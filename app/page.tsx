@@ -73,6 +73,20 @@ import { TaskList } from "@/features/tasks/components/task-list";
 import { getRuntimeCached, invalidateRuntimeCache, primeRuntimeCache } from "@/lib/client/runtime-cache";
 import { LandingPage } from "@/features/landing/components/landing-page";
 import { motion, AnimatePresence } from "framer-motion";
+import { format, subDays, addDays } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
+const OrzaiLogo = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M60 36 A24 24 0 1 1 50.5 14.5" stroke="#2D7FEA" strokeWidth="5" strokeLinecap="round" fill="none" />
+    <path d="M56 36 A20 20 0 1 1 47.5 18" stroke="#2D7FEA" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.25" />
+    <circle cx="53" cy="13.5" r="5" fill="#00E5A0" />
+    <circle cx="53" cy="13.5" r="2.5" fill="#0A0F1E" />
+    <circle cx="53" cy="13.5" r="8" stroke="#00E5A0" strokeWidth="1" fill="none" opacity="0.3" />
+    <circle cx="26" cy="28" r="2" fill="#2D7FEA" opacity="0.5" />
+    <circle cx="36" cy="18" r="1.5" fill="#2D7FEA" opacity="0.35" />
+  </svg>
+);
 
 const preloadDashboard = () => import("@/components/crm/dashboard");
 const preloadAnalyticsView = () => import("@/components/crm/analytics-view");
@@ -1078,7 +1092,7 @@ export default function OrzaiCrmPage() {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
-    doc.text("Base CRM - Exportação de Leads", 40, 36);
+    doc.text("Orzai - Exportação de Leads", 40, 36);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
@@ -1175,7 +1189,7 @@ export default function OrzaiCrmPage() {
     return (
       <main className="belart-home grid min-h-screen place-items-center p-4 text-foreground">
         <section className="soft-panel w-full max-w-[430px] rounded-lg border p-6 text-center shadow-xl">
-          <p className="text-sm font-medium text-muted-foreground">Carregando Base CRM...</p>
+          <p className="text-sm font-medium text-muted-foreground">Carregando Orzai...</p>
         </section>
       </main>
     );
@@ -1188,19 +1202,8 @@ export default function OrzaiCrmPage() {
 
     return (
       <main className="belart-home grid min-h-screen place-items-center p-4 text-foreground relative overflow-hidden bg-[#080808]">
-        {/* Background Blobs Animados (Estilo VM2 Global) */}
-        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-          <motion.div 
-            animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} 
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -top-[10%] -right-[5%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle_at_center,rgba(219,13,113,0.15)_0,transparent_60%)] blur-[100px]"
-          />
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }} 
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute -bottom-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle_at_center,rgba(40,128,210,0.15)_0,transparent_60%)] blur-[120px]"
-          />
-        </div>
+        {/* Fundo limpo e otimizado (sem bolhas de blur gigantes) */}
+        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" />
         <div className="absolute top-4 left-4 z-10">
           <Button variant="ghost" onClick={() => setLoginMode("landing")}>
             &larr; Voltar
@@ -1208,11 +1211,9 @@ export default function OrzaiCrmPage() {
         </div>
         <section className="w-full max-w-[430px] rounded-2xl border border-border bg-card p-6 shadow-xl">
           <div className="flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-md bg-primary text-primary-foreground">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
+            <OrzaiLogo className="h-10 w-10 text-primary" />
             <div>
-              <p className="text-sm font-semibold text-muted-foreground">Base CRM</p>
+              <p className="text-sm font-bold text-white/90">Orzai</p>
               <h1 className="text-xl font-semibold tracking-normal">
                 {loginMode === "login" ? "Acesso ao CRM" : "Criar conta"}
               </h1>

@@ -36,8 +36,8 @@ export function Dashboard({
              const isActive = period === p;
              return (
                <button key={p} onClick={() => setPeriod(p as "day"|"week"|"month")} className="relative px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300">
-                 {isActive && <motion.div layoutId="period-pill" className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-[0_0_15px_rgba(219,13,113,0.3)]" />}
-                 <span className={`relative z-10 ${isActive ? "text-primary drop-shadow-[0_0_5px_rgba(219,13,113,0.8)]" : "text-white/40 hover:text-white"}`}>{label}</span>
+                 {isActive && <motion.div layoutId="period-pill" className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-none" />}
+                 <span className={`relative z-10 ${isActive ? "text-primary " : "text-white/40 hover:text-white"}`}>{label}</span>
                </button>
              );
            })}
@@ -56,7 +56,7 @@ export function Dashboard({
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-md">
           <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
@@ -101,7 +101,7 @@ export function Dashboard({
           </CardContent>
         </Card>
 
-        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-md">
           <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
             <div className="flex items-center justify-between">
               <div>

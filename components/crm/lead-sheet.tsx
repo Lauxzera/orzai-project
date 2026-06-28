@@ -88,7 +88,7 @@ export function LeadSheet({
       <SheetContent className="bg-[#0c0c0c] border-l border-white/5 shadow-2xl sm:max-w-2xl overflow-y-auto">
         <SheetHeader className="mb-6">
           <div className="flex items-center gap-4">
-            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border border-primary/20 bg-primary/10 text-[20px] font-bold text-primary shadow-[0_0_15px_rgba(219,13,113,0.3)]">
+            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border border-primary/20 bg-primary/10 text-[20px] font-bold text-primary shadow-none">
               {lead.nome.slice(0, 2).toUpperCase()}
             </span>
             <div>
@@ -101,7 +101,7 @@ export function LeadSheet({
         </SheetHeader>
 
         <div className="space-y-6 pb-20">
-          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-md">
             <CardContent className="space-y-6 p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline" className="border-white/10 bg-white/5 text-[10px] uppercase tracking-widest text-white/50">{lead.status_funil}</Badge>
@@ -219,7 +219,7 @@ export function LeadSheet({
 
 
           {canEdit ? (
-            <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+            <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-md">
               <CardHeader className="border-b border-white/5 px-6 py-4">
                 <CardTitle className="text-[16px] font-light text-white">Criar Follow-up</CardTitle>
                 <CardDescription className="text-white/40">Registre a próxima ação do atendimento.</CardDescription>
@@ -244,7 +244,7 @@ export function LeadSheet({
             </Card>
           ) : null}
 
-          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-md">
             <CardHeader className="border-b border-white/5 px-6 py-4">
               <CardTitle className="text-[16px] font-light text-white">Tarefas</CardTitle>
             </CardHeader>
@@ -265,7 +265,7 @@ export function LeadSheet({
             </CardContent>
           </Card>
 
-          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
+          <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-md">
             <CardHeader className="border-b border-white/5 px-6 py-4">
               <CardTitle className="text-[16px] font-light text-white">Timeline do lead</CardTitle>
               <CardDescription className="text-white/40">Histórico do atendimento e mudanças.</CardDescription>
@@ -291,7 +291,7 @@ export function LeadSheet({
               <div className="space-y-4 border-l border-white/10 ml-2 pl-4">
                 {visibleTimeline.length ? visibleTimeline.map((entry) => (
                   <div key={entry.id} className="relative pb-4">
-                    <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(219,13,113,0.8)]" />
+                    <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-primary shadow-none" />
                     <div className="flex items-center gap-3">
                       <p className="text-[14px] font-medium text-white">{entry.action}</p>
                       <Badge variant={getTimelineBadgeVariant(entry.kind)} className="text-[9px] uppercase tracking-widest font-bold bg-white/5 border-white/10">{getTimelineBadgeLabel(entry.kind)}</Badge>

@@ -201,7 +201,7 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
         <CardContent className="p-8 space-y-6">
           <AdminUserFields draft={draft} onChange={setDraft} />
           <div className="pt-4 flex justify-end">
-            <Button onClick={() => void createUser()} disabled={createLoading} className="rounded-full bg-primary px-8 h-12 shadow-[0_0_20px_rgba(219,13,113,0.3)] hover:shadow-[0_0_30px_rgba(219,13,113,0.6)] font-bold tracking-wider uppercase text-[12px]">
+            <Button onClick={() => void createUser()} disabled={createLoading} className="rounded-full bg-primary px-8 h-12 shadow-none hover:shadow-none font-bold tracking-wider uppercase text-[12px]">
               {createLoading ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : <ShieldCheck className="mr-2 h-4 w-4" />}
               Autorizar Usuário
             </Button>
@@ -225,7 +225,7 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
                       <p className="text-[16px] font-medium text-white">{user.name}</p>
                       <span className={`px-3 py-1 text-[11px] font-bold uppercase tracking-widest rounded-full border ${user.active ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-white/10 text-white/40 bg-white/5'}`}>{user.active ? "Ativo" : "Bloqueado"}</span>
                       <span className={`px-3 py-1 text-[11px] font-bold uppercase tracking-widest rounded-full border ${user.role === 'ADMIN' ? 'border-amber-500/30 text-amber-400 bg-amber-500/10' : 'border-primary/30 text-primary bg-primary/10'}`}>{roleLabel(user.role)}</span>
-                      {user.isAgent && <span className="px-3 py-1 text-[11px] font-bold uppercase tracking-widest rounded-full border border-purple-500/30 text-purple-400 bg-purple-500/10">Atendente</span>}
+                      {user.isAgent && <span className="px-3 py-1 text-[11px] font-bold uppercase tracking-widest rounded-full border border-primary/30 text-primary bg-primary/10">Atendente</span>}
                       {isSelf && <span className="px-3 py-1 text-[11px] font-bold uppercase tracking-widest rounded-full border border-white/20 text-white/80 bg-white/10">Você</span>}
                     </div>
                     <p className="text-[13px] font-light text-white/40">@{user.username}</p>
@@ -348,8 +348,8 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
              <div className="space-y-8">
                 <div className="flex flex-wrap gap-4">
                   {roundRobin.agents.map((agent) => (
-                    <div key={agent.id} className={`relative flex items-center gap-3 px-6 py-4 rounded-[20px] border transition-all duration-300 ${agent.isNext ? 'border-primary/50 bg-primary/10 shadow-[0_0_30px_rgba(219,13,113,0.2)]' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.03]'}`}>
-                      {agent.isNext && <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span></span>}
+                    <div key={agent.id} className={`relative flex items-center gap-3 px-6 py-4 rounded-[20px] border transition-all duration-300 ${agent.isNext ? 'border-primary/50 bg-primary/10 shadow-none' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.03]'}`}>
+                      {agent.isNext && <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3"><span className=" absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span></span>}
                       <span className={`text-[15px] font-medium ${agent.isNext ? 'text-white' : 'text-white/70'}`}>{agent.name}</span>
                       <span className="w-px h-4 bg-white/10 mx-1"></span>
                       <span className="text-[12px] font-bold tracking-widest text-white/40">{agent.activeLeadCount} ATIVOS</span>
@@ -431,7 +431,7 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
                     className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)] transition-all duration-300"
                   />
                 )}
-                <Icon className={`relative z-10 h-4 w-4 ${isActive ? "drop-shadow-[0_0_8px_rgba(219,13,113,0.5)]" : ""}`} />
+                <Icon className={`relative z-10 h-4 w-4 ${isActive ? "" : ""}`} />
                 <span className={`relative z-10 text-[13px] font-medium tracking-wide ${isActive ? "text-white" : ""}`}>
                   {cat.label}
                 </span>

@@ -50,45 +50,45 @@
 }
 
 :root, :root.dark {
-  --background: #080808;
-  --foreground: #F5F2EE;
+  --background: #0A0F1E;
+  --foreground: #F0F4FF;
   
-  --card: rgba(255, 255, 255, 0.02);
-  --card-foreground: #F5F2EE;
+  --card: #1C2539;
+  --card-foreground: #F0F4FF;
   
-  --popover: rgba(8, 8, 8, 0.95);
-  --popover-foreground: #F5F2EE;
+  --popover: #0A0F1E;
+  --popover-foreground: #F0F4FF;
   
-  --primary: #D4AF37;
-  --primary-foreground: #080808;
+  --primary: #2D7FEA;
+  --primary-foreground: #FFFFFF;
   
-  --secondary: rgba(255, 255, 255, 0.05);
-  --secondary-foreground: #F5F2EE;
+  --secondary: #1C2539;
+  --secondary-foreground: #F0F4FF;
   
   --muted: rgba(255, 255, 255, 0.03);
-  --muted-foreground: rgba(245, 242, 238, 0.5);
+  --muted-foreground: #8B97B0;
   
-  --accent: rgba(219, 13, 113, 0.15);
-  --accent-foreground: #F5F2EE;
+  --accent: #00E5A0;
+  --accent-foreground: #0A0F1E;
   
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   
-  --border: rgba(255, 255, 255, 0.06);
-  --input: rgba(255, 255, 255, 0.06);
-  --ring: rgba(219, 13, 113, 0.5);
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.07);
+  --ring: #2D7FEA;
   
-  --chart-1: #D4AF37;
-  --chart-2: #2880D2;
-  --chart-3: #DB0D71;
-  --chart-4: #8B5CF6;
-  --chart-5: #F59E0B;
+  --chart-1: #2D7FEA;
+  --chart-2: #00E5A0;
+  --chart-3: #1C2539;
+  --chart-4: #8B97B0;
+  --chart-5: #0A0F1E;
   
   --metric-a: rgba(255, 255, 255, 0.03);
   --metric-b: rgba(255, 255, 255, 0.06);
   
   --shadow-soft: 0 0 20px -5px rgba(0, 0, 0, 0.5);
-  --shadow-floating: 0 0 40px -10px rgba(219, 13, 113, 0.2);
+  --shadow-floating: 0 0 40px -10px rgba(45, 127, 234, 0.2);
 }
 
 @layer base {
@@ -120,7 +120,11 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-outfit, Outfit), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-space-grotesk, 'Space Grotesk'), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-space-mono, 'Space Mono'), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 ::selection {
@@ -363,4 +367,23 @@ html.dark .belart-home .bg-white\/55 {
 
 html.dark .belart-home .text-foreground\/80 {
   color: color-mix(in oklab, var(--foreground) 82%, transparent) !important;
+}
+
+@keyframes button-wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.animate-button-wave {
+  animation: button-wave 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-button-wave-delayed {
+  animation: button-wave 2s cubic-bezier(0, 0, 0.2, 1) infinite 1s;
 }
