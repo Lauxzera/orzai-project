@@ -339,14 +339,10 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={workspaceView}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
+      <div
+        key={workspaceView}
+        className="animate-in fade-in duration-300"
+      >
           {workspaceView === "overview" ? (
         <div className="grid gap-4 xl:grid-cols-[1.55fr_0.95fr]">
           <div className="space-y-4">
@@ -867,8 +863,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
           </Card>
         </div>
       ) : null}
-            </motion.div>
-      </AnimatePresence>
+          </div>
     </div>
   );
 }

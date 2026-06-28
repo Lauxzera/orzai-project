@@ -122,7 +122,6 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                        layout
                         className={`group relative overflow-hidden rounded-[16px] border transition-all duration-300 ${
                           isRead 
                             ? "border-white/5 bg-white/[0.01] opacity-50 hover:opacity-100" 

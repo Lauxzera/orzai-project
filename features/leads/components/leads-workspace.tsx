@@ -93,7 +93,7 @@ export function LeadsWorkspace({
                   onClick={() => setMode(m.id as "list" | "kanban")}
                   className={`relative flex items-center gap-2 px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 disabled:opacity-30 ${isActive ? "text-primary drop-shadow-[0_0_5px_rgba(219,13,113,0.8)]" : "text-white/40 hover:text-white"}`}
                 >
-                  {isActive && <motion.div layoutId="mode-pill" className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-[0_0_15px_rgba(219,13,113,0.3)]" />}
+                  {isActive && <div className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-[0_0_15px_rgba(219,13,113,0.3)] transition-all duration-300" />}
                   <m.icon className="relative z-10 h-4 w-4" />
                   <span className="relative z-10">{m.label}</span>
                   <span className={`relative z-10 ml-2 rounded-full px-2 py-0.5 text-[10px] ${isActive ? 'bg-primary/30 text-white' : 'bg-white/10 text-white/50'}`}>

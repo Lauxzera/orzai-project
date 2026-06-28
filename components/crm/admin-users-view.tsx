@@ -348,12 +348,12 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
              <div className="space-y-8">
                 <div className="flex flex-wrap gap-4">
                   {roundRobin.agents.map((agent) => (
-                    <motion.div layout key={agent.id} className={`relative flex items-center gap-3 px-6 py-4 rounded-[20px] border ${agent.isNext ? 'border-primary/50 bg-primary/10 shadow-[0_0_30px_rgba(219,13,113,0.2)]' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.03]'}`}>
+                    <div key={agent.id} className={`relative flex items-center gap-3 px-6 py-4 rounded-[20px] border transition-all duration-300 ${agent.isNext ? 'border-primary/50 bg-primary/10 shadow-[0_0_30px_rgba(219,13,113,0.2)]' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.03]'}`}>
                       {agent.isNext && <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span></span>}
                       <span className={`text-[15px] font-medium ${agent.isNext ? 'text-white' : 'text-white/70'}`}>{agent.name}</span>
                       <span className="w-px h-4 bg-white/10 mx-1"></span>
                       <span className="text-[12px] font-bold tracking-widest text-white/40">{agent.activeLeadCount} ATIVOS</span>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
                 <div className="rounded-2xl border border-white/5 bg-white/[0.01] p-5 inline-flex items-center gap-4">
@@ -427,9 +427,8 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
                 }`}
               >
                 {isActive && (
-                  <motion.div
-                    layoutId="active-admin-tab"
-                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)]"
+                  <div
+                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)] transition-all duration-300"
                   />
                 )}
                 <Icon className={`relative z-10 h-4 w-4 ${isActive ? "drop-shadow-[0_0_8px_rgba(219,13,113,0.5)]" : ""}`} />

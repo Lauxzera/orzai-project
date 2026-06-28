@@ -204,15 +204,9 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <AnimatePresence>
             {items.map((item) => (
-              <motion.span
+              <span
                 key={item}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{ type: "spring", bounce: 0.3 }}
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[13px] font-medium text-white/80 transition-all hover:bg-white/[0.05]"
               >
                 <Tag className="h-3 w-3 text-white/30 group-hover:text-primary transition-colors" />
@@ -226,12 +220,11 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 )}
-              </motion.span>
+              </span>
             ))}
             {items.length === 0 && (
               <span className="text-[13px] font-light text-white/30 italic">Nenhum item cadastrado.</span>
             )}
-          </AnimatePresence>
         </div>
       </CardContent>
     </Card>
@@ -262,9 +255,8 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
                 }`}
               >
                 {isActive && (
-                  <motion.div
-                    layoutId="active-settings-tab"
-                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)]"
+                  <div
+                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)] transition-all duration-300"
                   />
                 )}
                 <Icon className={`relative z-10 h-4 w-4 ${isActive ? "drop-shadow-[0_0_8px_rgba(219,13,113,0.5)]" : ""}`} />

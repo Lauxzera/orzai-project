@@ -95,10 +95,8 @@ export function AppSidebar({ items, activeView, messagesUnreadCount = 0, sidebar
                       )}
                     >
                       {isActive && (
-                        <motion.div
-                          layoutId="active-pill"
-                          transition={{ duration: 0.5, type: "spring", bounce: 0.25 }}
-                          className="absolute inset-0 z-[-1] rounded-xl bg-white/[0.04] border border-white/5 shadow-[0_0_20px_-5px_rgba(255,255,255,0.05)]"
+                        <div
+                          className="absolute inset-0 z-[-1] rounded-xl bg-white/[0.04] border border-white/5 shadow-[0_0_20px_-5px_rgba(255,255,255,0.05)] transition-all duration-300"
                         />
                       )}
                       
