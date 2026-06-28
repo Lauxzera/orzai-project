@@ -125,10 +125,16 @@ export function CaseTag({
   );
 }
 
-export function DateField({ date, prefix = "" }: { date: string; prefix?: string }) {
+export function DateField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
   return (
-    <span className="text-[11px] font-light text-white/40 tracking-wide">
-      {prefix} <span className="font-medium text-white/60">{date}</span>
-    </span>
+    <div className="space-y-1.5">
+      <label className="text-xs font-medium text-muted-foreground">{label}</label>
+      <input
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="flex h-9 w-full rounded-md border border-white/10 bg-black/20 px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+      />
+    </div>
   );
 }
