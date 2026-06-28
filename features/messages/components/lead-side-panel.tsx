@@ -284,7 +284,7 @@ export function LeadSidePanel({
             <TabsList className="grid h-12 w-full grid-cols-3 bg-white/5 rounded-[16px] p-1 border border-white/10 shadow-inner">
               <TabsTrigger value="overview" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(219,13,113,0.4)]">Painel</TabsTrigger>
               <TabsTrigger value="lead" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(219,13,113,0.4)]">Lead</TabsTrigger>
-              <TabsTrigger value="ai" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(219,13,113,0.4)]">Inteligência</TabsTrigger>
+
             </TabsList>
           </div>
 
@@ -447,54 +447,6 @@ export function LeadSidePanel({
                 </div>
               ) : null}
             </TabsContent>
-
-            <TabsContent value="ai" className="mt-0 space-y-6">
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20"><Bot className="h-5 w-5" /></span>
-                    <div>
-                      <p className="text-[14px] font-light text-white tracking-wide">Inteligência Artificial</p>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">Análise de contexto</p>
-                    </div>
-                  </div>
-                  <Button size="sm" variant="outline" className="h-9 rounded-full border-purple-500/30 bg-purple-500/10 px-4 text-[10px] font-bold uppercase tracking-widest text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:bg-purple-500/20" onClick={onAnalyze} disabled={analysisLoading}>
-                    {analysisLoading ? <LoaderCircle className="h-3.5 w-3.5 animate-spin mr-2" /> : <Sparkles className="h-3.5 w-3.5 mr-2" />} Analisar
-                  </Button>
-                </div>
-
-                {analysis ? (
-                  <div className="space-y-5">
-                    <div className="rounded-[16px] bg-white/5 p-4 border border-white/5">
-                      <p className="text-[13px] font-light leading-relaxed text-white/80">{analysis.summary}</p>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant={SENTIMENT_VARIANT[analysis.sentiment]} className="text-[9px] uppercase tracking-widest">{SENTIMENT_LABEL[analysis.sentiment]}</Badge>
-                      <Badge variant={URGENCY_VARIANT[analysis.urgency]} className="text-[9px] uppercase tracking-widest">{URGENCY_LABEL[analysis.urgency]}</Badge>
-                    </div>
-                    <div className="rounded-[16px] border border-primary/20 bg-primary/5 px-4 py-4">
-                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary">Ação sugerida (IA)</p>
-                      <p className="mt-2 text-[13px] font-light text-white">{analysis.suggestedAction}</p>
-                    </div>
-                    {analysis.suggestedStatus && analysis.suggestedStatus !== conversation.leadStatus ? (
-                      <div className="flex items-center gap-3 rounded-[16px] border border-emerald-500/20 bg-emerald-500/10 px-4 py-3">
-                        <ChevronRight className="h-5 w-5 shrink-0 text-emerald-400" />
-                        <span className="flex-1 text-[13px] font-light text-white">Mover para <span className="font-medium text-emerald-400">{analysis.suggestedStatus}</span></span>
-                        <Button size="sm" className="h-8 rounded-full bg-emerald-500 text-[10px] font-bold uppercase tracking-widest text-[#0a0a0a] hover:bg-emerald-400" onClick={onApplyStatus} disabled={applyingStatus || !canEdit}>{applyingStatus ? "Aplicando" : "Aplicar"}</Button>
-                      </div>
-                    ) : null}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-6 text-center">
-                     <Sparkles className="h-10 w-10 text-white/10 mb-3" />
-                     <p className="text-[13px] font-light text-white/40 max-w-[200px]">Rode a análise para ler o contexto e receber sugestões táticas.</p>
-                  </div>
-                )}
-              </div>
-
-              {leadSuggestions.length > 0 ? (
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
-                  <div className="mb-4">
                     <p className="text-[14px] font-light text-white tracking-wide">Sugestões de Cadastro</p>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">Dados detectados na conversa</p>
                   </div>

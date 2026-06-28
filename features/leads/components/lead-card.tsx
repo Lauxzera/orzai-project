@@ -159,14 +159,7 @@ export function LeadCard({
           <div className="flex flex-col items-end gap-2">
             {score ? <ScorePill score={score} /> : null}
             {overdue ? <Badge variant="danger" className="text-[10px] uppercase tracking-widest font-bold">Atrasado</Badge> : null}
-            <Button
-              size="icon"
-              variant="ghost"
-              className="mt-2 h-10 w-10 rounded-full border border-white/10 bg-white/5 text-white/50 hover:bg-primary/20 hover:text-primary transition-colors"
-              onClick={handleAiAnalyze} disabled={analysisLoading} aria-label="Analisar conversa com IA"
-            >
-              {analysisLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-            </Button>
+
           </div>
         </div>
 

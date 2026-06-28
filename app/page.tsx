@@ -1681,17 +1681,6 @@ export default function OrzaiCrmPage() {
           </>
         ) : null}
 
-      {view !== "messages" ? (
-        <Button
-          type="button"
-          size="icon"
-          onClick={() => setAssistantOpen(true)}
-          aria-label="Abrir assistente comercial"
-          className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full border border-primary/20 bg-primary text-primary-foreground shadow-2xl shadow-primary/25 transition-transform hover:scale-[1.03] hover:bg-primary/95 focus-visible:ring-2 focus-visible:ring-primary/40"
-        >
-          <Bot className="h-5 w-5" />
-        </Button>
-      ) : null}
 
       {(leadDialogOpen || editingLeadId !== null) ? (
         <LeadDialog
@@ -1749,7 +1738,7 @@ export default function OrzaiCrmPage() {
         />
       ) : null}
 
-      <AssistantSheet open={assistantOpen} onOpenChange={setAssistantOpen} crmState={state} selectedLeadId={selectedLeadId} />
+
     </main>
   );
 }

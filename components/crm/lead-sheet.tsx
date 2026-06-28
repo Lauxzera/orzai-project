@@ -216,7 +216,7 @@ export function LeadSheet({
             </Card>
           ) : null}
 
-          <LeadAiCard lead={lead} />
+
 
           {canEdit ? (
             <Card className="rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">

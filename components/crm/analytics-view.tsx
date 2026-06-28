@@ -487,35 +487,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
           </div>
 
           <div className="space-y-4">
-            <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-[24px] shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
-              <CardHeader>
-                <CardTitle>Leitura inteligente</CardTitle>
-                <CardDescription>Resumo executivo do recorte atual com apoio da IA quando você quiser aprofundar.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" onClick={actions.analyzeWithAi} disabled={state.aiLoading} className="w-full">
-                  {state.aiLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                  Analisar com IA
-                </Button>
-                {state.aiLoading ? (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <LoaderCircle className="h-4 w-4 animate-spin" />
-                    Cruzando dados do recorte...
-                  </div>
-                ) : null}
-                {state.aiError ? <p className="text-sm text-destructive">{state.aiError}</p> : null}
-                {state.aiSummary ? (
-                  <div className="space-y-2">
-                    <Badge variant="outline">{state.aiSummary.source === "openrouter" ? "OpenRouter" : "Fallback"}</Badge>
-                    <div className="whitespace-pre-wrap text-sm leading-6 text-foreground">{state.aiSummary.answer}</div>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Use a análise para gerar um resumo executivo do recorte atual, sem precisar navegar manualmente por todos os blocos.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+
 
             <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-[24px] shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
               <CardHeader>
