@@ -1,0 +1,301 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../lib/generated/prisma"
+  previewFeatures = ["driverAdapters"]
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  SALES
+  VIEWER
+}
+
+enum FunnelStatus {
+  NOVO_LEAD
+  PRIMEIRO_CONTATO_FEITO
+  INTERESSADO_NO_CURSO
+  INFORMACOES_ENVIADAS
+  AGUARDANDO_RETORNO
+  NEGOCIACAO_MATRICULA
+  AGUARDANDO_PAGAMENTO
+  MATRICULADO
+  PERDIDO
+  REATIVAR_FUTURAMENTE
+}
+
+enum EnrollmentStatus {
+  NAO_INICIADO
+  INTERESSADO
+  AGUARDANDO_PAGAMENTO
+  PAGAMENTO_CONFIRMADO
+  MATRICULADO
+  CANCELADO
+  REMANEJADO
+}
+
+enum ChatMessageDirection {
+  inbound
+  outbound
+}
+
+enum ChatMessageType {
+  text
+  image
+  audio
+  document
+}
+
+enum ChatMessageStatus {
+  sent
+  delivered
+  read
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  username     String        @unique
+  passwordHash String
+  role         UserRole      @default(SALES)
+  active       Boolean       @default(true)
+  isAgent      Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  leads        Lead[]        @relation("LeadOwner")
+  history      LeadHistory[]
+}
+
+model Lead {
+  id                 String           @id @default(cuid())
+  nome               String
+  telefone           String
+  whatsapp           String?
+  email              String?
+  cursoDeInteresse   String
+  origem             String
+  origemDetalhe      String?
+  captadoVia         String?
+  utmSource          String?
+  utmMedium          String?
+  utmCampaign        String?
+  utmTerm            String?
+  utmContent         String?
+  trackingReferrer   String?
+  trackingLandingPage String?
+  trackingId         String?
+  statusFunil        FunnelStatus     @default(NOVO_LEAD)
+  statusMatricula    EnrollmentStatus @default(NAO_INICIADO)
+  responsavelId      String?
+  responsavelNome    String
+  dataEntrada        DateTime
+  proximoContato     DateTime?
+  objecaoPrincipal   String?
+  observacoes        String?
+  jaFoiAluno         Boolean          @default(false)
+  cidade             String?
+  profissao          String?
+  predictiveScore    Int?
+  predictiveScoreConfidence String?
+  predictiveScoreReasons String[]      @default([])
+  predictiveScoreRisks String[]        @default([])
+  predictiveScoreSource String?
+  predictiveScoreUpdatedAt DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  archivedAt         DateTime?
+  responsavel        User?            @relation("LeadOwner", fields: [responsavelId], references: [id])
+  tasks              Task[]
+  history            LeadHistory[]
+
+  @@index([statusFunil])
+  @@index([statusMatricula])
+  @@index([origem])
+  @@index([utmSource])
+  @@index([utmCampaign])
+  @@index([cursoDeInteresse])
+  @@index([responsavelNome])
+  @@index([proximoContato])
+  @@index([telefone])
+  @@index([email])
+  @@index([archivedAt])
+  @@index([updatedAt])
+  @@index([predictiveScoreUpdatedAt])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  leadId      String
+  title       String
+  owner       String
+  dueDate     DateTime
+  done        Boolean   @default(false)
+  doneAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  archivedAt  DateTime?
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([owner])
+  @@index([dueDate])
+  @@index([done])
+  @@index([archivedAt])
+}
+
+model LeadHistory {
+  id        String   @id @default(cuid())
+  leadId    String
+  userId    String?
+  action    String
+  note      String?
+  createdAt DateTime @default(now())
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([leadId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model LeadListRecord {
+  id          String   @id
+  name        String
+  description String   @default("")
+  color       String
+  leadIds     String[]
+  createdAt   DateTime
+  updatedAt   DateTime
+
+  @@index([updatedAt])
+}
+
+model CrmCustomizationState {
+  id                        String   @id
+  courses                   String[]
+  courseSegmentsFormacao    String[]
+  courseSegmentsEspecializacao String[]
+  origins                   String[]
+  leadCaptureMethods        String[]
+  owners                    String[]
+  updatedAt                 DateTime @updatedAt
+}
+
+model AdminAuditRecord {
+  id             String   @id
+  actorId        String?
+  actorName      String
+  action         String
+  targetUserId   String
+  targetUserName String
+  details        String
+  changeTypes    Json?
+  createdAt      DateTime
+
+  @@index([createdAt])
+  @@index([targetUserId])
+}
+
+model MessageConversation {
+  id                   String               @id
+  contactPhone         String
+  contactName          String
+  lastMessage          String               @default("")
+  lastMessageAt        DateTime
+  lastMessageDirection ChatMessageDirection?
+  unreadCount          Int                  @default(0)
+  source               String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  messages             MessageRecord[]
+
+  @@index([lastMessageAt])
+  @@index([contactPhone])
+}
+
+model MessageRecord {
+  id                String               @id
+  conversationId    String
+  direction         ChatMessageDirection
+  type              ChatMessageType
+  content           String               @default("")
+  mediaUrl          String?
+  status            ChatMessageStatus
+  statusError       String?
+  timestamp         DateTime
+  externalMessageId String?              @unique
+  externalMediaId   String?
+  mimeType          String?
+  fileName          String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  conversation      MessageConversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, timestamp])
+  @@index([timestamp])
+}
+
+model MessageWorkspaceRecord {
+  conversationKey String   @id
+  priority        String
+  serviceStatus   String
+  tags            String[]
+  pinnedNote      String   @default("")
+  attempts        Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model MessageCampaignRecord {
+  id              String   @id
+  title           String
+  messageTemplate String
+  delaySeconds    Int
+  status          String
+  createdAt       DateTime
+  updatedAt       DateTime
+  createdByName   String
+  startedAt       DateTime?
+  completedAt     DateTime?
+  nextDispatchAt  DateTime?
+  recipients      Json
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model RoundRobinState {
+  id        String   @id @default("global")
+  nextIndex Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model MessageChannelConfigRecord {
+  id                    String   @id
+  provider              String
+  mode                  String
+  embeddedSignupEnabled Boolean  @default(false)
+  coexistenceEnabled    Boolean  @default(false)
+  metaAppId             String?
+  metaAppConfigId       String?
+  redirectUri           String?
+  onboardingStatus      String   @default("not-started")
+  lastEventType         String?
+  lastEventPayload      Json?
+  lastCode              String?
+  lastWabaId            String?
+  lastPhoneNumberId     String?
+  lastBusinessAccountId String?
+  linkedAccessToken     String?
+  linkedTokenType       String?
+  linkedAt              DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([provider])
+  @@index([onboardingStatus])
+}

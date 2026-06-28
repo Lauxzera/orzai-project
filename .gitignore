@@ -1,0 +1,30 @@
+.next
+node_modules
+out
+dist
+lib/generated/
+.env*
+!.env.example
+*.tsbuildinfo
+.next-dev*.log
+data/*.json
+.aidesigner/*
+!.aidesigner/.gitkeep
+
+# Logs e arquivos de runtime local
+*.log
+.runtime/
+.runtime/*
+.codex/
+.codex-remote-attachments/
+
+# Pacotes e atalhos locais
+*.zip
+*.lnk
+
+.vercel
+.vercel-cache-data/
+.vercel-cache-home/
+.mcp.json
+.claude/settings.local.json
+.claude/launch.json

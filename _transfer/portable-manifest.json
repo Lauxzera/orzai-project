@@ -1,0 +1,7 @@
+﻿{
+    "project":  "Base CRM",
+    "createdAt":  "2026-06-25T17:55:25.7735689-03:00",
+    "machine":  "MARKETING-02",
+    "includesEnv":  true,
+    "includesRuntimeData":  false
+}
