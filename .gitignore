@@ -30,3 +30,4 @@ data/*.json
 .claude/launch.json
 
 .vercel
+.env*

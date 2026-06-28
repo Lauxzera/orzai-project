@@ -447,32 +447,7 @@ export function LeadSidePanel({
                 </div>
               ) : null}
             </TabsContent>
-                    <p className="text-[14px] font-light text-white tracking-wide">Sugestões de Cadastro</p>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">Dados detectados na conversa</p>
-                  </div>
-                  <div className="grid gap-3">
-                    {leadSuggestions.map((suggestion) => (
-                      <div key={suggestion.field} className="rounded-[16px] border border-white/10 bg-white/5 p-4">
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">{suggestion.label}</p>
-                            <p className="text-[12px] font-light text-white/50 mb-1">Atual: <span className="font-medium text-white/80">{suggestion.currentValue || "vazio"}</span></p>
-                            <p className="text-[12px] font-light text-emerald-400 mb-2">Sugerido: <span className="font-medium">{suggestion.suggestedValue}</span></p>
-                            <p className="text-[10px] text-white/30">{suggestion.reason}</p>
-                          </div>
-                          {canEdit ? (
-                            <div className="flex flex-col gap-2">
-                              <Button type="button" size="icon" className="h-8 w-8 rounded-full bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40" onClick={() => onAcceptSuggestion(suggestion.field, suggestion.suggestedValue)}><Check className="h-4 w-4" /></Button>
-                              <Button type="button" size="icon" variant="outline" className="h-8 w-8 rounded-full border-white/10 bg-transparent text-white/50 hover:bg-white/10 hover:text-white" onClick={() => onDismissSuggestion(suggestion.field)}><X className="h-4 w-4" /></Button>
-                            </div>
-                          ) : null}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-            </TabsContent>
+
           </div>
         </Tabs>
       ) : (
