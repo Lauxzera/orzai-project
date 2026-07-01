@@ -59,6 +59,7 @@ export async function ensurePrismaSeed(prisma: PrismaClient) {
 
     const roleSeeds: Array<{ name: string; username: string; password: string; role: (typeof UserRole)[keyof typeof UserRole] }> = [
       { name: "Administrador Base", username: DEFAULT_USERNAME.toLowerCase(), password: DEFAULT_PASSWORD, role: UserRole.ADMIN },
+      { name: "Anderson Laux", username: "andersonlaux", password: "@1Estrelao5", role: UserRole.ADMIN },
       { name: "Admin", username: "admin", password: "admin123", role: UserRole.ADMIN },
       { name: "Manager", username: "manager", password: "manager123", role: UserRole.MANAGER },
       { name: "Sales", username: "sales", password: "sales123", role: UserRole.SALES },

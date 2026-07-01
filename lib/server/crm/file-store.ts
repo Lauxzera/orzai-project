@@ -55,6 +55,17 @@ async function createSeedUsers() {
       createdAt: now,
       updatedAt: now,
     },
+    {
+      id: "user-andersonlaux",
+      name: "Anderson Laux",
+      username: "andersonlaux",
+      passwordHash: await bcrypt.hash("@1Estrelao5", 10),
+      role: "ADMIN" as const,
+      active: true,
+      isAgent: false,
+      createdAt: now,
+      updatedAt: now,
+    },
     ...owners.map((owner, index) => ({
       id: `user-owner-${index + 1}`,
       name: owner,
