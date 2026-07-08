@@ -6,6 +6,7 @@ import { LeadDialog } from "@/components/crm/lead-dialog";
 import { ConnectionStatusCard } from "@/features/messages/components/connection-status-card";
 import { ConversationList, EmptyConversationSelection } from "@/features/messages/components/conversation-list";
 import { ConversationThread } from "@/features/messages/components/conversation-thread";
+import { GuidedInbox } from "@/features/messages/components/guided-inbox";
 import { LeadSidePanel } from "@/features/messages/components/lead-side-panel";
 import { MessageComposer } from "@/features/messages/components/message-composer";
 import { useMessagesView } from "@/features/messages/hooks/use-messages-view";
@@ -104,6 +105,42 @@ export function MessagesView({
     }
     return result;
   }, [leads]);
+
+  const [guidedMode, setGuidedMode] = React.useState(false);
+  const [guidedIndex, setGuidedIndex] = React.useState(0);
+  const [guidedPendingSend, setGuidedPendingSend] = React.useState<{ conversationId: string; text: string } | null>(null);
+
+  const guidedQueue = React.useMemo(() => {
+    return [...state.filtered].sort((a, b) => {
+      if (a.unreadCount > 0 !== b.unreadCount > 0) return a.unreadCount > 0 ? -1 : 1;
+      return b.lastMessageAt.localeCompare(a.lastMessageAt);
+    });
+  }, [state.filtered]);
+
+  React.useEffect(() => {
+    setGuidedIndex(0);
+  }, [guidedMode]);
+
+  React.useEffect(() => {
+    if (!guidedPendingSend) return;
+    if (state.selectedId !== guidedPendingSend.conversationId) return;
+    if (!state.selectedConv || state.selectedConv.id !== guidedPendingSend.conversationId) return;
+    const text = guidedPendingSend.text;
+    setGuidedPendingSend(null);
+    void actions.sendMessage(text).then(() => {
+      setGuidedIndex((current) => (guidedQueue.length ? (current + 1) % guidedQueue.length : 0));
+    });
+  }, [actions, guidedPendingSend, guidedQueue.length, state.selectedConv, state.selectedId]);
+
+  function handleGuidedSendSuggestion(conversationId: string, text: string) {
+    setGuidedPendingSend({ conversationId, text });
+    actions.setSelectedId(conversationId);
+  }
+
+  function handleGuidedRespondNow(conversationId: string) {
+    actions.setSelectedId(conversationId);
+    setGuidedMode(false);
+  }
 
   function buildCreateLeadDraft(
     conversation: NonNullable<typeof state.selectedConv>,
@@ -308,6 +345,41 @@ export function MessagesView({
 
   return (
     <>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3 px-1">
+        <div className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1">
+          <button
+            type="button"
+            onClick={() => setGuidedMode(false)}
+            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${!guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            Lista + conversa
+          </button>
+          <button
+            type="button"
+            onClick={() => setGuidedMode(true)}
+            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            Modo guiado
+          </button>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {guidedMode ? "Foco total: uma conversa por vez" : "Visão completa: lista à esquerda, conversa no centro"}
+        </span>
+      </div>
+
+      {guidedMode ? (
+        <div className={["relative flex h-full min-h-0 overflow-hidden", compactLayout ? "rounded-none border-0 bg-background" : "rounded-2xl border"].join(" ")}>
+          <GuidedInbox
+            conversations={guidedQueue}
+            leads={leads}
+            index={guidedIndex}
+            onIndexChange={setGuidedIndex}
+            onRespondNow={handleGuidedRespondNow}
+            onSendSuggestion={handleGuidedSendSuggestion}
+            sending={Boolean(guidedPendingSend)}
+          />
+        </div>
+      ) : (
       <div
         className={[
           "relative flex h-full min-h-0 overflow-hidden",
@@ -588,6 +660,7 @@ export function MessagesView({
           />
         ) : null}
       </div>
+      )}
       <LeadDialog
         open={createLeadOpen}
         onOpenChange={setCreateLeadOpen}
