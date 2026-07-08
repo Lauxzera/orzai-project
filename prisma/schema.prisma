@@ -57,18 +57,30 @@ enum ChatMessageStatus {
   read
 }
 
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum FollowUpStatus {
+  PENDING
+  CANCELLED
+}
+
 model User {
-  id           String        @id @default(cuid())
-  name         String
-  username     String        @unique
-  passwordHash String
-  role         UserRole      @default(SALES)
-  active       Boolean       @default(true)
-  isAgent      Boolean       @default(false)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  leads        Lead[]        @relation("LeadOwner")
-  history      LeadHistory[]
+  id              String               @id @default(cuid())
+  name            String
+  username        String               @unique
+  passwordHash    String
+  role            UserRole             @default(SALES)
+  active          Boolean              @default(true)
+  isAgent         Boolean              @default(false)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  leads           Lead[]               @relation("LeadOwner")
+  history         LeadHistory[]
+  departmentRoles UserDepartmentRole[]
 }
 
 model Lead {
@@ -106,12 +118,16 @@ model Lead {
   predictiveScoreRisks String[]        @default([])
   predictiveScoreSource String?
   predictiveScoreUpdatedAt DateTime?
+  departmentId       String?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
   archivedAt         DateTime?
   responsavel        User?            @relation("LeadOwner", fields: [responsavelId], references: [id])
+  department         Department?      @relation(fields: [departmentId], references: [id])
   tasks              Task[]
   history            LeadHistory[]
+  appointments       Appointment[]
+  scheduledFollowUps ScheduledFollowUp[]
 
   @@index([statusFunil])
   @@index([statusMatricula])
@@ -126,6 +142,7 @@ model Lead {
   @@index([archivedAt])
   @@index([updatedAt])
   @@index([predictiveScoreUpdatedAt])
+  @@index([departmentId])
 }
 
 model Task {
@@ -209,12 +226,16 @@ model MessageConversation {
   lastMessageDirection ChatMessageDirection?
   unreadCount          Int                  @default(0)
   source               String?
+  departmentId         String?
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
+  department           Department?          @relation(fields: [departmentId], references: [id])
   messages             MessageRecord[]
+  insight              ConversationInsight?
 
   @@index([lastMessageAt])
   @@index([contactPhone])
+  @@index([departmentId])
 }
 
 model MessageRecord {
@@ -269,21 +290,25 @@ model MessageCampaignRecord {
 }
 
 model RoundRobinState {
-  id        String   @id @default("global")
-  nextIndex Int      @default(0)
-  updatedAt DateTime @updatedAt
+  id           String      @id @default("global")
+  nextIndex    Int         @default(0)
+  departmentId String?
+  updatedAt    DateTime    @updatedAt
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  @@index([departmentId])
 }
 
 model MessageChannelConfigRecord {
-  id                    String   @id
+  id                    String      @id
   provider              String
   mode                  String
-  embeddedSignupEnabled Boolean  @default(false)
-  coexistenceEnabled    Boolean  @default(false)
+  embeddedSignupEnabled Boolean     @default(false)
+  coexistenceEnabled    Boolean     @default(false)
   metaAppId             String?
   metaAppConfigId       String?
   redirectUri           String?
-  onboardingStatus      String   @default("not-started")
+  onboardingStatus      String      @default("not-started")
   lastEventType         String?
   lastEventPayload      Json?
   lastCode              String?
@@ -293,9 +318,129 @@ model MessageChannelConfigRecord {
   linkedAccessToken     String?
   linkedTokenType       String?
   linkedAt              DateTime?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  departmentId          String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  department            Department? @relation(fields: [departmentId], references: [id])
 
   @@index([provider])
   @@index([onboardingStatus])
+  @@index([departmentId])
+}
+
+model Department {
+  id                  String                       @id @default(cuid())
+  name                String
+  description         String?
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  userRoles           UserDepartmentRole[]
+  botConfigs          BotConfig[]
+  knowledgeBase       KnowledgeBase[]
+  channelIntegrations ChannelIntegration[]
+  leads               Lead[]
+  conversations       MessageConversation[]
+  roundRobinStates    RoundRobinState[]
+  channelConfigs      MessageChannelConfigRecord[]
+  appointments        Appointment[]
+  scheduledFollowUps  ScheduledFollowUp[]
+}
+
+model UserDepartmentRole {
+  id           String     @id @default(cuid())
+  userId       String
+  departmentId String
+  role         UserRole   @default(SALES)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, departmentId])
+  @@index([userId])
+  @@index([departmentId])
+}
+
+model BotConfig {
+  id           String     @id @default(cuid())
+  departmentId String
+  prompt       String
+  model        String?
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@index([departmentId])
+}
+
+model KnowledgeBase {
+  id           String     @id @default(cuid())
+  departmentId String
+  title        String
+  content      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@index([departmentId])
+}
+
+model ChannelIntegration {
+  id                String     @id @default(cuid())
+  provider          String
+  accessToken       String
+  providerAccountId String
+  departmentId      String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  department        Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@index([departmentId])
+  @@index([provider])
+  @@index([providerAccountId])
+}
+
+model Appointment {
+  id           String            @id @default(cuid())
+  externalId   String?
+  leadId       String
+  departmentId String
+  startTime    DateTime
+  endTime      DateTime
+  status       AppointmentStatus @default(PENDING)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  lead         Lead              @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  department   Department        @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([departmentId])
+  @@index([startTime])
+}
+
+model ScheduledFollowUp {
+  id           String         @id @default(cuid())
+  leadId       String
+  departmentId String
+  scheduledFor DateTime
+  status       FollowUpStatus @default(PENDING)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  lead         Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  department   Department     @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([departmentId])
+  @@index([status])
+}
+
+model ConversationInsight {
+  conversationId String              @id
+  sentiment      String
+  objections     String[]            @default([])
+  summary        String
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  conversation   MessageConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
