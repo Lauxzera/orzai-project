@@ -165,7 +165,7 @@ function measureRange(leads: Lead[], tasks: Task[], bundles: ConversationBundle[
     });
 
   const wonLeads = leadsInRange.filter((lead) => ["Pagamento confirmado", "Matriculado"].includes(lead.status_matricula)).length;
-  const lostLeads = leadsInRange.filter((lead) => lead.status_funil === "Perdido").length;
+  const lostLeads = leadsInRange.filter((lead) => lead.status_matricula === "Cancelado").length;
   const unfilledLeads = leadsInRange.filter((lead) => !lead.email.trim() || !lead.cidade.trim() || !lead.profissao.trim()).length;
 
   const stalledLeadItems = leadsInRange
@@ -541,7 +541,7 @@ function buildOriginPerformance(leads: Lead[], stalledLeadItems: StalledLeadInsi
     if (["Pagamento confirmado", "Matriculado"].includes(lead.status_matricula)) {
       current.wonLeads += 1;
     }
-    if (lead.status_funil === "Perdido") {
+    if (lead.status_matricula === "Cancelado") {
       current.lostLeads += 1;
     }
     if (stalledByLeadId.has(lead.id)) {
@@ -622,8 +622,7 @@ export function formatRangeLabel(range: DateRange) {
 
 function describePendingResponseReason(lead: Lead | null, silenceHours: number, lastMessage: string) {
   if (!lead) return "Conversa sem lead vinculado. Vale revisar a identificação antes do próximo contato.";
-  if (lead.status_funil === "Aguardando Pagamento") return "O lead está em etapa de pagamento e ficou sem retorno após a última interação.";
-  if (lead.status_funil === "Negociação / Matrícula") return "A conversa parou em momento de decisão. Vale retomar com proposta objetiva e urgência controlada.";
+  if (lead.status_funil === "Negociação") return "A conversa parou em momento de decisão. Vale retomar com proposta objetiva e urgência controlada.";
   if (lead.objecao_principal?.trim()) return `A objeção dominante é "${lead.objecao_principal}" e a conversa ficou parada depois disso.`;
   if (silenceHours >= 48) return "O lead falou por último e já existe silêncio prolongado. Este é um bom candidato para retomada prioritária.";
   if (/parcel|valor|pag/i.test(lastMessage)) return "A última mensagem sugere dúvida financeira. Uma retomada com condição clara pode destravar o avanço.";
@@ -632,10 +631,9 @@ function describePendingResponseReason(lead: Lead | null, silenceHours: number, 
 
 function describeFollowUpStage(lead: Lead) {
   if (lead.status_funil === "Novo Lead") return "Entrada sem cadência";
-  if (lead.status_funil === "Primeiro Contato Feito") return "Contato inicial sem sequência";
-  if (lead.status_funil === "Informações Enviadas") return "Informações sem avanço";
+  if (lead.status_funil === "Em Conversa") return "Conversa sem avanço";
   if (lead.status_funil === "Aguardando Retorno") return "Retorno prometido não retomado";
-  if (lead.status_funil === "Negociação / Matrícula") return "Negociação sem follow-up";
+  if (lead.status_funil === "Negociação") return "Negociação sem follow-up";
   return "Follow-up em atraso";
 }
 

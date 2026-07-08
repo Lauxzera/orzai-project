@@ -1049,10 +1049,7 @@ export function useMessagesView({
         (inboxSegment === "with-lead" && Boolean(conversation.leadId)) ||
         (inboxSegment === "without-lead" && !conversation.leadId) ||
         (inboxSegment === "overdue" && Boolean(linkedLead?.proximo_contato && isOverdue(linkedLead.proximo_contato))) ||
-        (
-          inboxSegment === "negotiation" &&
-          ["Negociação / Matrícula", "Aguardando Pagamento"].includes(linkedLead?.status_funil ?? "")
-        );
+        (inboxSegment === "negotiation" && linkedLead?.status_funil === "Negociação");
 
       return matchesCourse && matchesFunnel && matchesOwner && matchesSegment;
     });

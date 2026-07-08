@@ -144,13 +144,8 @@ export type AnalyticsFilters = {
 
 export const funnelStatusOptions: FunnelStatus[] = [
   "Novo Lead",
-  "Primeiro Contato Feito",
-  "Interessado no Curso",
-  "Informações Enviadas",
+  "Em Conversa",
   "Aguardando Retorno",
-  "Negociação / Matrícula",
-  "Aguardando Pagamento",
+  "Negociação",
   "Matriculado",
-  "Perdido",
-  "Reativar Futuramente",
 ];

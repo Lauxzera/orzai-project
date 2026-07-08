@@ -17,7 +17,7 @@ export function CourseLeadChart({
   title: string; description: string; data: ChartPoint[]; selectedCourse: string | null; onSelectCourse: (course: string | null) => void; leads: Lead[];
 }) {
   const statusData = React.useMemo(() => Object.entries(leads.reduce<Record<string, number>>((acc, lead) => { acc[lead.status_funil] = (acc[lead.status_funil] || 0) + 1; return acc; }, {})).sort((a, b) => b[1] - a[1]), [leads]);
-  const overdueCount = React.useMemo(() => leads.filter((lead) => !["Matriculado", "Perdido", "Reativar Futuramente"].includes(lead.status_funil) && isLateFollowUp(lead.proximo_contato)).length, [leads]);
+  const overdueCount = React.useMemo(() => leads.filter((lead) => lead.status_funil !== "Matriculado" && isLateFollowUp(lead.proximo_contato)).length, [leads]);
 
   return (
     <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">

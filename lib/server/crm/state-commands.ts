@@ -31,18 +31,10 @@ export function applyCommandToState(state: CrmState, command: CrmCommand, actor:
         ...normalizedState,
         leads: normalizedState.leads.map((lead) => {
           if (lead.id !== command.leadId || lead.status_funil === command.status) return lead;
-          if (command.status === "Perdido" && !lead.objecao_principal.trim()) {
-            throw new Error("Leads perdidos precisam ter motivo de perda.");
-          }
           return {
             ...lead,
             status_funil: command.status,
-            status_matricula:
-              command.status === "Matriculado"
-                ? "Matriculado"
-                : command.status === "Aguardando Pagamento"
-                  ? "Aguardando pagamento"
-                  : lead.status_matricula,
+            status_matricula: command.status === "Matriculado" ? "Matriculado" : lead.status_matricula,
             history: [
               ...lead.history,
               historyEntry(`Status alterado de ${lead.status_funil} para ${command.status}`, actor?.name || "Atualizado no CRM"),

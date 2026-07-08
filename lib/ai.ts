@@ -281,11 +281,11 @@ export function fallbackLeadAnalysis(
   let urgencia: LeadAnalysisResult["urgencia"] = overdue ? "alta" : "media";
   let statusSugerido: FunnelStatus = lead.status_funil;
 
-  if (["Aguardando Pagamento", "Negociação / Matrícula"].includes(lead.status_funil)) {
+  if (lead.status_funil === "Negociação") {
     temperatura = "quente";
     urgencia = overdue ? "alta" : "media";
-  } else if (["Matriculado", "Perdido"].includes(lead.status_funil)) {
-    temperatura = lead.status_funil === "Matriculado" ? "quente" : "frio";
+  } else if (lead.status_funil === "Matriculado") {
+    temperatura = "quente";
     urgencia = "baixa";
   } else if (overdue || entryAge > 10) {
     temperatura = "frio";
@@ -294,19 +294,19 @@ export function fallbackLeadAnalysis(
   if (/quero|tenho interesse|podemos fechar|como faço minha matricula|como faço minha matrícula|link de pagamento|pix/i.test(lowerConversation)) {
     temperatura = "quente";
     urgencia = overdue ? "alta" : "media";
-    if (["Novo Lead", "Primeiro Contato Feito", "Interessado no Curso", "Informações Enviadas", "Aguardando Retorno"].includes(statusSugerido)) {
-      statusSugerido = "Negociação / Matrícula";
+    if (["Novo Lead", "Em Conversa", "Aguardando Retorno"].includes(statusSugerido)) {
+      statusSugerido = "Negociação";
     }
   } else if (/depois vejo|vou pensar|sem dinheiro|caro|agora nao|agora não/i.test(lowerConversation)) {
     temperatura = temperatura === "quente" ? "morno" : "frio";
   }
 
   if (lead.status_funil === "Novo Lead") {
-    statusSugerido = "Primeiro Contato Feito";
-  } else if (lead.status_funil === "Informações Enviadas" && overdue) {
+    statusSugerido = "Em Conversa";
+  } else if (lead.status_funil === "Em Conversa" && overdue) {
     statusSugerido = "Aguardando Retorno";
   } else if (lead.status_funil === "Aguardando Retorno" && overdue) {
-    statusSugerido = "Negociação / Matrícula";
+    statusSugerido = "Negociação";
   }
 
   const objecao = lead.objecao_principal.trim() || inferLeadObjectionFromContext(lead, lowerConversation);
@@ -371,7 +371,7 @@ export function buildAssistantFallback(
 
   if (normalized.includes("negociac") || normalized.includes("pagamento")) {
     const negotiationLeads = crmState.leads
-      .filter((lead) => ["Negociação / Matrícula", "Aguardando Pagamento"].includes(lead.status_funil))
+      .filter((lead) => lead.status_funil === "Negociação")
       .slice(0, 6);
 
     if (!negotiationLeads.length) {
@@ -520,15 +520,10 @@ export function buildNativeAssistantSystemPrompt(crmState?: CrmState): string {
 
   const funnelDesc = [
     "NOVO_LEAD / Novo Lead: lead acabou de entrar, ainda sem contato.",
-    "PRIMEIRO_CONTATO_FEITO / Primeiro Contato Feito: ja foi abordado pela equipe.",
-    "INTERESSADO_NO_CURSO / Interessado no Curso: demonstrou interesse real.",
-    "INFORMACOES_ENVIADAS / Informacoes Enviadas: recebeu material ou proposta.",
+    "EM_CONVERSA / Em Conversa: ja foi abordado e esta trocando mensagens com a equipe.",
     "AGUARDANDO_RETORNO / Aguardando Retorno: esperando resposta do lead.",
-    "NEGOCIACAO_MATRICULA / Negociacao / Matricula: em processo de fechamento.",
-    "AGUARDANDO_PAGAMENTO / Aguardando Pagamento: proposta aceita, pagamento pendente.",
+    "NEGOCIACAO / Negociacao: em processo de fechamento ou pagamento pendente.",
     "MATRICULADO / Matriculado: convertido com sucesso.",
-    "PERDIDO / Perdido: nao converteu.",
-    "REATIVAR_FUTURAMENTE / Reativar Futuramente: potencial futuro, pausado agora.",
   ].join(" | ");
 
   const courses = crmState
@@ -755,7 +750,7 @@ function buildAssistantContext(crmState: CrmState, latestUserMessage: string, se
   const originBreakdown = breakdownBy(crmState.leads, "origem").slice(0, 3);
   const matchedLead = findBestLeadMatch(latestUserMessage, crmState, selectedLeadId);
   const negotiationLeads = crmState.leads
-    .filter((lead) => ["Negociação / Matrícula", "Aguardando Pagamento"].includes(lead.status_funil))
+    .filter((lead) => lead.status_funil === "Negociação")
     .slice(0, 5);
 
   const asksForCrmContext =
@@ -865,11 +860,9 @@ export function buildFullCrmContext(crmState: CrmState, selectedLeadId?: string 
   const pendingTasks = crmState.tasks
     .filter((t) => !t.done)
     .sort((a, b) => (a.dueDate || "9999").localeCompare(b.dueDate || "9999"));
-  const negotiationLeads = activeLeads.filter((l) =>
-    ["Negociação / Matrícula", "Aguardando Pagamento"].includes(l.status_funil)
-  );
+  const negotiationLeads = activeLeads.filter((l) => l.status_funil === "Negociação");
   const newLeads = activeLeads.filter((l) =>
-    ["Novo Lead", "Primeiro Contato Feito"].includes(l.status_funil)
+    ["Novo Lead", "Em Conversa"].includes(l.status_funil)
   ).slice(0, 10);
   const closingLeads = crmState.leads.filter((l) => closingStatuses.includes(l.status_funil));
 
@@ -1092,8 +1085,7 @@ function truncateText(value: string, maxLength: number) {
 }
 
 function inferLeadObjection(lead: Lead) {
-  if (lead.status_funil === "Aguardando Pagamento") return "Ainda nao concluiu o pagamento.";
-  if (lead.status_funil === "Negociação / Matrícula") return "Precisa de ajuda para fechar a condicao comercial.";
+  if (lead.status_funil === "Negociação") return "Precisa de ajuda para fechar a condicao comercial ou o pagamento.";
   if (lead.status_funil === "Aguardando Retorno") return "Parou de responder e precisa de retomada.";
   return "Ainda nao existe uma objecao principal claramente registrada.";
 }
@@ -1102,14 +1094,14 @@ function inferNextAction(lead: Lead, tasks: Task[], overdue: boolean) {
   const firstPendingTask = tasks.find((task) => !task.done);
   if (firstPendingTask) return `${firstPendingTask.title} ate ${firstPendingTask.dueDate}.`;
   if (lead.status_funil === "Novo Lead") return "Fazer o primeiro contato e validar interesse real na turma mais proxima.";
-  if (lead.status_funil === "Aguardando Pagamento") return "Confirmar forma de pagamento e enviar o link ou chave de cobranca.";
+  if (lead.status_funil === "Negociação") return "Confirmar forma de pagamento e enviar o link ou chave de cobranca.";
   if (overdue) return "Retomar contato hoje com mensagem curta e CTA de resposta rapida.";
   return "Manter acompanhamento do lead e registrar a proxima etapa no historico.";
 }
 
 function inferBuyingSignals(lead: Lead, tasks: Task[]) {
   const signals: string[] = [];
-  if (["Negociação / Matrícula", "Aguardando Pagamento", "Matriculado"].includes(lead.status_funil)) {
+  if (["Negociação", "Matriculado"].includes(lead.status_funil)) {
     signals.push("Ja avancou para etapa de decisao ou fechamento.");
   }
   if (lead.objecao_principal.trim()) {
@@ -1130,7 +1122,6 @@ function inferLeadRisks(lead: Lead, tasks: Task[], overdue: boolean) {
   if (!tasks.some((task) => !task.done) && !closingStatuses.includes(lead.status_funil)) {
     risks.push("Nao existe tarefa ativa registrada para o lead.");
   }
-  if (lead.status_funil === "Perdido") risks.push("Lead marcado como perdido e exige motivo bem documentado.");
   if (!lead.objecao_principal.trim()) risks.push("Objeção principal ainda nao esta clara.");
   return risks.slice(0, 4);
 }

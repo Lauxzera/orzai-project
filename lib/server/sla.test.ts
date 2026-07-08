@@ -98,7 +98,7 @@ describe("runSlaCheckWithClient", () => {
         id: "lead-2",
         nome: "Ja avancou",
         responsavelNome: "Ana",
-        statusFunil: FunnelStatus.NEGOCIACAO_MATRICULA,
+        statusFunil: FunnelStatus.NEGOCIACAO,
         archivedAt: null,
         dataEntrada: threeHoursAgo,
       },

@@ -4,8 +4,7 @@ export const snowChartColors = ["#9DB9E8", "#6FDDB2", "#F0A876", "#79B8F7", "#B6
 
 export function badgeVariantForFunnelStatus(status: string): "outline" | "gold" | "danger" | "success" {
   if (status === "Matriculado") return "success";
-  if (status === "Perdido") return "danger";
-  if (status === "Negociação / Matrícula" || status === "Aguardando Pagamento") return "gold";
+  if (status === "Negociação") return "gold";
   return "outline";
 }
 

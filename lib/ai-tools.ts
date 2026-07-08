@@ -476,7 +476,7 @@ function executeEstatisticasCrm(
   const overdueLeads = activeLeads.filter((l) => isOverdue(l.proximo_contato));
   const pendingTasks = crmState.tasks.filter((t) => !t.done);
   const matriculados = crmState.leads.filter((l) => l.status_funil === "Matriculado");
-  const perdidos = crmState.leads.filter((l) => l.status_funil === "Perdido");
+  const perdidos = crmState.leads.filter((l) => l.status_matricula === "Cancelado");
 
   const breakdown = (leads: Lead[], key: keyof Lead) => {
     const map: Record<string, number> = {};

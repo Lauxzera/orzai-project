@@ -66,7 +66,7 @@ export function LeadsWorkspace({
     });
   }, [attentionFilter, integrityFilter, leads]);
 
-  const activePipelineCount = React.useMemo(() => visibleLeads.filter((l) => l.status_funil !== "Matriculado" && l.status_funil !== "Perdido").length, [visibleLeads]);
+  const activePipelineCount = React.useMemo(() => visibleLeads.filter((l) => l.status_funil !== "Matriculado").length, [visibleLeads]);
   const urgentCount = React.useMemo(() => visibleLeads.filter((l) => getLeadAttentionFilterValue(l) === "acao-imediata").length, [visibleLeads]);
   const duplicateCount = React.useMemo(() => visibleLeads.filter((l) => getLeadIntegrityFilterValue(l, leads) === "duplicado").length, [leads, visibleLeads]);
 

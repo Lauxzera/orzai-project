@@ -723,12 +723,6 @@ export default function OrzaiCrmPage() {
   }
 
   async function changeLeadStatus(leadId: string, status: FunnelStatus) {
-    const currentLead = state.leads.find((lead) => lead.id === leadId);
-    if (status === "Perdido" && currentLead && !currentLead.objecao_principal.trim()) {
-      openEditLead(currentLead);
-      return;
-    }
-
     try {
       await runCommand({ type: "changeLeadStatus", leadId, status });
     } catch (error) {

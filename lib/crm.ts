@@ -1,14 +1,9 @@
 ﻿export type FunnelStatus =
   | "Novo Lead"
-  | "Primeiro Contato Feito"
-  | "Informações Enviadas"
-  | "Interessado no Curso"
+  | "Em Conversa"
   | "Aguardando Retorno"
-  | "Negociação / Matrícula"
-  | "Aguardando Pagamento"
-  | "Matriculado"
-  | "Perdido"
-  | "Reativar Futuramente";
+  | "Negociação"
+  | "Matriculado";
 
 export type EnrollmentStatus =
   | "Não iniciado"
@@ -187,15 +182,10 @@ export const STORAGE_KEY = "orzai-project-next-v2";
 
 export const funnelStatuses = [
   "Novo Lead",
-  "Primeiro Contato Feito",
-  "Interessado no Curso",
-  "Informações Enviadas",
+  "Em Conversa",
   "Aguardando Retorno",
-  "Negociação / Matrícula",
-  "Aguardando Pagamento",
-  "Matriculado",
-  "Perdido",
-  "Reativar Futuramente"
+  "Negociação",
+  "Matriculado"
 ] as const satisfies readonly FunnelStatus[];
 
 export const enrollmentStatuses = [
@@ -252,7 +242,7 @@ export const defaultCrmCustomizations: CrmCustomizations = {
   leadCaptureMethods: [...leadCaptureMethods],
   owners: [...owners],
 };
-export const closingStatuses: FunnelStatus[] = ["Matriculado", "Perdido", "Reativar Futuramente"];
+export const closingStatuses: FunnelStatus[] = ["Matriculado"];
 export const chartPalette = ["#1f3043", "#baa377", "#f4e0bf", "#64748b", "#8b7354", "#d7c09a"];
 export const userRoles: readonly UserRole[] = ["ADMIN", "MANAGER", "SALES", "VIEWER"] as const;
 export const leadListColors = ["slate", "blue", "violet", "emerald", "amber", "rose"] as const satisfies readonly LeadListColor[];
@@ -386,16 +376,7 @@ export function validateLead(lead: LeadEditableInput) {
 
 export function getRequiredLeadFieldsForStage(status: FunnelStatus): LeadStageRequirement[] {
   switch (status) {
-    case "Primeiro Contato Feito":
-      return [
-        { field: "proximo_contato", label: "Próximo contato", reason: "define a próxima ação comercial" },
-      ];
-    case "Informações Enviadas":
-      return [
-        { field: "proximo_contato", label: "Próximo contato", reason: "garante o retorno após o envio das informações" },
-        { field: "observacoes", label: "Observações", reason: "registra o que foi enviado ou combinado" },
-      ];
-    case "Interessado no Curso":
+    case "Em Conversa":
       return [
         { field: "proximo_contato", label: "Próximo contato", reason: "mantém o avanço do lead interessado" },
         { field: "observacoes", label: "Observações", reason: "ajuda a registrar interesse e contexto" },
@@ -404,20 +385,10 @@ export function getRequiredLeadFieldsForStage(status: FunnelStatus): LeadStageRe
       return [
         { field: "proximo_contato", label: "Próximo contato", reason: "controla a data do retorno combinado" },
       ];
-    case "Negociação / Matrícula":
+    case "Negociação":
       return [
         { field: "proximo_contato", label: "Próximo contato", reason: "evita a negociação parada" },
         { field: "observacoes", label: "Observações", reason: "registra proposta, objeções e próximos passos" },
-      ];
-    case "Aguardando Pagamento":
-      return [
-        { field: "proximo_contato", label: "Próximo contato", reason: "acompanha o fechamento" },
-        { field: "email", label: "Email", reason: "facilita o envio de comprovantes e instruções" },
-      ];
-    case "Reativar Futuramente":
-      return [
-        { field: "proximo_contato", label: "Próximo contato", reason: "define a data de reativação" },
-        { field: "observacoes", label: "Observações", reason: "explica o motivo da pausa comercial" },
       ];
     default:
       return [];
@@ -527,25 +498,25 @@ export function getLeadIntegrityFilterValue(lead: Lead, leads: Lead[]): Exclude<
 export function seedState(): CrmState {
   const leadSeeds: Array<[string, string, string, FunnelStatus, EnrollmentStatus, string, number, number, string]> = [
     ["Mariana Alves", "Design de Sobrancelhas", "Instagram", "Aguardando Retorno", "Interessado", "Ana Paula", -2, -1, "Quer confirmar agenda de sábado"],
-    ["Letícia Fernandes", "Especialização em Harmonização Facial", "Tráfego Pago", "Aguardando Pagamento", "Aguardando pagamento", "Bruna Martins", -8, 1, "Parcelamento"],
+    ["Letícia Fernandes", "Especialização em Harmonização Facial", "Tráfego Pago", "Negociação", "Aguardando pagamento", "Bruna Martins", -8, 1, "Parcelamento"],
     ["Patrícia Gomes", "Drenagem Linfática", "Indicação", "Matriculado", "Matriculado", "Carla Souza", -12, 3, ""],
     ["Camila Rocha", "Estética Facial", "WhatsApp", "Novo Lead", "Não iniciado", "Equipe Comercial", 0, 0, ""],
-    ["Renata Lima", "Extensão de Cílios", "Eventos", "Informações Enviadas", "Interessado", "Ana Paula", -5, 2, "Precisa avaliar deslocamento"],
-    ["Juliana Prado", "Microagulhamento", "Site", "Negociação / Matrícula", "Interessado", "Bruna Martins", -18, 0, "Solicitou desconto à vista"],
-    ["Aline Castro", "Massoterapia Profissional", "WhatsApp", "Primeiro Contato Feito", "Interessado", "Equipe Comercial", -1, 1, ""],
-    ["Beatriz Nunes", "Design de Sobrancelhas", "Instagram", "Informações Enviadas", "Interessado", "Ana Paula", -3, 2, "Comparando com outra escola"],
-    ["Carolina Freitas", "Extensão de Cílios", "Instagram", "Negociação / Matrícula", "Interessado", "Ana Paula", -6, 1, "Quer parcelar em mais vezes"],
+    ["Renata Lima", "Extensão de Cílios", "Eventos", "Em Conversa", "Interessado", "Ana Paula", -5, 2, "Precisa avaliar deslocamento"],
+    ["Juliana Prado", "Microagulhamento", "Site", "Negociação", "Interessado", "Bruna Martins", -18, 0, "Solicitou desconto à vista"],
+    ["Aline Castro", "Massoterapia Profissional", "WhatsApp", "Em Conversa", "Interessado", "Equipe Comercial", -1, 1, ""],
+    ["Beatriz Nunes", "Design de Sobrancelhas", "Instagram", "Em Conversa", "Interessado", "Ana Paula", -3, 2, "Comparando com outra escola"],
+    ["Carolina Freitas", "Extensão de Cílios", "Instagram", "Negociação", "Interessado", "Ana Paula", -6, 1, "Quer parcelar em mais vezes"],
     ["Daniela Moura", "Estética Facial", "Site", "Aguardando Retorno", "Interessado", "Bruna Martins", -4, -1, "Aguardando resposta do marido"],
     ["Elaine Ramos", "Drenagem Linfática", "Indicação", "Matriculado", "Pagamento confirmado", "Carla Souza", -9, 2, ""],
-    ["Fernanda Lopes", "Microagulhamento", "Tráfego Pago", "Informações Enviadas", "Interessado", "Bruna Martins", -7, 2, "Quer ver cronograma da turma"],
-    ["Gabriela Pinto", "Especialização em Harmonização Facial", "Tráfego Pago", "Primeiro Contato Feito", "Interessado", "Bruna Martins", -2, 1, ""],
+    ["Fernanda Lopes", "Microagulhamento", "Tráfego Pago", "Em Conversa", "Interessado", "Bruna Martins", -7, 2, "Quer ver cronograma da turma"],
+    ["Gabriela Pinto", "Especialização em Harmonização Facial", "Tráfego Pago", "Em Conversa", "Interessado", "Bruna Martins", -2, 1, ""],
     ["Helena Duarte", "Massoterapia Profissional", "Eventos", "Aguardando Retorno", "Interessado", "Equipe Comercial", -11, -2, "Pediu retorno após o salário"],
-    ["Isabela Teixeira", "Estética Facial", "WhatsApp", "Negociação / Matrícula", "Interessado", "Ana Paula", -10, 0, "Negociando entrada"],
+    ["Isabela Teixeira", "Estética Facial", "WhatsApp", "Negociação", "Interessado", "Ana Paula", -10, 0, "Negociando entrada"],
     ["Joana Sales", "Design de Sobrancelhas", "Instagram", "Matriculado", "Matriculado", "Ana Paula", -14, 5, ""],
     ["Karen Oliveira", "Drenagem Linfática", "Site", "Novo Lead", "Não iniciado", "Equipe Comercial", 0, 1, ""],
-    ["Larissa Melo", "Extensão de Cílios", "Tráfego Pago", "Perdido", "Cancelado", "Bruna Martins", -20, -3, "Sem disponibilidade de horário"],
-    ["Marcia Teles", "Estética Facial", "Indicação", "Reativar Futuramente", "Interessado", "Carla Souza", -16, 6, "Voltará a falar após mudança"],
-    ["Natália Borges", "Massoterapia Profissional", "WhatsApp", "Informações Enviadas", "Interessado", "Equipe Comercial", -3, 2, "Aguardando grade completa"]
+    ["Larissa Melo", "Extensão de Cílios", "Tráfego Pago", "Aguardando Retorno", "Cancelado", "Bruna Martins", -20, -3, "Sem disponibilidade de horário"],
+    ["Marcia Teles", "Estética Facial", "Indicação", "Aguardando Retorno", "Interessado", "Carla Souza", -16, 6, "Voltará a falar após mudança"],
+    ["Natália Borges", "Massoterapia Profissional", "WhatsApp", "Em Conversa", "Interessado", "Equipe Comercial", -3, 2, "Aguardando grade completa"]
   ];
 
   const leads = leadSeeds.map(([nome, curso, origem, funil, matricula, responsavel, entradaOffset, contatoOffset, objecao]) =>
@@ -988,17 +959,13 @@ function buildLeadScore(value: number): LeadScore {
 }
 
 export function computeDeterministicLeadScore(lead: Lead): LeadScore | null {
-  if (lead.status_funil === "Matriculado" || lead.status_funil === "Perdido") return null;
+  if (lead.status_funil === "Matriculado") return null;
 
   const funnelPoints: Partial<Record<FunnelStatus, number>> = {
-    "Negociação / Matrícula": 34,
-    "Aguardando Pagamento": 32,
-    "Interessado no Curso": 26,
-    "Aguardando Retorno": 18,
-    "Informações Enviadas": 16,
-    "Primeiro Contato Feito": 12,
+    "Negociação": 34,
+    "Em Conversa": 20,
+    "Aguardando Retorno": 12,
     "Novo Lead": 8,
-    "Reativar Futuramente": 3,
   };
   const funnelScore = funnelPoints[lead.status_funil] ?? 10;
 
@@ -1064,7 +1031,6 @@ export function computeDeterministicLeadScore(lead: Lead): LeadScore | null {
   const objectionPenalty = lead.objecao_principal.trim() ? -6 : 0;
   const noCoursePenalty = lead.curso_de_interesse.trim() ? 0 : -6;
   const noFollowUpPenalty = !closingStatuses.includes(lead.status_funil) && !lead.proximo_contato ? -6 : 0;
-  const reactivationPenalty = lead.status_funil === "Reativar Futuramente" ? -6 : 0;
 
   const value = Math.min(
     100,
@@ -1081,8 +1047,7 @@ export function computeDeterministicLeadScore(lead: Lead): LeadScore | null {
         referralBonus +
         objectionPenalty +
         noCoursePenalty +
-        noFollowUpPenalty +
-        reactivationPenalty,
+        noFollowUpPenalty,
     )
   );
 
@@ -1090,7 +1055,7 @@ export function computeDeterministicLeadScore(lead: Lead): LeadScore | null {
 }
 
 export function computeLeadScore(lead: Lead): LeadScore | null {
-  if (lead.status_funil === "Matriculado" || lead.status_funil === "Perdido") return null;
+  if (lead.status_funil === "Matriculado") return null;
 
   if (typeof lead.predictive_score === "number" && Number.isFinite(lead.predictive_score)) {
     return buildLeadScore(Math.max(0, Math.min(100, Math.round(lead.predictive_score))));
@@ -1100,7 +1065,7 @@ export function computeLeadScore(lead: Lead): LeadScore | null {
 }
 
 export function getLeadAttentionMeta(lead: Lead): LeadAttentionMeta | null {
-  if (lead.status_funil === "Matriculado" || lead.status_funil === "Perdido") {
+  if (lead.status_funil === "Matriculado") {
     return null;
   }
 

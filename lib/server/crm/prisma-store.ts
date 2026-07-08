@@ -122,20 +122,12 @@ export async function applyCommandWithPrisma(prisma: PrismaClient, command: CrmC
     case "changeLeadStatus": {
       const current = await prisma.lead.findUnique({ where: { id: command.leadId } });
       if (!current) throw new Error("Lead não encontrado.");
-      if (command.status === "Perdido" && !(current.objecaoPrincipal || "").trim()) {
-        throw new Error("Leads perdidos precisam ter motivo de perda.");
-      }
       await prisma.$transaction([
         prisma.lead.update({
           where: { id: command.leadId },
           data: {
             statusFunil: toPrismaFunnelStatus(command.status),
-            statusMatricula:
-              command.status === "Matriculado"
-                ? PrismaEnrollmentStatus.MATRICULADO
-                : command.status === "Aguardando Pagamento"
-                  ? PrismaEnrollmentStatus.AGUARDANDO_PAGAMENTO
-                  : undefined,
+            statusMatricula: command.status === "Matriculado" ? PrismaEnrollmentStatus.MATRICULADO : undefined,
           },
         }),
         prisma.leadHistory.create({
@@ -562,24 +554,14 @@ export function toPrismaFunnelStatus(status: FunnelStatus) {
   switch (status) {
     case "Novo Lead":
       return PrismaFunnelStatus.NOVO_LEAD;
-    case "Primeiro Contato Feito":
-      return PrismaFunnelStatus.PRIMEIRO_CONTATO_FEITO;
-    case "Interessado no Curso":
-      return PrismaFunnelStatus.INTERESSADO_NO_CURSO;
-    case "Informações Enviadas":
-      return PrismaFunnelStatus.INFORMACOES_ENVIADAS;
+    case "Em Conversa":
+      return PrismaFunnelStatus.EM_CONVERSA;
     case "Aguardando Retorno":
       return PrismaFunnelStatus.AGUARDANDO_RETORNO;
-    case "Negociação / Matrícula":
-      return PrismaFunnelStatus.NEGOCIACAO_MATRICULA;
-    case "Aguardando Pagamento":
-      return PrismaFunnelStatus.AGUARDANDO_PAGAMENTO;
+    case "Negociação":
+      return PrismaFunnelStatus.NEGOCIACAO;
     case "Matriculado":
       return PrismaFunnelStatus.MATRICULADO;
-    case "Perdido":
-      return PrismaFunnelStatus.PERDIDO;
-    case "Reativar Futuramente":
-      return PrismaFunnelStatus.REATIVAR_FUTURAMENTE;
   }
 }
 
@@ -587,24 +569,14 @@ export function fromPrismaFunnelStatus(status: PrismaFunnelStatus): FunnelStatus
   switch (status) {
     case PrismaFunnelStatus.NOVO_LEAD:
       return "Novo Lead";
-    case PrismaFunnelStatus.PRIMEIRO_CONTATO_FEITO:
-      return "Primeiro Contato Feito";
-    case PrismaFunnelStatus.INTERESSADO_NO_CURSO:
-      return "Interessado no Curso";
-    case PrismaFunnelStatus.INFORMACOES_ENVIADAS:
-      return "Informações Enviadas";
+    case PrismaFunnelStatus.EM_CONVERSA:
+      return "Em Conversa";
     case PrismaFunnelStatus.AGUARDANDO_RETORNO:
       return "Aguardando Retorno";
-    case PrismaFunnelStatus.NEGOCIACAO_MATRICULA:
-      return "Negociação / Matrícula";
-    case PrismaFunnelStatus.AGUARDANDO_PAGAMENTO:
-      return "Aguardando Pagamento";
+    case PrismaFunnelStatus.NEGOCIACAO:
+      return "Negociação";
     case PrismaFunnelStatus.MATRICULADO:
       return "Matriculado";
-    case PrismaFunnelStatus.PERDIDO:
-      return "Perdido";
-    case PrismaFunnelStatus.REATIVAR_FUTURAMENTE:
-      return "Reativar Futuramente";
   }
   throw new Error(`Status de funil desconhecido: ${String(status)}`);
 }

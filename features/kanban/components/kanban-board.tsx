@@ -10,9 +10,7 @@ import { EmptyState } from "@/features/app-shell/components/page-primitives";
 import { computeLeadScore, formatDateTime, getLastLeadActivity, getLeadAttentionMeta, type FunnelStatus, type Lead } from "@/lib/crm";
 
 const FUNNEL_STATUSES: FunnelStatus[] = [
-  "Novo Lead", "Primeiro Contato Feito", "Interessado no Curso", "Informações Enviadas",
-  "Aguardando Retorno", "Negociação / Matrícula", "Aguardando Pagamento", "Matriculado",
-  "Perdido", "Reativar Futuramente",
+  "Novo Lead", "Em Conversa", "Aguardando Retorno", "Negociação", "Matriculado",
 ];
 
 type KanbanProps = {
