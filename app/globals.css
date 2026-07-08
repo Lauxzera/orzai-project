@@ -48,43 +48,94 @@
   80% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-10px); }
 }
-:root, :root.dark {
+/* Tema claro "Belart amigável" — inspirado no design de UI amigável para iniciantes */
+:root {
+  --background: #EFEBE4;
+  --foreground: #1A2233;
+
+  --card: #FFFFFF;
+  --card-foreground: #1A2233;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #1A2233;
+
+  --primary: #DB0D71;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #F5F2EC;
+  --secondary-foreground: #1A2233;
+
+  --muted: #F0ECE4;
+  --muted-foreground: #8A8577;
+
+  --accent: #C79A1E;
+  --accent-foreground: #1A2233;
+
+  --destructive: #C2621A;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #EAE4DA;
+  --input: #EAE4DA;
+  --ring: #DB0D71;
+
+  --chart-1: #2A6FDB;
+  --chart-2: #1F8A5B;
+  --chart-3: #B4791A;
+  --chart-4: #C2621A;
+  --chart-5: #7A52C7;
+
+  --metric-a: #F5F2EC;
+  --metric-b: #EFE9FB;
+}
+
+/* Tema escuro Orzai (padrão da aplicação) */
+:root.dark {
   --background: #09090B;
   --foreground: #F0F4FF;
-  
+
   --card: #18181B;
   --card-foreground: #F0F4FF;
-  
+
   --popover: #09090B;
   --popover-foreground: #F0F4FF;
-  
+
   --primary: #2D7FEA;
   --primary-foreground: #FFFFFF;
-  
+
   --secondary: #18181B;
   --secondary-foreground: #F0F4FF;
-  
+
   --muted: rgba(255, 255, 255, 0.03);
   --muted-foreground: #8B97B0;
-  
+
   --accent: #00E5A0;
   --accent-foreground: #0A0F1E;
-  
+
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  
+
   --border: rgba(255, 255, 255, 0.07);
   --input: rgba(255, 255, 255, 0.07);
   --ring: #2D7FEA;
-  
+
   --chart-1: #2D7FEA;
   --chart-2: #00E5A0;
   --chart-3: #1C2539;
   --chart-4: #8B97B0;
   --chart-5: #0A0F1E;
-  
+
   --metric-a: rgba(255, 255, 255, 0.03);
   --metric-b: rgba(255, 255, 255, 0.06);
+}
+
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3,
+:root:not(.dark) h4,
+:root:not(.dark) h5,
+:root:not(.dark) h6 {
+  font-family: var(--font-outfit, 'Outfit'), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 @layer base {
