@@ -20,8 +20,8 @@ export function CourseLeadChart({
   const overdueCount = React.useMemo(() => leads.filter((lead) => !["Matriculado", "Perdido", "Reativar Futuramente"].includes(lead.status_funil) && isLateFollowUp(lead.proximo_contato)).length, [leads]);
 
   return (
-    <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
-      <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
+    <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">
+      <CardHeader className="border-b border-border bg-card px-8 py-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <CardTitle className="text-xl font-light tracking-wide text-white">{title}</CardTitle>
@@ -41,15 +41,15 @@ export function CourseLeadChart({
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-2xl border border-primary/20 bg-primary/10 p-5">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70 mb-2">Leads no curso</p>
-                <p className="text-[28px] font-light text-primary drop-shadow-[0_0_15px_rgba(219,13,113,0.5)]">{leads.length}</p>
+                <p className="text-[28px] font-light text-primary">{leads.length}</p>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+              <div className="rounded-2xl border border-border bg-card p-5">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2">Status Dominante</p>
                 <p className="text-[16px] font-medium text-white">{statusData[0]?.[0] || "Sem dados"}</p>
               </div>
               <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-5">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-rose-400/70 mb-2">Atrasados</p>
-                <p className="text-[28px] font-light text-rose-400 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]">{overdueCount}</p>
+                <p className="text-[28px] font-light text-rose-400">{overdueCount}</p>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export function CourseLeadChart({
             {leads.length ? (
               <div className="space-y-3 mt-4">
                 {leads.slice().sort((a, b) => a.proximo_contato.localeCompare(b.proximo_contato)).map((lead) => (
-                  <div key={lead.id} className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:bg-white/[0.04] transition-colors">
+                  <div key={lead.id} className="rounded-2xl border border-border bg-card p-5 hover:bg-white/[0.04] transition-colors">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                       <div className="min-w-0">
                         <p className="text-[15px] font-medium text-white mb-1">{lead.nome}</p>
@@ -87,7 +87,7 @@ export function CourseLeadChart({
             ) : null}
           </div>
         ) : (
-          <ChartContainer config={{ value: { label: "Total", color: "var(--chart-1)" } }} className="h-[300px] w-full filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]">
+          <ChartContainer config={{ value: { label: "Total", color: "var(--chart-1)" } }} className="h-[300px] w-full">
             <BarChart accessibilityLayer data={data.slice(0, 8).map((item) => ({ ...item, shortName: compactLabel(item.name) }))} margin={{ left: 12, right: 12, top: 24, bottom: 8 }}>
               <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.03)" strokeDasharray="4 4" />
               <XAxis dataKey="shortName" tickLine={false} axisLine={false} tickMargin={14} tick={{ fill: "#ffffff", opacity: 0.4, fontSize: 11, fontWeight: 700 }} />

@@ -16,8 +16,8 @@ export function TaskOwnerChart({
   title: string; description: string; data: ChartPoint[]; selectedOwner: string | null; onSelectOwner: (owner: string | null) => void; tasks: Task[]; leadNameById: Record<string, string>;
 }) {
   return (
-    <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-[24px]">
-      <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
+    <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">
+      <CardHeader className="border-b border-border bg-card px-8 py-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <CardTitle className="text-xl font-light tracking-wide text-white">{title}</CardTitle>
@@ -41,7 +41,7 @@ export function TaskOwnerChart({
             {tasks.length ? (
               <div className="space-y-3">
                 {tasks.map((task) => (
-                  <div key={task.id} className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:bg-white/[0.04] transition-colors">
+                  <div key={task.id} className="rounded-2xl border border-border bg-card p-5 hover:bg-white/[0.04] transition-colors">
                     <div className="flex items-center justify-between gap-4">
                       <div className="min-w-0">
                         <p className="text-[14px] font-medium text-white mb-1">{task.title}</p>
@@ -61,7 +61,7 @@ export function TaskOwnerChart({
             )}
           </div>
         ) : (
-          <ChartContainer config={{ value: { label: "Total", color: "var(--chart-1)" } }} className="h-[300px] w-full filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]">
+          <ChartContainer config={{ value: { label: "Total", color: "var(--chart-1)" } }} className="h-[300px] w-full">
             <BarChart accessibilityLayer data={data.slice(0, 8).map((item) => ({ ...item, shortName: compactLabel(item.name) }))} margin={{ left: 12, right: 12, top: 24, bottom: 8 }}>
               <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.03)" strokeDasharray="4 4" />
               <XAxis dataKey="shortName" tickLine={false} axisLine={false} tickMargin={14} tick={{ fill: "#ffffff", opacity: 0.4, fontSize: 11, fontWeight: 700 }} />

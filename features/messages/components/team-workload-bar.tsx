@@ -115,7 +115,7 @@ export function TeamWorkloadBar({ convs, ownerOptions, ownerFilter, canInspectAl
         </DropdownMenuTrigger>
         
         <DropdownMenuContent 
-          className="w-[calc(100vw-2rem)] sm:w-[320px] rounded-[24px] border-white/10 bg-[#0c0c0c]/95 p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-[24px]"
+          className="w-[calc(100vw-2rem)] sm:w-[320px] rounded-[24px] border-border bg-[#0c0c0c] p-3 "
         >
           <DropdownMenuItem 
             onClick={() => onOwnerFilterChange("all")}
@@ -172,7 +172,7 @@ export function TeamWorkloadBar({ convs, ownerOptions, ownerFilter, canInspectAl
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <div className="flex items-center gap-1.5">
-                      {chip.unread > 0 ? <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(219,13,113,0.8)]" /> : null}
+                      {chip.unread > 0 ? <span className="h-2 w-2 rounded-full bg-primary" /> : null}
                       <span className={cn("text-[12px] font-light", isActive ? "text-primary/70" : "text-white/50")}>{chip.total}</span>
                     </div>
                     {isActive ? <Check className="h-4 w-4 text-primary" /> : <div className="w-4" />}

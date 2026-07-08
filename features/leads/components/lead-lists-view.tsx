@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,12 +78,12 @@ const colorMap: Record<LeadListColor, string> = {
 };
 
 const colorDotMap: Record<LeadListColor, string> = {
-  slate: "bg-slate-400 shadow-[0_0_0_4px_rgba(148,163,184,0.16)]",
-  blue: "bg-blue-400 shadow-[0_0_0_4px_rgba(96,165,250,0.16)]",
-  violet: "bg-violet-400 shadow-[0_0_0_4px_rgba(167,139,250,0.16)]",
-  emerald: "bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.16)]",
-  amber: "bg-amber-400 shadow-[0_0_0_4px_rgba(251,191,36,0.18)]",
-  rose: "bg-rose-400 shadow-[0_0_0_4px_rgba(251,113,133,0.16)]",
+  slate: "bg-slate-400 ring-4 ring-slate-400/16",
+  blue: "bg-blue-400 ring-4 ring-blue-400/16",
+  violet: "bg-violet-400 ring-4 ring-violet-400/16",
+  emerald: "bg-emerald-400 ring-4 ring-emerald-400/16",
+  amber: "bg-amber-400 ring-4 ring-amber-400/18",
+  rose: "bg-rose-400 ring-4 ring-rose-400/16",
 };
 
 export function LeadListsView({
@@ -680,7 +680,7 @@ function LeadMembershipPicker({
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <p className="inline-flex items-center gap-2 text-sm font-semibold">
-            <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_0_4px_rgba(212,175,55,0.12)]" />
+            <span className="h-2 w-2 rounded-full bg-primary ring-4 ring-primary/12" />
             {title}
           </p>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{description}</p>

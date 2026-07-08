@@ -29,8 +29,7 @@ export function ActiveOriginShape(props: {
     <g
       style={{
         transform: "translateX(-4px)",
-        transition: "transform 240ms ease-out, filter 240ms ease-out",
-        filter: "drop-shadow(0 8px 12px rgba(31, 48, 67, 0.12))",
+        transition: "transform 240ms ease-out",
       }}
     >
       <Sector
@@ -122,17 +121,6 @@ export function MetricCard({
   icon: ElementType;
   tone?: "blue" | "violet" | "danger" | "success" | "gold";
 }) {
-  const glowColor =
-    tone === "danger"
-      ? "rgba(239, 68, 68, 0.3)"
-      : tone === "success"
-        ? "rgba(16, 185, 129, 0.3)"
-        : tone === "violet"
-          ? "rgba(167, 139, 250, 0.3)"
-          : tone === "gold"
-            ? "rgba(245, 158, 11, 0.3)"
-            : "rgba(219, 13, 113, 0.3)";
-
   const textColor =
     tone === "danger"
       ? "text-rose-400"
@@ -145,18 +133,15 @@ export function MetricCard({
             : "text-primary";
 
   return (
-    <Card className="group relative overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px] transition-all duration-300 hover:bg-white/[0.03]">
+    <Card className="group relative overflow-hidden rounded-[24px] border border-border bg-card transition-all duration-300">
       <CardContent className="flex items-start justify-between gap-4 p-6">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">{label}</p>
-          <p 
-            className={cn("mt-4 text-[32px] font-light tabular-nums drop-shadow-md", textColor)} 
-            style={{ textShadow: `0 0 20px ${glowColor}` }}
-          >
+          <p className={cn("mt-4 text-[32px] font-light tabular-nums", textColor)}>
             {value}
           </p>
         </div>
-        <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-[14px] border border-white/10 bg-white/5 transition-transform duration-300 group-hover:scale-110", textColor)}>
+        <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-[14px] border border-border bg-card transition-transform duration-300 group-hover:scale-110", textColor)}>
           <Icon className="h-4 w-4" />
         </div>
       </CardContent>

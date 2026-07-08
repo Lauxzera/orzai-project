@@ -4,7 +4,7 @@ import * as React from "react";
 import { Bot, Check, LoaderCircle, SendHorizontal, Sparkles, X, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { type CrmState } from "@/lib/crm";
 import type { ProposedAction } from "@/lib/ai-tools";

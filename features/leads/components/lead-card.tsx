@@ -77,16 +77,8 @@ export function LeadCard({
   const lastActivity = getLastLeadActivity(lead);
   const quality = getLeadDataQuality(lead, allLeads);
 
-  const neonGlow = overdue || quality.duplicateHints.length
-    ? "rgba(239, 68, 68, 0.4)" // rose
-    : attention
-      ? "rgba(245, 158, 11, 0.4)" // amber
-      : score && score.value >= 70
-        ? "rgba(16, 185, 129, 0.4)" // emerald
-        : "rgba(255, 255, 255, 0.0)";
-
   const borderColor = overdue || quality.duplicateHints.length
-    ? "border-rose-500/50" : attention ? "border-amber-500/50" : score && score.value >= 70 ? "border-emerald-500/30" : "border-white/5";
+    ? "border-destructive" : attention ? "border-amber-500" : score && score.value >= 70 ? "border-emerald-500" : "border-border";
 
   React.useEffect(() => {
     const cached = leadConversationAnalysisCache.get(cacheKey);
@@ -129,8 +121,7 @@ export function LeadCard({
     <Card
       draggable={draggable}
       onDragStart={(event) => event.dataTransfer.setData("lead-id", lead.id)}
-      className={`group overflow-hidden rounded-[24px] transition-all duration-300 hover:bg-white/[0.04] bg-white/[0.015] backdrop-blur-[12px] border ${borderColor}`}
-      style={{ boxShadow: neonGlow !== "rgba(255, 255, 255, 0.0)" ? `0 0 20px ${neonGlow}` : 'none' }}
+      className={`group overflow-hidden rounded-[16px] transition-colors bg-card hover:bg-accent/5 border ${borderColor}`}
     >
       <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
@@ -145,7 +136,7 @@ export function LeadCard({
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-light text-white/60">
+              <p className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-[11px] font-medium text-muted-foreground">
                 <Phone className="h-3 w-3" />
                 {lead.telefone}
               </p>
@@ -163,22 +154,22 @@ export function LeadCard({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2">
-          <Badge variant="gold" className="rounded-full px-3 py-1 text-[10px] uppercase tracking-widest">{lead.origem}</Badge>
-          <Badge variant="outline" className="rounded-full border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-widest text-white/50">{lead.responsavel}</Badge>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Badge variant="gold" className="rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-wider">{lead.origem}</Badge>
+          <Badge variant="outline" className="rounded-full border-border bg-background px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">{lead.responsavel}</Badge>
           {attention ? <Badge variant={attention.variant} className="rounded-full px-3 py-1 text-[10px] uppercase tracking-widest">{attention.label}</Badge> : null}
           {quality.duplicateHints.length ? <Badge variant="danger" className="rounded-full px-3 py-1 text-[10px] uppercase tracking-widest">Possível duplicado</Badge> : null}
           {quality.missingStageRequirements.length ? <Badge variant="gold" className="rounded-full px-3 py-1 text-[10px] uppercase tracking-widest">Etapa incompleta</Badge> : null}
           {lead.status_matricula === "Matriculado" ? <Badge variant="success" className="rounded-full px-3 py-1 text-[10px] uppercase tracking-widest">Matriculado</Badge> : null}
         </div>
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <p className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+        <div className="mt-5 rounded-xl border border-border bg-background/50 px-4 py-3">
+          <p className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             <CalendarClock className="h-3.5 w-3.5" /> Próximo contato
           </p>
-          <p className="mt-2 text-[14px] font-medium text-white">{formatDate(lead.proximo_contato)}</p>
+          <p className="mt-1.5 text-[13px] font-medium text-foreground">{formatDate(lead.proximo_contato)}</p>
           {!quality.duplicateHints.length && !quality.missingStageRequirements.length && quality.missingCoreFields.length ? (
-            <p className="mt-2 text-[11px] text-rose-400/60">
+            <p className="mt-1 text-[11px] text-destructive/80 font-medium">
               Falta: {quality.missingCoreFields.map((item) => item.label.toLowerCase()).join(", ")}
             </p>
           ) : null}
@@ -210,10 +201,10 @@ export function LeadCard({
           </div>
         ) : null}
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Button size="sm" className="rounded-full px-6 font-bold uppercase tracking-widest text-[10px]" onClick={() => onOpen(lead.id)}>Abrir Lead</Button>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Button size="sm" className="rounded-full px-5 h-8 font-bold uppercase tracking-wider text-[10px] hover:bg-primary/90" onClick={() => onOpen(lead.id)}>Abrir Lead</Button>
           <AddToLeadListDialog lead={lead} leadLists={leadLists} canEdit={canEdit} onAddToList={onAddToLeadList} onCreateList={onCreateLeadList} buttonLabel="Salvar na Lista" />
-          {canEdit ? <Button size="sm" variant="outline" className="rounded-full border-white/10 bg-transparent hover:bg-white/5 px-6 font-bold uppercase tracking-widest text-[10px] text-white/70" onClick={() => onEdit(lead)}>Editar</Button> : null}
+          {canEdit ? <Button size="sm" variant="outline" className="rounded-full border-border bg-transparent hover:bg-accent/10 px-5 h-8 font-bold uppercase tracking-wider text-[10px] text-muted-foreground hover:text-foreground" onClick={() => onEdit(lead)}>Editar</Button> : null}
         </div>
       </CardContent>
     </Card>

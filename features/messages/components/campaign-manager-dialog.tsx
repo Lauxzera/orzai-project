@@ -1,11 +1,11 @@
-ï»¿"use client";
+"use client";
 
 import * as React from "react";
 import { LoaderCircle, Pause, Play, Plus, Send, Square, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,7 +50,7 @@ export function CampaignManagerDialog({
   const [selectedLeadIds, setSelectedLeadIds] = React.useState<string[]>([]);
   const [title, setTitle] = React.useState("");
   const [messageTemplate, setMessageTemplate] = React.useState(
-    "OlÃ¡, {nome}! Aqui Ã© do Base CRM sobre o curso {curso}. Posso te ajudar a avanÃ§ar?"
+    "Olá, {nome}! Aqui é do Base CRM sobre o curso {curso}. Posso te ajudar a avançar?"
   );
   const [delaySeconds, setDelaySeconds] = React.useState("45");
   const [confirmLargeCampaign, setConfirmLargeCampaign] = React.useState(false);
@@ -95,7 +95,7 @@ export function CampaignManagerDialog({
         studentFilter === "all" ||
         (studentFilter === "Sim"
           ? lead.ja_foi_aluno === "Sim"
-          : lead.ja_foi_aluno === ("NÃ£o" as Lead["ja_foi_aluno"]));
+          : lead.ja_foi_aluno === ("Não" as Lead["ja_foi_aluno"]));
       const matchesLeadList = !leadListLeadIds || leadListLeadIds.has(lead.id);
 
       return matchesSearch && matchesFunnel && matchesCourse && matchesStudent && matchesLeadList;
@@ -135,14 +135,14 @@ export function CampaignManagerDialog({
         confirmLargeCampaign,
       });
       setTitle("");
-      setMessageTemplate("OlÃ¡, {nome}! Aqui Ã© do Base CRM sobre o curso {curso}. Posso te ajudar a avanÃ§ar?");
+      setMessageTemplate("Olá, {nome}! Aqui é do Base CRM sobre o curso {curso}. Posso te ajudar a avançar?");
       setDelaySeconds("45");
       setSelectedLeadIds([]);
       setConfirmLargeCampaign(false);
       setLeadListFilter("all");
       await onRefresh();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "NÃ£o foi possÃ­vel criar a campanha.");
+      setError(cause instanceof Error ? cause.message : "Não foi possível criar a campanha.");
     } finally {
       setSaving(false);
     }
@@ -180,16 +180,16 @@ export function CampaignManagerDialog({
               <CardContent>
                 <form className="grid gap-4" onSubmit={handleSubmit}>
                   <div className="grid gap-2">
-                    <Label htmlFor="campaign-title">TÃ­tulo</Label>
+                    <Label htmlFor="campaign-title">Título</Label>
                     <Input
                       id="campaign-title"
                       value={title}
                       onChange={(event) => setTitle(event.target.value)}
-                      placeholder="Ex.: ReativaÃ§Ã£o de maio"
+                      placeholder="Ex.: Reativação de maio"
                       disabled={!canEdit || saving}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Se ficar em branco, o CRM cria um tÃ­tulo automÃ¡tico para a campanha.
+                      Se ficar em branco, o CRM cria um título automático para a campanha.
                     </p>
                   </div>
 
@@ -203,7 +203,7 @@ export function CampaignManagerDialog({
                       disabled={!canEdit || saving}
                     />
                     <p className="text-xs text-muted-foreground">
-                      VariÃ¡veis: {"{nome}"}, {"{curso}"}, {"{origem}"}, {"{cidade}"}, {"{responsavel}"}
+                      Variáveis: {"{nome}"}, {"{curso}"}, {"{origem}"}, {"{cidade}"}, {"{responsavel}"}
                     </p>
                   </div>
 
@@ -227,7 +227,7 @@ export function CampaignManagerDialog({
                       id="campaign-search"
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
-                      placeholder="Buscar por nome, curso ou responsÃ¡vel"
+                      placeholder="Buscar por nome, curso ou responsável"
                       disabled={!canEdit || saving}
                     />
                     <div className="grid gap-2 md:grid-cols-4">
@@ -261,12 +261,12 @@ export function CampaignManagerDialog({
 
                       <Select value={studentFilter} onValueChange={setStudentFilter} disabled={!canEdit || saving}>
                         <SelectTrigger>
-                          <SelectValue placeholder="JÃ¡ Ã© aluno?" />
+                          <SelectValue placeholder="Já é aluno?" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="all">Todos</SelectItem>
-                          <SelectItem value="Sim">JÃ¡ Ã© aluno</SelectItem>
-                          <SelectItem value="NÃ£o">Ainda nÃ£o Ã© aluno</SelectItem>
+                          <SelectItem value="Sim">Já é aluno</SelectItem>
+                          <SelectItem value="Não">Ainda não é aluno</SelectItem>
                         </SelectContent>
                       </Select>
 
@@ -287,7 +287,7 @@ export function CampaignManagerDialog({
 
                     <div className="flex items-center justify-between gap-3 rounded-xl border px-3 py-2">
                       <p className="text-xs text-muted-foreground">
-                        {filteredLeads.length} lead(s) visÃ­vel(is) com os filtros atuais
+                        {filteredLeads.length} lead(s) visível(is) com os filtros atuais
                       </p>
                       <Button
                         type="button"
@@ -296,7 +296,7 @@ export function CampaignManagerDialog({
                         onClick={toggleVisibleLeads}
                         disabled={!canEdit || saving || !visibleLeadIds.length}
                       >
-                        {allVisibleSelected ? "Desmarcar visÃ­veis" : "Selecionar visÃ­veis"}
+                        {allVisibleSelected ? "Desmarcar visíveis" : "Selecionar visíveis"}
                       </Button>
                     </div>
 
@@ -314,7 +314,7 @@ export function CampaignManagerDialog({
                             <span className="min-w-0 flex-1">
                               <span className="block font-medium">{lead.nome}</span>
                               <span className="block text-muted-foreground">
-                                {lead.curso_de_interesse} Â· {lead.responsavel}
+                                {lead.curso_de_interesse} · {lead.responsavel}
                               </span>
                             </span>
                           </label>
@@ -334,9 +334,9 @@ export function CampaignManagerDialog({
                           className="mt-1"
                         />
                         <span>
-                          <span className="block font-medium text-foreground">ConfirmaÃ§Ã£o manual obrigatÃ³ria</span>
+                          <span className="block font-medium text-foreground">Confirmação manual obrigatória</span>
                           <span className="block text-muted-foreground">
-                            Esta campanha excede 20 leads. Revise o texto, pÃºblico e atraso antes de iniciar.
+                            Esta campanha excede 20 leads. Revise o texto, público e atraso antes de iniciar.
                           </span>
                         </span>
                       </label>
@@ -384,7 +384,7 @@ export function CampaignManagerDialog({
                             <div className="min-w-0">
                               <p className="text-sm font-semibold">{campaign.title}</p>
                               <p className="mt-1 text-xs text-muted-foreground">
-                                {campaign.createdByName} Â· atraso {campaign.delaySeconds}s
+                                {campaign.createdByName} · atraso {campaign.delaySeconds}s
                               </p>
                             </div>
                             <span className="rounded-full bg-muted px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">

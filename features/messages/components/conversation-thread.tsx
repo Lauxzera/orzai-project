@@ -103,7 +103,7 @@ function ConversationThreadComponent({
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-[#080808]">
       {/* Cockpit / Header */}
-      <div className="shrink-0 z-10 border-b border-white/5 bg-[#0a0a0a]/80 px-4 py-4 backdrop-blur-[24px]">
+      <div className="shrink-0 z-10 border-b border-white/5 bg-[#0a0a0a] px-4 py-4 ">
         <div className="flex items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
             {onToggleInbox ? (
@@ -114,10 +114,10 @@ function ConversationThreadComponent({
             
             {/* Avatar Em Detalhe Neon */}
             <div className="relative shrink-0">
-               <span className="grid h-12 w-12 place-items-center rounded-full border border-primary/30 bg-primary/10 text-[16px] font-bold text-primary shadow-[0_0_15px_rgba(219,13,113,0.3)]">
+               <span className="grid h-12 w-12 place-items-center rounded-full border border-primary/30 bg-primary/10 text-[16px] font-bold text-primary">
                   {displayName.charAt(0)}
                </span>
-               <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#0a0a0a] bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+               <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#0a0a0a] bg-emerald-500" />
             </div>
 
             <div className="min-w-0">
@@ -137,7 +137,7 @@ function ConversationThreadComponent({
           <div className="flex shrink-0 items-center gap-2">
             {refreshing && messages.length > 0 ? (
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-primary/80 shadow-[0_0_8px_rgba(219,13,113,1)]" />
+                <span className="h-2 w-2 animate-pulse rounded-full bg-primary/80" />
               </span>
             ) : null}
             
@@ -152,7 +152,7 @@ function ConversationThreadComponent({
             ) : null}
 
             {!lead && onCreateLead ? (
-               <Button type="button" className="h-10 gap-2 rounded-full bg-primary px-4 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(219,13,113,0.4)] hover:bg-primary/90" onClick={onCreateLead}>
+               <Button type="button" className="h-10 gap-2 rounded-full bg-primary px-4 text-[11px] font-bold uppercase tracking-widest text-white hover:bg-primary/90" onClick={onCreateLead}>
                  <PlusCircle className="h-4 w-4" /> Salvar Lead
                </Button>
             ) : null}
@@ -199,11 +199,7 @@ function ConversationThreadComponent({
       </div>
 
       <div ref={viewportRef} className="crm-scrollbar min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 relative z-0">
-        {/* Thread Background Decoration */}
-        <div className="pointer-events-none absolute inset-0 z-[-1] opacity-30">
-           <div className="absolute top-[20%] left-[10%] w-96 h-96 bg-primary/20 blur-[120px] rounded-full mix-blend-screen" />
-           <div className="absolute bottom-[20%] right-[10%] w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full mix-blend-screen" />
-        </div>
+
 
         {hasMore ? (
           <div className="mb-6 flex justify-center">
@@ -229,7 +225,7 @@ function ConversationThreadComponent({
             {groupedMessages.map((group) => (
               <React.Fragment key={group.label}>
                 <div className="my-6 flex items-center justify-center">
-                  <span className="rounded-full border border-white/10 bg-[#0a0a0a]/80 px-4 py-1.5 text-[9px] font-bold uppercase tracking-widest text-white/40 shadow-sm backdrop-blur">
+                  <span className="rounded-full border border-white/10 bg-[#0a0a0a] px-4 py-1.5 text-[9px] font-bold uppercase tracking-widest text-white/40 shadow-sm ">
                     {group.label}
                   </span>
                 </div>
@@ -268,8 +264,8 @@ const MessageBubble = React.memo(function MessageBubble({ message, mediaHref }: 
         className={cn(
           "max-w-[85%] sm:max-w-[75%] lg:max-w-[65%] px-4 py-3 text-[14px] font-light leading-relaxed tracking-wide shadow-2xl",
           message.direction === "outbound"
-            ? "rounded-[24px] rounded-br-[4px] bg-primary/90 text-white shadow-[0_4px_24px_rgba(219,13,113,0.3)] backdrop-blur-sm"
-            : "rounded-[24px] rounded-bl-[4px] border border-white/10 bg-white/[0.04] text-white/90 backdrop-blur-[12px]",
+            ? "rounded-[24px] rounded-br-[4px] bg-primary/90 text-white "
+            : "rounded-[24px] rounded-bl-[4px] border border-white/10 bg-white/[0.04] text-white/90 ",
         )}
       >
         {message.type === "image" && message.mediaUrl ? (

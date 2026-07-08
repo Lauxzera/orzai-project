@@ -394,7 +394,7 @@ export default function OrzaiCrmPage() {
   const allowUserManagement = canManageUsers(currentRole);
   const allowLeadSettings = currentRole === "ADMIN" || currentRole === "MANAGER";
   const allowLeadImport = canImportLeads(currentRole);
-  const allowedViews = getRoleViews(currentRole);
+  const allowedViews = React.useMemo(() => getRoleViews(currentRole), [currentRole]);
   const defaultView = getDefaultViewForRole(currentRole);
   const navigationItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -590,20 +590,10 @@ export default function OrzaiCrmPage() {
     [editingLeadId, formLead, state.leads]
   );
 
-  const periodLeads = React.useMemo(
-    () => filteredLeads.filter((lead) => withinPeriod(lead.data_entrada, period)),
-    [filteredLeads, period]
-  );
-
-  const periodTasks = React.useMemo(
-    () => tasksForFilteredLeads.filter((task) => withinPeriod(task.dueDate, period)),
-    [period, tasksForFilteredLeads]
-  );
-
-  const pendingTasks = React.useMemo(() => tasksForFilteredLeads.filter((task) => !task.done), [tasksForFilteredLeads]);
+  const pendingTasks = React.useMemo(() => state.tasks.filter((task) => !task.done), [state.tasks]);
   const overdueLeads = React.useMemo(
-    () => filteredLeads.filter((lead) => isOverdue(lead.proximo_contato) && !closingStatuses.includes(lead.status_funil)),
-    [filteredLeads]
+    () => state.leads.filter((lead) => isOverdue(lead.proximo_contato) && !closingStatuses.includes(lead.status_funil)),
+    [state.leads]
   );
   const notifications = React.useMemo<NotificationItem[]>(() => {
     const items: NotificationItem[] = [];
@@ -636,7 +626,7 @@ export default function OrzaiCrmPage() {
       });
     }
 
-    for (const lead of filteredLeads.filter((item) => item.data_entrada === currentDate(0)).slice(0, 4)) {
+    for (const lead of state.leads.filter((item) => item.data_entrada === currentDate(0)).slice(0, 4)) {
       const id = `new-lead::${lead.id}::${lead.data_entrada}`;
       items.push({
         id,
@@ -653,7 +643,7 @@ export default function OrzaiCrmPage() {
       if (a.read !== b.read) return a.read ? 1 : -1;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [currentUserName, filteredLeads, overdueLeads, pendingTasks, readNotifications, state.leads]);
+  }, [currentUserName, overdueLeads, pendingTasks, readNotifications, state.leads]);
   const unreadNotifications = React.useMemo(
     () => notifications.filter((item) => !item.read).length,
     [notifications]
@@ -670,28 +660,6 @@ export default function OrzaiCrmPage() {
   const rightRailContacts = React.useMemo(
     () => filteredLeads.slice(0, 5).map((lead) => ({ id: lead.id, nome: lead.nome })),
     [filteredLeads]
-  );
-  const confirmedEnrollments = React.useMemo(
-    () => periodLeads.filter((lead) => ["Pagamento confirmado", "Matriculado"].includes(lead.status_matricula)),
-    [periodLeads]
-  );
-  const conversion = periodLeads.length ?Math.round((confirmedEnrollments.length / periodLeads.length) * 100) : 0;
-  const trendData = React.useMemo(() => buildTrend(periodLeads, tasksForFilteredLeads, period), [period, periodLeads, tasksForFilteredLeads]);
-  const courseData = React.useMemo(() => toChartData(groupCount(periodLeads, "curso_de_interesse")), [periodLeads]);
-  const originData = React.useMemo(
-    () =>
-      toChartData(
-        periodLeads.reduce<Record<string, number>>((acc, lead) => {
-          const key = getLeadTrackedOriginLabel(lead);
-          acc[key] = (acc[key] || 0) + 1;
-          return acc;
-        }, {})
-      ),
-    [periodLeads]
-  );
-  const taskOwnerData = React.useMemo(
-    () => toChartData(groupCount(periodTasks.filter((task) => !task.done), "owner")),
-    [periodTasks]
   );
 
   function openNewLead() {
@@ -1370,7 +1338,7 @@ export default function OrzaiCrmPage() {
         <button
           type="button"
           aria-label="Fechar menu lateral"
-          className="fixed inset-0 z-40 bg-[#1f3043]/24 backdrop-blur-[1px] lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -1410,10 +1378,7 @@ export default function OrzaiCrmPage() {
             onToggleRightRail={() => setRightRailOpen((open) => !open)}
           />
 
-          <div 
-            key={view} 
-            className="flex min-h-0 flex-1 flex-col overflow-hidden relative z-10 w-full animate-in fade-in duration-300"
-          >
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden relative z-10 w-full animate-in fade-in duration-300">
               {view === "messages" ? (
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
               <MessagesView
@@ -1540,23 +1505,14 @@ export default function OrzaiCrmPage() {
 
           {view === "dashboard" ? (
             <div className="perf-section">
-            <Dashboard
-              period={period}
-              setPeriod={setPeriod}
-              periodLeads={periodLeads}
-              newLeads={periodLeads.filter((lead) => lead.status_funil === "Novo Lead").length}
-              waiting={periodLeads.filter((lead) => lead.status_funil === "Aguardando Retorno").length}
-              overdue={overdueLeads.length}
-              confirmed={confirmedEnrollments.length}
-              conversion={conversion}
-              trendData={trendData}
-              courseData={courseData}
-              originData={originData}
-              taskOwnerData={taskOwnerData}
-              pendingTasks={pendingTasks.length}
-              pendingTaskItems={pendingTasks}
-              allLeads={state.leads}
-            />
+              <DashboardContainer
+                period={period}
+                setPeriod={setPeriod}
+                leads={state.leads}
+                tasks={state.tasks}
+                overdueLeads={overdueLeads.length}
+                pendingTasks={pendingTasks}
+              />
             </div>
           ) : null}
 
@@ -1659,7 +1615,7 @@ export default function OrzaiCrmPage() {
           <button
             type="button"
             aria-label="Fechar painel de notificações"
-            className="fixed inset-0 z-40 hidden bg-[#1f3043]/18 backdrop-blur-[1px] xl:block"
+            className="fixed inset-0 z-40 hidden bg-black/30 xl:block"
             onClick={() => setRightRailOpen(false)}
           />
             <RightRail
@@ -1697,7 +1653,7 @@ export default function OrzaiCrmPage() {
 
       {messageToast && view !== "messages" ? (
         <div className="pointer-events-none fixed bottom-5 left-5 z-50 animate-[fade-notification_1.8s_ease-out_forwards]">
-          <div className="rounded-2xl border border-primary/20 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur">
+          <div className="rounded-2xl border border-border bg-card px-4 py-3">
             <p className="text-sm font-semibold text-foreground">
               Você tem {messageToast.count} nova{messageToast.count > 1 ? "s" : ""} mensagem{messageToast.count > 1 ? "s" : ""}
             </p>
@@ -1761,4 +1717,71 @@ async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit) {
   }
 
   return data as T;
+}
+
+function DashboardContainer({
+  period,
+  setPeriod,
+  leads,
+  tasks,
+  overdueLeads,
+  pendingTasks,
+}: {
+  period: Period;
+  setPeriod: (period: Period) => void;
+  leads: Lead[];
+  tasks: Task[];
+  overdueLeads: number;
+  pendingTasks: Task[];
+}) {
+  const periodLeads = React.useMemo(
+    () => leads.filter((lead) => withinPeriod(lead.data_entrada, period)),
+    [leads, period]
+  );
+  const confirmedEnrollments = React.useMemo(
+    () => periodLeads.filter((lead) => ["Pagamento confirmado", "Matriculado"].includes(lead.status_matricula)),
+    [periodLeads]
+  );
+  const conversion = periodLeads.length ? Math.round((confirmedEnrollments.length / periodLeads.length) * 100) : 0;
+  const trendData = React.useMemo(() => buildTrend(periodLeads, tasks, period), [period, periodLeads, tasks]);
+  const courseData = React.useMemo(() => toChartData(groupCount(periodLeads, "curso_de_interesse")), [periodLeads]);
+  const originData = React.useMemo(
+    () =>
+      toChartData(
+        periodLeads.reduce<Record<string, number>>((acc, lead) => {
+          const key = getLeadTrackedOriginLabel(lead);
+          acc[key] = (acc[key] || 0) + 1;
+          return acc;
+        }, {})
+      ),
+    [periodLeads]
+  );
+  const periodTasks = React.useMemo(
+    () => tasks.filter((task) => withinPeriod(task.dueDate, period)),
+    [period, tasks]
+  );
+  const taskOwnerData = React.useMemo(
+    () => toChartData(groupCount(periodTasks.filter((task) => !task.done), "owner")),
+    [periodTasks]
+  );
+
+  return (
+    <Dashboard
+      period={period}
+      setPeriod={setPeriod}
+      periodLeads={periodLeads}
+      newLeads={periodLeads.filter((lead) => lead.status_funil === "Novo Lead").length}
+      waiting={periodLeads.filter((lead) => lead.status_funil === "Aguardando Retorno").length}
+      overdue={overdueLeads}
+      confirmed={confirmedEnrollments.length}
+      conversion={conversion}
+      trendData={trendData}
+      courseData={courseData}
+      originData={originData}
+      taskOwnerData={taskOwnerData}
+      pendingTasks={pendingTasks.length}
+      pendingTaskItems={pendingTasks}
+      allLeads={leads}
+    />
+  );
 }

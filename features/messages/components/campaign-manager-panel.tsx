@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -333,12 +333,12 @@ export function CampaignManagerPanel({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.56fr)]">
-      <div className="flex flex-col overflow-hidden rounded-[32px] border border-white/5 bg-[#0c0c0c]/80 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+      <div className="flex flex-col overflow-hidden rounded-[32px] border border-border bg-[#0c0c0c]">
         <div className="border-b border-white/5 pb-4 p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="flex items-center gap-3 text-[18px] font-medium text-white">
-                <span className="rounded-[16px] border border-primary/20 bg-primary/10 p-2.5 text-primary shadow-[0_0_15px_rgba(219,13,113,0.3)]">
+                <span className="rounded-[16px] border border-primary/20 bg-primary/10 p-2.5 text-primary">
                   <Send className="h-4 w-4" />
                 </span>
                 Novo disparo oficial
@@ -351,11 +351,11 @@ export function CampaignManagerPanel({
               className={[
                 "inline-flex w-fit items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em]",
                 canCreateCampaign
-                  ? "border-primary/20 bg-primary/10 text-primary shadow-[0_0_15px_rgba(219,13,113,0.2)]"
+                  ? "border-primary/20 bg-primary/10 text-primary"
                   : "border-amber-500/20 bg-amber-500/10 text-amber-500",
               ].join(" ")}
             >
-              <span className={["h-1.5 w-1.5 rounded-full", canCreateCampaign ? "bg-primary shadow-[0_0_10px_rgba(219,13,113,0.8)]" : "bg-amber-500"].join(" ")} />
+              <span className={["h-1.5 w-1.5 rounded-full", canCreateCampaign ? "bg-primary" : "bg-amber-500"].join(" ")} />
               {canCreateCampaign ? "Pronto para criar" : "Aguardando revisão"}
             </span>
           </div>
@@ -415,9 +415,9 @@ export function CampaignManagerPanel({
               <div className="min-w-0">
                 <p className="flex items-center gap-2 text-[14px] font-semibold text-white">
                   {templateSource === "missing" ? (
-                    <AlertTriangle className="h-4 w-4 text-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]" />
+                    <AlertTriangle className="h-4 w-4 text-rose-500" />
                   ) : (
-                    <CheckCircle2 className="h-4 w-4 text-primary shadow-[0_0_10px_rgba(219,13,113,0.5)]" />
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
                   )}
                   Envio
                 </p>
@@ -462,12 +462,12 @@ export function CampaignManagerPanel({
               <div className="flex flex-col gap-3 border-b border-white/5 p-5 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p className="flex items-center gap-2 text-[14px] font-semibold text-white">
-                    <Users className="h-4 w-4 text-primary shadow-[0_0_10px_rgba(219,13,113,0.3)]" />
+                    <Users className="h-4 w-4 text-primary" />
                     Público do disparo
                   </p>
                   <p className="mt-1.5 text-[12px] text-white/40">Filtre, confira e selecione somente os leads compatíveis com a campanha.</p>
                 </div>
-                <div className="inline-flex w-fit items-center gap-1.5 rounded-[12px] border border-primary/20 bg-primary/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary shadow-[0_0_10px_rgba(219,13,113,0.1)]">
+                <div className="inline-flex w-fit items-center gap-1.5 rounded-[12px] border border-primary/20 bg-primary/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   {selectedLeadIds.length} selecionado{selectedLeadIds.length === 1 ? "" : "s"}
                 </div>
@@ -637,7 +637,7 @@ export function CampaignManagerPanel({
         </div>
       </div>
 
-      <div className="flex flex-col rounded-[32px] border border-white/5 bg-[#0c0c0c]/80 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+      <div className="flex flex-col rounded-[32px] border border-border bg-[#0c0c0c]">
         <div className="border-b border-white/5 pb-4 p-6">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -712,7 +712,7 @@ export function CampaignManagerPanel({
                         <span className="font-bold text-white/50">{progress}%</span>
                       </div>
                       <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5">
-                        <div className="h-full rounded-full bg-primary transition-all shadow-[0_0_10px_rgba(219,13,113,0.8)]" style={{ width: `${progress}%` }} />
+                        <div className="h-full rounded-full bg-primary transition-colors" style={{ width: `${progress}%` }} />
                       </div>
 
                       <p className="mt-4 line-clamp-2 text-[12px] leading-relaxed text-white/60">{campaign.messageTemplate}</p>
@@ -982,9 +982,9 @@ function FormStepCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015]">
+    <div className="overflow-hidden rounded-[24px] border border-border bg-card">
       <div className="flex items-start gap-4 border-b border-white/5 p-5">
-        <span className="rounded-full border border-primary/20 bg-primary/10 p-2.5 text-primary shadow-[0_0_10px_rgba(219,13,113,0.2)]">
+        <span className="rounded-full border border-primary/20 bg-primary/10 p-2.5 text-primary">
           <Icon className="h-4 w-4" />
         </span>
         <div className="min-w-0">

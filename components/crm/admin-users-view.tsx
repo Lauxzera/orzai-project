@@ -5,7 +5,7 @@ import { CheckCircle2, LoaderCircle, RefreshCcw, ShieldCheck, Trash2, UserCog, U
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { closingStatuses, isOverdue, userRoles, type CrmState, type CrmUser, type UserRole } from "@/lib/crm";
@@ -428,7 +428,7 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
               >
                 {isActive && (
                   <div
-                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)] transition-all duration-300"
+                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-border bg-card transition-colors duration-300"
                   />
                 )}
                 <Icon className={`relative z-10 h-4 w-4 ${isActive ? "" : ""}`} />
@@ -469,8 +469,8 @@ export function AdminUsersView({ currentUser, crmState, onCurrentUserUpdated, on
           </AnimatePresence>
         </div>
 
-        {error ? <p className="mb-6 rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-[13px] text-destructive shadow-[0_0_30px_rgba(239,68,68,0.2)]">{error}</p> : null}
-        {success ? <p className="mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-6 py-4 text-[13px] text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.1)]">{success}</p> : null}
+        {error ? <p className="mb-6 rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-[13px] text-destructive">{error}</p> : null}
+        {success ? <p className="mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-6 py-4 text-[13px] text-emerald-400">{success}</p> : null}
 
         <div className="relative min-h-[500px]">
           <AnimatePresence mode="wait">

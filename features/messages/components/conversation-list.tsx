@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { funnelStatuses, isOverdue, type Lead, UNASSIGNED_OWNER } from "@/lib/crm";
 import type { Conversation } from "@/lib/messages";
@@ -97,7 +97,7 @@ function ConversationAvatar({ name, hasLead }: { name: string; hasLead: boolean 
       <span
         className={cn(
           "absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-background",
-          hasLead ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" : "bg-white/20",
+          hasLead ? "bg-emerald-500" : "bg-white/20",
         )}
         title={hasLead ? "Lead cadastrado" : "Sem cadastro de lead"}
       />
@@ -143,7 +143,7 @@ export function ConversationList({
 
   return (
     <>
-      <div className="sticky top-0 z-10 border-b border-white/5 bg-background/95 px-4 py-4 backdrop-blur-[24px]">
+      <div className="sticky top-0 z-10 border-b border-white/5 bg-background px-4 py-4 ">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Inbox</p>
@@ -159,7 +159,7 @@ export function ConversationList({
                 <span className="hidden sm:inline">Filtros</span>
                 <span className="sm:hidden">{activeSegmentLabel}</span>
                 {activeFilterCount > 0 ? (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-white shadow-[0_0_8px_rgba(219,13,113,0.8)]">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-white">
                     {activeFilterCount}
                   </span>
                 ) : null}
@@ -221,7 +221,7 @@ export function ConversationList({
                     {(Object.keys(segmentLabels) as InboxSegment[]).map((segment) => (
                       <Button
                         key={segment} type="button" size="sm" variant={inboxSegment === segment ? "default" : "outline"}
-                        className={`h-9 justify-start px-4 text-[11px] font-bold tracking-widest uppercase rounded-xl ${inboxSegment === segment ? 'bg-primary text-white border-primary shadow-[0_0_10px_rgba(219,13,113,0.3)]' : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
+                        className={`h-9 justify-start px-4 text-[11px] font-bold tracking-widest uppercase rounded-xl ${inboxSegment === segment ? 'bg-primary text-white border-primary' : 'border-border bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
                         onClick={() => onInboxSegmentChange(segment)}
                       >
                         {segmentLabels[segment]}
@@ -254,7 +254,7 @@ export function ConversationList({
         <div className="mt-4 grid grid-cols-3 gap-2">
           <button
             type="button" onClick={() => toggleSegment("unread")}
-            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "unread" ? "border-primary/30 bg-primary/10 text-primary shadow-[0_0_15px_rgba(219,13,113,0.2)]" : "border-white/5 bg-white/[0.02] text-white/40 hover:bg-white/5 hover:text-white/80")}
+            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "unread" ? "border-primary/30 bg-primary/10 text-primary" : "border-border bg-card text-white/40 hover:bg-white/5 hover:text-white/80")}
           >
             <div className="flex w-full items-center justify-between">
               <MessageCircle className="h-4 w-4" />
@@ -265,7 +265,7 @@ export function ConversationList({
           
           <button
             type="button" onClick={() => toggleSegment("overdue")}
-            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "overdue" ? "border-rose-500/30 bg-rose-500/10 text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.2)]" : "border-white/5 bg-white/[0.02] text-white/40 hover:bg-white/5 hover:text-white/80")}
+            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "overdue" ? "border-rose-500/30 bg-rose-500/10 text-rose-400" : "border-border bg-card text-white/40 hover:bg-white/5 hover:text-white/80")}
           >
              <div className="flex w-full items-center justify-between">
                <ShieldAlert className="h-4 w-4" />
@@ -276,7 +276,7 @@ export function ConversationList({
           
           <button
             type="button" onClick={() => toggleSegment("negotiation")}
-            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "negotiation" ? "border-amber-500/30 bg-amber-500/10 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-white/5 bg-white/[0.02] text-white/40 hover:bg-white/5 hover:text-white/80")}
+            className={cn("flex flex-col gap-2 rounded-[20px] border px-3 py-3 transition-colors", inboxSegment === "negotiation" ? "border-amber-500/30 bg-amber-500/10 text-amber-400" : "border-border bg-card text-white/40 hover:bg-white/5 hover:text-white/80")}
           >
             <div className="flex w-full items-center justify-between">
               <BriefcaseBusiness className="h-4 w-4" />
@@ -360,9 +360,9 @@ const ConversationListItem = React.memo(function ConversationListItem({
     <button
       onClick={() => (bulkMode ? onToggleSelection(conversation.id) : onSelect(conversation.id))}
       className={cn(
-        "relative flex w-full items-start gap-4 overflow-hidden rounded-[24px] border p-4 text-left transition-all duration-300",
+        "relative flex w-full items-start gap-4 overflow-hidden rounded-[24px] border p-4 text-left transition-colors transition-shadow duration-300",
         isActive
-          ? "border-primary/50 bg-primary/10 shadow-[0_0_15px_rgba(219,13,113,0.15)]"
+          ? "border-primary/50 bg-primary/10"
           : "border-white/5 bg-[#0c0c0c] hover:bg-[#121212]",
       )}
     >
@@ -378,7 +378,7 @@ const ConversationListItem = React.memo(function ConversationListItem({
         <span className="flex items-start justify-between gap-3">
           <span className="min-w-0">
             <span className="flex items-center gap-2 truncate text-[14px] font-medium text-white tracking-wide">
-              {conversation.unreadCount > 0 ? <span className="h-2 w-2 shrink-0 rounded-full bg-primary shadow-[0_0_8px_rgba(219,13,113,0.8)]" /> : null}
+              {conversation.unreadCount > 0 ? <span className="h-2 w-2 shrink-0 rounded-full bg-primary" /> : null}
               <span className="truncate">{displayName}</span>
             </span>
             <span className="mt-1.5 flex flex-wrap items-center gap-2">
@@ -392,7 +392,7 @@ const ConversationListItem = React.memo(function ConversationListItem({
                 <Clock3 className="h-3 w-3" /> {relativeTime(conversation.lastMessageAt)}
              </span>
              {conversation.unreadCount > 0 ? (
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-[0_0_8px_rgba(219,13,113,0.8)]">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                   {conversation.unreadCount}
                 </span>
              ) : bulkMode ? (

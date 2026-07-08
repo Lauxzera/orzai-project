@@ -12,8 +12,6 @@ import { TaskOwnerChart } from "@/features/dashboard/components/dashboard-task-o
 import { useDashboardView } from "@/features/dashboard/hooks/use-dashboard-view";
 import { dashboardChartConfig, type DashboardProps } from "@/features/dashboard/lib/dashboard-types";
 import { snowChartColors } from "@/features/dashboard/lib/dashboard-utils";
-import { motion } from "framer-motion";
-
 const InteractivePie = Pie as unknown as React.ComponentType<Record<string, unknown>>;
 
 export function Dashboard({
@@ -30,14 +28,13 @@ export function Dashboard({
           <p className="mt-2 text-[13px] font-light text-white/40">Acompanhe captação, conversão, retornos e tarefas operacionais.</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 bg-white/[0.015] border border-white/5 p-2 rounded-full backdrop-blur-md">
+        <div className="flex flex-wrap items-center gap-4 bg-card border border-border p-2 rounded-full ">
            {["day", "week", "month"].map((p) => {
              const label = p === "day" ? "Dia" : p === "week" ? "Semana" : "Mês";
              const isActive = period === p;
              return (
-               <button key={p} onClick={() => setPeriod(p as "day"|"week"|"month")} className="relative px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300">
-                 {isActive && <motion.div layoutId="period-pill" className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-none" />}
-                 <span className={`relative z-10 ${isActive ? "text-primary " : "text-white/40 hover:text-white"}`}>{label}</span>
+               <button key={p} onClick={() => setPeriod(p as "day"|"week"|"month")} className={`relative px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? "bg-primary/20 border border-primary/30 rounded-full text-primary" : "text-white/40 hover:text-white"}`}>
+                 <span>{label}</span>
                </button>
              );
            })}
@@ -56,8 +53,8 @@ export function Dashboard({
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-md">
-          <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
+        <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">
+          <CardHeader className="border-b border-border bg-card px-8 py-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <CardTitle className="text-xl font-light tracking-wide text-white">Analytics do Funil</CardTitle>
@@ -72,28 +69,12 @@ export function Dashboard({
           <CardContent className="p-8">
             <ChartContainer config={dashboardChartConfig} className="h-[360px] w-full">
               <AreaChart accessibilityLayer data={trendData} margin={{ left: 12, right: 26, top: 34, bottom: 8 }}>
-                <defs>
-                  <linearGradient id="leadsGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.4} />
-                    <stop offset="75%" stopColor="var(--chart-1)" stopOpacity={0.01} />
-                  </linearGradient>
-                  <linearGradient id="matriculasGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--chart-2)" stopOpacity={0.3} />
-                    <stop offset="80%" stopColor="var(--chart-2)" stopOpacity={0.01} />
-                  </linearGradient>
-                  <filter id="neonDropShadow" x="-20%" y="-20%" width="140%" height="140%">
-                     <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="var(--chart-1)" floodOpacity="0.4"/>
-                  </filter>
-                  <filter id="neonDropShadow2" x="-20%" y="-20%" width="140%" height="140%">
-                     <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="var(--chart-2)" floodOpacity="0.4"/>
-                  </filter>
-                </defs>
                 <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.03)" strokeDasharray="4 4" />
                 <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={16} tick={{ fill: "#ffffff", opacity: 0.4, fontSize: 11, fontWeight: 700 }} />
                 <YAxis width={40} tickLine={false} axisLine={false} allowDecimals={false} tickMargin={10} tick={{ fill: "#ffffff", opacity: 0.4, fontSize: 11, fontWeight: 700 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Area type="monotone" dataKey="leads" stroke="var(--color-leads)" strokeWidth={4} fill="url(#leadsGlow)" dot={false} activeDot={{ r: 6, strokeWidth: 3, stroke: "#fff" }} animationDuration={420} filter="url(#neonDropShadow)" />
-                <Area type="monotone" dataKey="matriculas" stroke="var(--color-matriculas)" strokeWidth={3} fill="url(#matriculasGlow)" dot={false} activeDot={{ r: 5, strokeWidth: 3, stroke: "#fff" }} animationDuration={420} filter="url(#neonDropShadow2)" />
+                <Area type="monotone" dataKey="leads" stroke="var(--color-leads)" strokeWidth={4} fill="var(--color-leads)" fillOpacity={0.2} dot={false} activeDot={{ r: 6, strokeWidth: 3, stroke: "#fff" }} animationDuration={420} />
+                <Area type="monotone" dataKey="matriculas" stroke="var(--color-matriculas)" strokeWidth={3} fill="var(--color-matriculas)" fillOpacity={0.2} dot={false} activeDot={{ r: 5, strokeWidth: 3, stroke: "#fff" }} animationDuration={420} />
                 <Line type="monotone" dataKey="tarefas" stroke="var(--color-tarefas)" strokeWidth={2.5} strokeDasharray="6 6" dot={{ r: 3 }} animationDuration={420} />
                 {state.chartMarkers.map((marker) => <ChartMarker key={`${marker.dataKey}-${marker.x}`} marker={marker} />)}
               </AreaChart>
@@ -101,8 +82,8 @@ export function Dashboard({
           </CardContent>
         </Card>
 
-        <Card className="rounded-[32px] overflow-hidden border border-white/5 bg-white/[0.015] backdrop-blur-md">
-          <CardHeader className="border-b border-white/5 bg-white/[0.01] px-8 py-6">
+        <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">
+          <CardHeader className="border-b border-border bg-card px-8 py-6">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-light tracking-wide text-white">Canais de Aquisição</CardTitle>
@@ -113,7 +94,7 @@ export function Dashboard({
           </CardHeader>
           <CardContent className="p-8">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-center">
-              <ChartContainer config={{ value: { label: "Leads", color: "var(--chart-2)" } }} className="h-[280px] w-full filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+              <ChartContainer config={{ value: { label: "Leads", color: "var(--chart-2)" } }} className="h-[280px] w-full">
                 <PieChart>
                   <ChartTooltip content={<OriginTooltipContent total={periodLeads.length} />} />
                   <InteractivePie
@@ -127,9 +108,9 @@ export function Dashboard({
                 </PieChart>
               </ChartContainer>
 
-              <div className="rounded-[24px] border border-white/5 bg-white/[0.02] p-6">
+              <div className="rounded-[24px] border border-border bg-card p-6">
                 {state.selectedOrigin ? (
-                  <motion.div initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}}>
+                  <div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2">Canal Selecionado</p>
                     <p className="text-[20px] font-light text-white mb-6">{state.selectedOrigin}</p>
                     <div className="space-y-4">
@@ -137,7 +118,7 @@ export function Dashboard({
                       <div className="flex justify-between items-center"><span className="text-[12px] font-light text-white/50">Fatia</span> <span className="text-[14px] font-medium text-white">{state.selectedOriginShare}%</span></div>
                       <div className="flex justify-between items-center"><span className="text-[12px] font-light text-white/50">Curso Top</span> <span className="text-[12px] font-medium text-white max-w-[100px] truncate text-right">{state.selectedOriginCourses[0]?.[0] || "-"}</span></div>
                     </div>
-                  </motion.div>
+                  </div>
                 ) : (
                   <div className="space-y-2">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4 px-2">Top 6 Origens</p>
@@ -146,7 +127,7 @@ export function Dashboard({
                       return (
                         <button key={item.name} onClick={() => actions.setSelectedOrigin(item.name)} className="flex w-full items-center justify-between p-2 rounded-xl hover:bg-white/5 transition-colors">
                           <span className="flex items-center gap-3 min-w-0">
-                            <span className="h-2 w-2 rounded-full shadow-[0_0_8px_currentColor]" style={{ background: snowChartColors[index % snowChartColors.length], color: snowChartColors[index % snowChartColors.length] }} />
+                            <span className="h-2 w-2 rounded-full" style={{ background: snowChartColors[index % snowChartColors.length], color: snowChartColors[index % snowChartColors.length] }} />
                             <span className="text-[12px] font-medium text-white/70 truncate">{item.name}</span>
                           </span>
                           <span className="text-[11px] font-bold text-white/30">{share}%</span>

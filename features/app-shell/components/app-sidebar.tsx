@@ -5,7 +5,6 @@ import { X, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type View } from "@/lib/crm";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 
 type NavigationItem = {
   id: string;
@@ -49,68 +48,64 @@ export function AppSidebar({ items, activeView, messagesUnreadCount = 0, sidebar
   return (
     <aside
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[calc(100vw-1rem)] flex-col transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:static lg:z-auto lg:w-[280px] lg:self-stretch xl:w-[320px] lg:p-4",
+        "fixed inset-y-0 left-0 z-50 flex w-[260px] max-w-[calc(100vw-1rem)] flex-col transition-transform duration-200 lg:static lg:z-auto lg:w-[240px] xl:w-[260px] border-r border-border bg-card",
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:hidden"
       )}
     >
-      <div className="flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[32px] p-6 shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)]">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/20 text-primary shadow-[0_0_20px_-5px_rgba(219,13,113,0.3)]">
-              <ShieldCheck className="h-5 w-5" />
+      <div className="flex h-full w-full flex-col overflow-hidden p-3">
+        <div className="flex items-center justify-between mb-4 px-2 pt-2">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 text-primary">
+              <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-[14px] font-medium text-white tracking-wide">Base CRM</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">CRM Comercial</p>
+              <p className="text-sm font-semibold text-foreground leading-none">Base CRM</p>
+              <p className="text-[10px] uppercase text-muted-foreground mt-1 tracking-wider">CRM Comercial</p>
             </div>
           </div>
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="h-9 w-9 shrink-0 text-white/50 hover:text-white"
+            className="h-8 w-8 text-muted-foreground hover:text-foreground lg:hidden"
             onClick={onClose}
-            aria-label="Fechar menu lateral"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className="mt-8 flex-1 overflow-y-auto pr-1">
+        <div className="flex-1 overflow-y-auto space-y-4 pr-1 crm-scrollbar">
           {sections.map((section) => (
-            <section key={section.title} className="mt-8 first:mt-0">
-              <p className="mb-4 px-3 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">
+            <section key={section.title}>
+              <p className="mb-1 px-2 text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">
                 {section.title}
               </p>
-              <nav className="grid gap-1.5 relative">
+              <nav className="space-y-0.5">
                 {section.items.map((item) => {
                   const isActive = activeView === item.id;
+                  const Icon = item.icon;
                   return (
                     <button
                       key={item.id}
                       onClick={() => handleSelect(item.id as View)}
                       className={cn(
-                        "group relative flex min-h-[44px] w-full items-center gap-3 rounded-xl px-3 text-left text-[13px] transition-colors duration-300 z-10",
-                        isActive ? "text-primary font-medium" : "text-white/60 font-light hover:text-white"
+                        "flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors",
+                        isActive 
+                          ? "bg-primary/10 text-primary font-medium" 
+                          : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
                       )}
                     >
-                      {isActive && (
-                        <div
-                          className="absolute inset-0 z-[-1] rounded-xl bg-white/[0.04] border border-white/5 shadow-[0_0_20px_-5px_rgba(255,255,255,0.05)] transition-all duration-300"
-                        />
-                      )}
+                      <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-primary" : "")} />
+                      <span className="truncate">{item.label}</span>
                       
-                      <item.icon className={cn("h-[16px] w-[16px] transition-transform duration-300", isActive ? "" : "group-hover:scale-110")} />
-                      <span className="truncate tracking-wide">{item.label}</span>
-                      
-                      {item.id === "messages" && messagesUnreadCount > 0 ? (
+                      {item.id === "messages" && messagesUnreadCount > 0 && (
                         <span className={cn(
-                          "ml-auto inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold transition-all",
-                          isActive ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(219,13,113,0.5)]" : "bg-white/10 text-white"
+                          "ml-auto flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold",
+                          isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                         )}>
                           {messagesUnreadCount > 99 ? "99+" : messagesUnreadCount}
                         </span>
-                      ) : null}
+                      )}
                     </button>
                   );
                 })}
@@ -119,14 +114,14 @@ export function AppSidebar({ items, activeView, messagesUnreadCount = 0, sidebar
           ))}
         </div>
         
-        {/* Footer Area inside sidebar */}
-        <div className="mt-6 pt-6 border-t border-white/5">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse" />
-            <span className="text-[11px] font-light tracking-wider text-white/50">Sistema Operacional</span>
+        <div className="mt-auto pt-4 border-t border-border/50">
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-white/5 border border-border/50">
+            <div className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="text-xs text-muted-foreground">Sistema Operacional</span>
           </div>
         </div>
       </div>
     </aside>
   );
 }
+

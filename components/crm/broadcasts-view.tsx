@@ -146,7 +146,7 @@ export function BroadcastsView({ leads, leadLists, courseOptions, canEdit }: Pro
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-5 bg-[#080808] p-4 lg:p-6 overflow-y-auto crm-scrollbar">
-      <section className="rounded-[32px] border border-white/5 bg-[#0a0a0a]/95 p-6 backdrop-blur-md">
+      <section className="rounded-[32px] border border-white/5 bg-[#0a0a0a] p-6 ">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
@@ -204,7 +204,7 @@ export function BroadcastsView({ leads, leadLists, courseOptions, canEdit }: Pro
         </div>
       </section>
 
-      <section className="rounded-[32px] border border-white/5 bg-[#0a0a0a]/95 p-5 backdrop-blur-md">
+      <section className="rounded-[32px] border border-white/5 bg-[#0a0a0a] p-5 ">
         <CampaignManagerPanel
           leads={leads}
           leadLists={leadLists}
@@ -237,9 +237,9 @@ function MetricCard({
     tone === "primary"
       ? "border-primary/20 bg-primary/10 text-primary shadow-none"
       : tone === "warning"
-        ? "border-amber-500/25 bg-amber-500/10 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
+        ? "border-amber-500/25 bg-amber-500/10 text-amber-500"
         : tone === "success"
-          ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+          ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-400"
           : "border-white/10 bg-white/[0.02] text-white/50 hover:bg-white/5";
 
   return (

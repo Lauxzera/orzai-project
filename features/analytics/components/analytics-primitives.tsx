@@ -18,7 +18,7 @@ export function AnalyticsMetricCard({ metric }: { metric: AnalyticsMetric }) {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group relative overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[32px] p-6 transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.03] hover:shadow-[0_0_40px_-15px_rgba(255,255,255,0.1)]"
+      className="group relative overflow-hidden rounded-[24px] border border-border bg-card  p-6 transition-colors duration-500 hover:-translate-y-1 hover:bg-card"
     >
       <div className="flex flex-col space-y-4">
         <div className="flex items-start justify-between gap-3">
@@ -28,8 +28,8 @@ export function AnalyticsMetricCard({ metric }: { metric: AnalyticsMetric }) {
               direction === "flat"
                 ? "rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-bold text-white/50 border border-white/10" 
                 : positiveOutcome
-                  ? "rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
-                  : "rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold text-primary border border-primary/20 shadow-[0_0_15px_rgba(219,13,113,0.3)]"
+                  ? "rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-400 border border-emerald-500/20" 
+                  : "rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold text-primary border border-primary/20"
             }
           >
             <span className="inline-flex items-center gap-1.5">
@@ -67,7 +67,7 @@ export function MiniDistribution({ title, items }: { title: string; items: Array
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.max(12, Math.min(100, (item.value / Math.max(1, items[0]?.value || 1)) * 100))}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
-                className="h-full rounded-full shadow-[0_0_10px_currentColor]"
+                className="h-full rounded-full"
                 style={{
                   background: chartPalette[index % chartPalette.length],
                   color: chartPalette[index % chartPalette.length],
@@ -109,11 +109,11 @@ export function CaseTag({
   const getVariantStyles = () => {
     switch (variant) {
       case "gold":
-        return "border-primary/30 bg-primary/10 text-primary shadow-[0_0_15px_rgba(219,13,113,0.2)]";
+        return "border-primary/30 bg-primary/10 text-primary";
       case "danger":
-        return "border-red-500/30 bg-red-500/10 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
+        return "border-red-500/30 bg-red-500/10 text-red-500";
       default:
-        return "border-white/10 bg-white/[0.02] text-white/60";
+        return "border-border bg-card text-white/60";
     }
   };
 

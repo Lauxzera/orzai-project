@@ -836,44 +836,46 @@ export function useMessagesView({
     void loadConnectionDebug();
   }, [loadConnectionDebug]);
 
+  const loadConversationsRef = React.useRef(loadConversations);
+  const loadMessagesRef = React.useRef(loadMessages);
+  const selectedConvRef = React.useRef(selectedConv);
+
   React.useEffect(() => {
-    if (!pageVisible) return;
-    if (connection?.status !== "waiting") return;
-    const interval = setInterval(() => {
-      void loadConversations(true);
-    }, WAITING_CONNECTION_REFRESH_MS);
-    return () => clearInterval(interval);
-  }, [connection?.status, loadConversations, pageVisible]);
+    loadConversationsRef.current = loadConversations;
+    loadMessagesRef.current = loadMessages;
+    selectedConvRef.current = selectedConv;
+  }, [loadConversations, loadMessages, selectedConv]);
 
   React.useEffect(() => {
     if (!pageVisible) return;
-    if (connection?.status !== "online") return;
-    const interval = setInterval(() => {
-      void loadConversations(true);
-    }, ONLINE_CONVERSATIONS_REFRESH_MS);
-    return () => clearInterval(interval);
-  }, [connection?.status, loadConversations, pageVisible]);
 
-  React.useEffect(() => {
-    if (!pageVisible) return;
-    if (!selectedId || connection?.status !== "online") return;
+    // Apenas 1 polling global sincronizado e mais lento para reduzir gargalos
     const interval = setInterval(async () => {
       try {
-        const activeConversationId = selectedIdRef.current ?? selectedId;
-        if (!activeConversationId) return;
-        const activeConversation =
-          selectedConversationSnapshotRef.current &&
-          getStableConversationKey(selectedConversationSnapshotRef.current) === selectedStableKeyRef.current
-            ? selectedConversationSnapshotRef.current
-            : selectedConv;
-        if (!activeConversation) return;
-        await loadMessages(activeConversation, true);
+        if (connection?.status === "waiting") {
+          await loadConversationsRef.current(true);
+        } else if (connection?.status === "online") {
+          await loadConversationsRef.current(true);
+
+          const activeConversationId = selectedIdRef.current ?? selectedId;
+          if (activeConversationId) {
+            const activeConversation =
+              selectedConversationSnapshotRef.current &&
+              getStableConversationKey(selectedConversationSnapshotRef.current) === selectedStableKeyRef.current
+                ? selectedConversationSnapshotRef.current
+                : selectedConvRef.current;
+            if (activeConversation) {
+              await loadMessagesRef.current(activeConversation, true);
+            }
+          }
+        }
       } catch {
-        // keep current messages
+        // ignora erros para manter o loop vivo
       }
-    }, ACTIVE_CONVERSATION_REFRESH_MS);
+    }, 6000);
+
     return () => clearInterval(interval);
-  }, [connection?.status, loadMessages, pageVisible, selectedConv, selectedId]);
+  }, [pageVisible, connection?.status, selectedId]);
 
   React.useEffect(() => {
     if (!selectedConv) {

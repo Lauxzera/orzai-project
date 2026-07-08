@@ -245,6 +245,19 @@ export function LandingPage({ onEnterCrm }: Props) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+function AnimatedHoverIcon({ icon: Icon, className = "" }: { icon: any, className?: string }) {
+  return (
+    <div className={`relative flex items-center justify-center ${className}`}>
+      <Icon className="absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-50 group-hover:opacity-0 group-hover:-rotate-12 w-full h-full text-white/40" />
+      <Icon 
+        className="absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] scale-50 opacity-0 rotate-12 group-hover:scale-110 group-hover:opacity-100 group-hover:rotate-0 w-full h-full text-[#00F0FF] drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]" 
+        strokeWidth={2.5}
+      />
+    </div>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function FeatureCard({ icon: Icon, title, description, enLabel }: { icon: any, title: string, description: string, enLabel: string }) {
   return (
     <motion.div 
@@ -261,7 +274,13 @@ function FeatureCard({ icon: Icon, title, description, enLabel }: { icon: any, t
       
       <div className="mt-8 flex items-end justify-between">
         <span className="text-[10px] font-bold tracking-[0.2em] text-white/20">{enLabel}</span>
-        <ArrowRight className="h-5 w-5 text-primary opacity-0 -translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0" />
+                <div className="relative ml-2 w-5 h-5 flex items-center justify-center">
+                  <ArrowRight className="absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-4 group-hover:scale-50 group-hover:opacity-0 w-full h-full text-[#050B14]" />
+                  <ArrowRight 
+                    className="absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] -translate-x-4 scale-50 opacity-0 group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100 w-full h-full text-[#0055FF]" 
+                    strokeWidth={3}
+                  />
+                </div>
       </div>
     </motion.div>
   );

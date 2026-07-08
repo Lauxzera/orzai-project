@@ -61,7 +61,7 @@ export function LeadList({
         return (
           <Card 
             key={lead.id} 
-            className={`group overflow-hidden rounded-[24px] transition-all duration-300 hover:bg-white/[0.04] bg-white/[0.015] backdrop-blur-[12px] border ${borderColor}`}
+            className={`group overflow-hidden rounded-[24px] transition-colors duration-300 hover:bg-white/[0.04] bg-white/[0.015]  border ${borderColor}`}
             style={{ boxShadow: neonGlow !== "rgba(255, 255, 255, 0.0)" ? `0 0 20px ${neonGlow}` : 'none' }}
           >
             <CardContent className="grid gap-6 p-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.92fr)_minmax(0,1fr)_auto] xl:items-center">

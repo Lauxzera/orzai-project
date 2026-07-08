@@ -5,7 +5,7 @@ import { Plus, Save, Trash2, Tag, ArrowRight, UserPlus, GraduationCap, Briefcase
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import type { CourseSegmentKey, CrmCustomizations } from "@/lib/crm";
 import { motion, AnimatePresence } from "framer-motion";
@@ -192,12 +192,12 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
               }
             }}
             placeholder={placeholder}
-            className="h-14 rounded-full border-white/10 bg-white/[0.02] pl-6 pr-32 text-[14px] text-white placeholder:text-white/30 focus-visible:ring-primary/40"
+            className="h-14 rounded-full border-border bg-card pl-6 pr-32 text-[14px] text-white placeholder:text-white/30 focus-visible:ring-primary/40"
           />
           <Button 
             type="button" 
             onClick={onAdd}
-            className="absolute right-2 top-2 h-10 rounded-full bg-white/5 hover:bg-primary hover:text-white text-white/50 border border-white/10 hover:border-primary hover:shadow-[0_0_20px_rgba(219,13,113,0.4)] px-4 transition-all duration-300"
+            className="absolute right-2 top-2 h-10 rounded-full bg-white/5 hover:bg-primary hover:text-white text-white/50 border border-border hover:border-primary px-4 transition-colors duration-300"
           >
             <Plus className="mr-2 h-4 w-4" /> Add
           </Button>
@@ -207,7 +207,7 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
             {items.map((item) => (
               <span
                 key={item}
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[13px] font-medium text-white/80 transition-all hover:bg-white/[0.05]"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/[0.05]"
               >
                 <Tag className="h-3 w-3 text-white/30 group-hover:text-primary transition-colors" />
                 {item}
@@ -250,16 +250,16 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveCategory(cat.id)}
-                className={`group relative flex items-center gap-3 rounded-full lg:rounded-2xl px-5 py-3.5 text-left transition-all duration-300 whitespace-nowrap lg:whitespace-normal ${
+                className={`group relative flex items-center gap-3 rounded-full lg:rounded-2xl px-5 py-3.5 text-left transition-colors duration-300 whitespace-nowrap lg:whitespace-normal ${
                   isActive ? "text-primary" : "text-white/50 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {isActive && (
                   <div
-                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_0_30px_-10px_rgba(255,255,255,0.1)] transition-all duration-300"
+                    className="absolute inset-0 z-0 rounded-full lg:rounded-2xl border border-border bg-card transition-colors duration-300"
                   />
                 )}
-                <Icon className={`relative z-10 h-4 w-4 ${isActive ? "drop-shadow-[0_0_8px_rgba(219,13,113,0.5)]" : ""}`} />
+                <Icon className={`relative z-10 h-4 w-4 ${isActive ? "" : ""}`} />
                 <span className={`relative z-10 text-[13px] font-medium tracking-wide ${isActive ? "text-white" : ""}`}>
                   {cat.label}
                 </span>
@@ -299,7 +299,7 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
           <Button 
             type="submit" 
             disabled={saving}
-            className="rounded-full bg-primary px-6 h-10 shadow-[0_0_20px_rgba(219,13,113,0.3)] hover:shadow-[0_0_30px_rgba(219,13,113,0.6)] text-[12px] font-bold uppercase tracking-wider transition-all"
+            className="rounded-full bg-primary px-6 h-10 text-[12px] font-bold uppercase tracking-wider transition-colors"
           >
             <AnimatePresence mode="wait">
               {savedSignal ? (
@@ -317,7 +317,7 @@ export function LeadSettingsView({ customizations, ownerOptions, saving, error, 
           </Button>
         </div>
 
-        {error ? <p className="mb-6 rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-[13px] text-destructive shadow-[0_0_30px_rgba(239,68,68,0.2)]">{error}</p> : null}
+        {error ? <p className="mb-6 rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-[13px] text-destructive">{error}</p> : null}
 
         <div className="relative min-h-[500px]">
           <AnimatePresence mode="wait">

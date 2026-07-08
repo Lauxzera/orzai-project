@@ -319,7 +319,7 @@ export function MessagesView({
         {compactSidebarOverlay && sidebarOpen ? (
           <button
             type="button"
-            className="absolute inset-0 z-30 bg-[#1f3043]/16 backdrop-blur-[1px]"
+            className="absolute inset-0 z-30 bg-black/60 "
             aria-label="Fechar painel de mensagens"
             onClick={() => setSidebarOpen(false)}
           />
@@ -327,7 +327,7 @@ export function MessagesView({
         {compactLayout && leadPanelOpen ? (
           <button
             type="button"
-            className="absolute inset-0 z-40 bg-[#1f3043]/18 backdrop-blur-[1px]"
+            className="absolute inset-0 z-40 bg-black/60 "
             aria-label="Fechar painel do lead"
             onClick={() => setLeadPanelOpen(false)}
           />

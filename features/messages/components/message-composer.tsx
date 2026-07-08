@@ -173,39 +173,39 @@ function MessageComposerComponent({
   return (
     <div className="shrink-0 bg-transparent px-4 pb-6 pt-2 z-10">
       {!connection?.configured ? (
-        <div className="flex items-center gap-3 rounded-[20px] border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-[11px] font-medium tracking-wide text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)] backdrop-blur">
+        <div className="flex items-center gap-3 rounded-[20px] border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-[11px] font-medium tracking-wide text-amber-500 ">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>O envio oficial não foi liberado neste ambiente. Verifique o checklist do canal.</span>
         </div>
       ) : connection.status !== "online" ? (
-        <div className="flex items-center gap-3 rounded-[20px] border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-[11px] font-medium tracking-wide text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)] backdrop-blur">
+        <div className="flex items-center gap-3 rounded-[20px] border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-[11px] font-medium tracking-wide text-amber-500 ">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>O canal oficial da Meta ainda não está pronto para envio nesta instalação.</span>
         </div>
       ) : (
         <>
           {isProcessingAudio ? (
-            <div className="flex h-14 items-center gap-4 rounded-[28px] border border-white/10 bg-[#0c0c0c]/90 px-6 shadow-2xl backdrop-blur-[24px]">
+            <div className="flex h-14 items-center gap-4 rounded-[28px] border border-white/10 bg-[#0c0c0c] px-6 shadow-2xl ">
               <LoaderCircle className="h-5 w-5 shrink-0 animate-spin text-primary" />
               <span className="text-[13px] font-light text-white/70 tracking-wide">Processando áudio...</span>
             </div>
           ) : isRecording ? (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex h-14 items-center gap-4 rounded-[28px] border border-rose-500/30 bg-[#0c0c0c]/90 px-4 shadow-[0_0_24px_rgba(244,63,94,0.15)] backdrop-blur-[24px]">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex h-14 items-center gap-4 rounded-[28px] border border-rose-500/30 bg-[#0c0c0c] px-4 ">
               <span className="relative flex h-3 w-3 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-500/60" />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-rose-500" />
               </span>
               <span className="text-[16px] font-light tracking-widest text-rose-500">{formatRecordingTime(recordingSeconds)}</span>
               <span className="flex-1 text-[11px] font-bold uppercase tracking-widest text-rose-400/50">Gravando...</span>
               <Button type="button" variant="ghost" size="icon" className="h-10 w-10 shrink-0 rounded-full text-white/50 hover:bg-white/5 hover:text-white" onClick={() => finishRecording(false)}>
                 <Trash2 className="h-4 w-4" />
               </Button>
-              <Button type="button" size="icon" className="h-10 w-10 shrink-0 rounded-full bg-primary text-white shadow-[0_0_15px_rgba(219,13,113,0.5)] hover:bg-primary/90" onClick={() => finishRecording(true)}>
+              <Button type="button" size="icon" className="h-10 w-10 shrink-0 rounded-full bg-primary text-white hover:bg-primary/90" onClick={() => finishRecording(true)}>
                 <Send className="h-4 w-4" />
               </Button>
             </motion.div>
           ) : (
-          <form className="relative flex flex-wrap gap-2 rounded-[28px] border border-white/10 bg-[#0a0a0a]/80 p-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-[24px] xl:flex-nowrap" onSubmit={handleSubmit}>
+          <form className="relative flex flex-wrap gap-2 rounded-[28px] border border-border bg-[#0a0a0a] p-2  xl:flex-nowrap" onSubmit={handleSubmit}>
             <input
               ref={fileInputRef} type="file" className="hidden" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
               onChange={async (event) => {
@@ -227,7 +227,7 @@ function MessageComposerComponent({
               </Button>
               <AnimatePresence>
                 {emojiPickerOpen && (
-                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute bottom-14 left-0 z-20 w-[240px] rounded-[24px] border border-white/10 bg-[#0c0c0c]/95 p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-[24px]">
+                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute bottom-14 left-0 z-20 w-[240px] rounded-[24px] border border-border bg-[#0c0c0c] p-3 ">
                     <div className="grid grid-cols-4 gap-2">
                       {QUICK_EMOJIS.map((emoji) => (
                         <button key={emoji} type="button" className="flex h-10 w-10 items-center justify-center rounded-full text-[20px] transition-colors hover:bg-white/10" onMouseDown={(e) => e.preventDefault()} onClick={() => insertEmoji(emoji)}>{emoji}</button>
@@ -255,7 +255,7 @@ function MessageComposerComponent({
                />
             </div>
 
-            <Button type="submit" size="icon" className={cn("h-11 w-11 shrink-0 rounded-full transition-all duration-300", draft.trim() ? "bg-primary text-white shadow-[0_0_15px_rgba(219,13,113,0.5)] hover:bg-primary/90 hover:scale-105" : "bg-white/10 text-white/30")} disabled={!canSendMessages || !draft.trim()}>
+            <Button type="submit" size="icon" className={cn("h-11 w-11 shrink-0 rounded-full transition-colors duration-300", draft.trim() ? "bg-primary text-white hover:bg-primary/90 hover:scale-105" : "bg-white/10 text-white/30")} disabled={!canSendMessages || !draft.trim()}>
               {sending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4 ml-0.5" />}
             </Button>
           </form>

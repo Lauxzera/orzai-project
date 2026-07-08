@@ -43,26 +43,25 @@
 }
 
 @keyframes fade-notification {
-  0% { opacity: 0; transform: translateY(12px); }
-  12% { opacity: 1; transform: translateY(0); }
-  82% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(6px); }
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
 }
-
 :root, :root.dark {
-  --background: #0A0F1E;
+  --background: #09090B;
   --foreground: #F0F4FF;
   
-  --card: #1C2539;
+  --card: #18181B;
   --card-foreground: #F0F4FF;
   
-  --popover: #0A0F1E;
+  --popover: #09090B;
   --popover-foreground: #F0F4FF;
   
   --primary: #2D7FEA;
   --primary-foreground: #FFFFFF;
   
-  --secondary: #1C2539;
+  --secondary: #18181B;
   --secondary-foreground: #F0F4FF;
   
   --muted: rgba(255, 255, 255, 0.03);
@@ -86,19 +85,11 @@
   
   --metric-a: rgba(255, 255, 255, 0.03);
   --metric-b: rgba(255, 255, 255, 0.06);
-  
-  --shadow-soft: 0 0 20px -5px rgba(0, 0, 0, 0.5);
-  --shadow-floating: 0 0 40px -10px rgba(45, 127, 234, 0.2);
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground font-light tracking-tight selection:bg-primary/30;
-  }
-  
-  /* Adiciona desfoque automático aos painéis glassmórficos */
-  .bg-card, .bg-popover, .bg-secondary, .bg-muted {
-    @apply backdrop-blur-xl;
   }
   
   /* Suaviza as bordas globais */
@@ -148,28 +139,6 @@ textarea {
 
 button {
   cursor: pointer;
-}
-
-.glass-sidebar {
-  background: var(--background);
-  border-color: var(--border);
-  box-shadow: none;
-}
-
-:root.dark .glass-sidebar {
-  background: color-mix(in oklab, var(--background) 86%, #000000);
-  border-color: color-mix(in oklab, var(--border) 88%, transparent);
-  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.02);
-}
-
-.soft-panel {
-  background: var(--card);
-  box-shadow: var(--shadow-soft);
-}
-
-:root.dark .soft-panel {
-  background: linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, white 8%), var(--card));
-  box-shadow: var(--shadow-soft);
 }
 
 .kanban-scroll {
@@ -367,23 +336,4 @@ html.dark .belart-home .bg-white\/55 {
 
 html.dark .belart-home .text-foreground\/80 {
   color: color-mix(in oklab, var(--foreground) 82%, transparent) !important;
-}
-
-@keyframes button-wave {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-.animate-button-wave {
-  animation: button-wave 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.animate-button-wave-delayed {
-  animation: button-wave 2s cubic-bezier(0, 0, 0.2, 1) infinite 1s;
 }

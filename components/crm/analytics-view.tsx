@@ -204,7 +204,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
         </div>
       </div>
 
-      <Card className="rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+      <Card className="rounded-2xl border border-border bg-card">
         <CardContent className="grid gap-3 p-4">
           <div className="grid gap-3 xl:grid-cols-4">
             <FilterSelect value={state.courseFilter} onValueChange={actions.setCourseFilter} options={state.filterOptions.courses} placeholder="Todos os cursos" />
@@ -239,7 +239,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
       </Card>
 
       {state.loadingMessages ? (
-        <div className="grid min-h-[220px] place-items-center rounded-xl border bg-white/[0.015] backdrop-blur-md">
+        <div className="grid min-h-[220px] place-items-center rounded-xl border bg-white/[0.015] ">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <LoaderCircle className="h-4 w-4 animate-spin" />
             Carregando dados de conversas para analytics...
@@ -253,7 +253,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
         ))}
       </div>
 
-      <Card className="rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+      <Card className="rounded-2xl border border-border bg-card">
         <CardHeader>
           <CardTitle>Comparativo do periodo</CardTitle>
           <CardDescription>Leitura lado a lado do recorte atual contra o periodo anterior, para entender mudancas de ritmo sem sair do topo do painel.</CardDescription>
@@ -263,7 +263,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             const positive = item.delta > 0;
             const effectiveGood = item.trendGood === "up" ? positive : item.trendGood === "down" ? item.delta < 0 : false;
             return (
-              <div key={item.key} className="rounded-xl border bg-white/[0.015] backdrop-blur-md p-4">
+              <div key={item.key} className="rounded-xl border bg-white/[0.015]  p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-medium text-foreground">{item.label}</p>
@@ -285,7 +285,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
       </Card>
 
       {state.analytics.executiveAlerts.length ? (
-        <Card className="rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+        <Card className="rounded-2xl border border-border bg-card">
           <CardHeader>
             <CardTitle>Alertas executivos</CardTitle>
             <CardDescription>Os sinais mais importantes do recorte atual para ação rápida da gestão.</CardDescription>
@@ -299,7 +299,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                     ? "rounded-xl border border-destructive/30 bg-destructive/10 p-4"
                     : alert.severity === "warning"
                       ? "rounded-xl border border-amber-500/30 bg-amber-500/10 p-4"
-                      : "rounded-xl border bg-white/[0.015] backdrop-blur-md p-4"
+                      : "rounded-xl border bg-white/[0.015]  p-4"
                 }
               >
                 <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
         </Card>
       ) : null}
 
-      <div className="flex flex-col gap-3 rounded-full border border-white/5 bg-white/[0.015] backdrop-blur-md p-2 px-4 lg:flex-row lg:items-center lg:justify-between shadow-[0_0_30px_-10px_rgba(0,0,0,0.5)]">
+      <div className="flex flex-col gap-3 rounded-full border border-border bg-card p-2 px-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant={workspaceView === "overview" ? "default" : "ghost"} className={workspaceView === "overview" ? "rounded-full shadow-none bg-primary" : "rounded-full text-white/50 hover:bg-white/5 hover:text-white"} size="sm" onClick={() => setWorkspaceView("overview")}>
             Visão geral
@@ -346,7 +346,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
           {workspaceView === "overview" ? (
         <div className="grid gap-4 xl:grid-cols-[1.55fr_0.95fr]">
           <div className="space-y-4">
-            <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+            <Card className="overflow-hidden rounded-2xl border border-border bg-card">
               <CardHeader className="space-y-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
@@ -397,7 +397,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
               </CardContent>
             </Card>
 
-            <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+            <Card className="overflow-hidden rounded-2xl border border-border bg-card">
               <CardHeader className="space-y-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
@@ -451,7 +451,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                   )}
                 </ChartContainer>
 
-                <Card className="border bg-white/[0.015] backdrop-blur-md shadow-none">
+                <Card className="border bg-white/[0.015]  shadow-none">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm">Origem em foco</CardTitle>
                     <CardDescription>Detalhamento da origem selecionada no gráfico.</CardDescription>
@@ -485,7 +485,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
           <div className="space-y-4">
 
 
-            <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+            <Card className="overflow-hidden rounded-2xl border border-border bg-card">
               <CardHeader>
                 <CardTitle>Saúde do pipeline</CardTitle>
                 <CardDescription>Leituras rápidas para entender de onde os leads vêm e em quais estágios se concentram.</CardDescription>
@@ -501,7 +501,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
 
       {workspaceView === "pipeline" ? (
         <div className="grid gap-4 xl:grid-cols-[1.35fr_0.95fr]">
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader className="space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-1">
@@ -544,7 +544,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader>
               <CardTitle>Leitura das etapas</CardTitle>
               <CardDescription>Uma visão resumida da participação e do tempo em cada estágio do pipeline.</CardDescription>
@@ -552,7 +552,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             <CardContent className="space-y-3">
               {state.analytics.funnelConversions.length ? (
                 state.analytics.funnelConversions.map((item) => (
-                  <div key={item.status} className="rounded-xl border bg-white/[0.015] backdrop-blur-md p-4">
+                  <div key={item.status} className="rounded-xl border bg-white/[0.015]  p-4">
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <p className="text-sm font-semibold">{item.status}</p>
@@ -577,7 +577,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
 
       {workspaceView === "team" ? (
         <div className="grid gap-4 xl:grid-cols-[1.25fr_0.95fr]">
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader className="space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-1">
@@ -616,7 +616,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                 </BarChart>
               </ChartContainer>
 
-              <Card className="border bg-white/[0.015] backdrop-blur-md shadow-none">
+              <Card className="border bg-white/[0.015]  shadow-none">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm">Responsável em foco</CardTitle>
                   <CardDescription>Detalhamento do responsável selecionado no gráfico.</CardDescription>
@@ -645,7 +645,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader className="space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-1">
@@ -684,7 +684,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                 </BarChart>
               </ChartContainer>
 
-              <Card className="border bg-white/[0.015] backdrop-blur-md shadow-none">
+              <Card className="border bg-white/[0.015]  shadow-none">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm">Variacao em foco</CardTitle>
                   <CardDescription>Resumo do responsavel selecionado no grafico de tendencia.</CardDescription>
@@ -719,7 +719,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader>
               <CardTitle>Maior atraso de follow-up</CardTitle>
               <CardDescription>Onde a cadência do time está demorando mais para sair do papel.</CardDescription>
@@ -738,7 +738,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                         onOpenLead(item.lead.id);
                       }
                     }}
-                    className="rounded-xl border bg-white/[0.015] backdrop-blur-md p-4 transition-colors hover:bg-white/[0.015] backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="rounded-xl border bg-white/[0.015]  p-4 transition-colors hover:bg-white/[0.015]  focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
@@ -765,7 +765,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
 
       {workspaceView === "risks" ? (
         <div className="grid gap-4 xl:grid-cols-2">
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader>
               <CardTitle>Conversas sem resposta</CardTitle>
               <CardDescription>Últimas conversas cujo lead falou por último e ainda aguardam retorno.</CardDescription>
@@ -787,7 +787,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                           onOpenLead(item.lead.id);
                         }
                       }}
-                      className="rounded-xl border bg-white/[0.015] backdrop-blur-md p-4 transition-colors hover:bg-white/[0.015] backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="rounded-xl border bg-white/[0.015]  p-4 transition-colors hover:bg-white/[0.015]  focus:outline-none focus:ring-2 focus:ring-ring"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
@@ -820,7 +820,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.015] backdrop-blur-md shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)]">
+          <Card className="overflow-hidden rounded-2xl border border-border bg-card">
             <CardHeader>
               <CardTitle>Leads estagnados</CardTitle>
               <CardDescription>Casos sem movimentação recente ou com follow-up vencido, para priorização da carteira.</CardDescription>
@@ -839,7 +839,7 @@ export function AnalyticsView({ leads, tasks, onOpenConversation, onOpenLead }: 
                         onOpenLead(item.lead.id);
                       }
                     }}
-                    className="rounded-xl border bg-white/[0.015] backdrop-blur-md p-4 transition-colors hover:bg-white/[0.015] backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="rounded-xl border bg-white/[0.015]  p-4 transition-colors hover:bg-white/[0.015]  focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">

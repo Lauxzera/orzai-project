@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { SmoothInput as Input } from "@/components/ui/smooth-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -146,7 +146,7 @@ function InfoMetric({
   return (
     <div
       className={cn(
-        "rounded-[20px] border px-4 py-3 shadow-[0_4px_16px_rgba(0,0,0,0.2)] backdrop-blur",
+        "rounded-[20px] border px-4 py-3 ",
         tone === "attention" ? "border-amber-500/30 bg-amber-500/10" : tone === "success" ? "border-emerald-500/30 bg-emerald-500/10" : "border-white/10 bg-white/5"
       )}
     >
@@ -258,10 +258,10 @@ export function LeadSidePanel({
         "min-h-0 shrink-0 border-l border-white/5 bg-[#080808]",
         presentation === "inline"
           ? "hidden w-[360px] xl:flex xl:flex-col 2xl:w-[380px]"
-          : "fixed top-20 bottom-4 right-4 z-40 flex w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0a0a]/95 shadow-[0_0_40px_rgba(0,0,0,0.8)] backdrop-blur-[24px]"
+          : "fixed top-20 bottom-4 right-4 z-40 flex w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[32px] border border-border bg-[#0a0a0a] "
       )}
     >
-      <div className="border-b border-white/5 bg-[#0c0c0c]/80 px-5 py-5 backdrop-blur-[24px]">
+      <div className="border-b border-white/5 bg-[#0c0c0c] px-5 py-5 ">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Mesa de atendimento</p>
@@ -282,8 +282,8 @@ export function LeadSidePanel({
         <Tabs defaultValue="overview" className="flex min-h-0 flex-1 flex-col overflow-hidden">
           <div className="border-b border-white/5 bg-[#0a0a0a]/50 px-4 py-3">
             <TabsList className="grid h-12 w-full grid-cols-3 bg-white/5 rounded-[16px] p-1 border border-white/10 shadow-inner">
-              <TabsTrigger value="overview" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(219,13,113,0.4)]">Painel</TabsTrigger>
-              <TabsTrigger value="lead" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(219,13,113,0.4)]">Lead</TabsTrigger>
+              <TabsTrigger value="overview" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white">Painel</TabsTrigger>
+              <TabsTrigger value="lead" className="rounded-[12px] text-[11px] font-bold uppercase tracking-widest text-white/50 data-[state=active]:bg-primary data-[state=active]:text-white">Lead</TabsTrigger>
 
             </TabsList>
           </div>
@@ -298,7 +298,7 @@ export function LeadSidePanel({
               </div>
 
               {/* Funil da Conversa (Radio Cards) */}
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              <div className="rounded-[24px] border border-border bg-card p-5">
                 <div className="mb-4">
                   <p className="text-[14px] font-light text-white tracking-wide">Funil Comercial</p>
                   <p className="text-[11px] font-bold uppercase tracking-widest text-white/30">Atualize a etapa atual</p>
@@ -310,8 +310,8 @@ export function LeadSidePanel({
                       <button
                         key={status} type="button" disabled={!canEdit} onClick={() => onUpdateField("status_funil", status)}
                         className={cn(
-                          "flex items-center justify-between rounded-[16px] border px-4 py-3 text-left transition-all duration-300",
-                          active ? "border-primary/50 bg-primary/10 shadow-[0_0_15px_rgba(219,13,113,0.2)] text-white" : "border-white/5 bg-white/5 hover:bg-white/10 text-white/70",
+                          "flex items-center justify-between rounded-[16px] border px-4 py-3 text-left transition-colors duration-300",
+                          active ? "border-primary/50 bg-primary/10 text-white" : "border-border bg-white/5 hover:bg-white/10 text-white/70",
                           !canEdit && "cursor-default opacity-50"
                         )}
                       >
@@ -324,7 +324,7 @@ export function LeadSidePanel({
               </div>
 
               {/* Classificação Operacional */}
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              <div className="rounded-[24px] border border-border bg-card p-5">
                  <div className="mb-4">
                    <p className="text-[14px] font-light text-white tracking-wide">Classificação da Conversa</p>
                  </div>
@@ -348,7 +348,7 @@ export function LeadSidePanel({
                      <Label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Etiquetas (Tags)</Label>
                      <div className="flex flex-wrap gap-2 mb-2">
                        {(conversation.workspace?.tags ?? []).length ? conversation.workspace?.tags.map((tagItem) => (
-                         <button key={tagItem} type="button" disabled={!canEdit || workspaceSaving} onClick={() => void handleRemoveTag(tagItem)} className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary shadow-[0_0_10px_rgba(219,13,113,0.15)] hover:bg-primary/20">
+                         <button key={tagItem} type="button" disabled={!canEdit || workspaceSaving} onClick={() => void handleRemoveTag(tagItem)} className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/20">
                            <Tag className="h-3 w-3" /> {tagItem} {canEdit ? <X className="h-3 w-3 opacity-60" /> : null}
                          </button>
                        )) : <p className="text-[12px] font-light text-white/30">Nenhuma tag.</p>}
@@ -376,7 +376,7 @@ export function LeadSidePanel({
               
               {/* Histórico e Próximo Passo */}
               {canEdit ? (
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                <div className="rounded-[24px] border border-border bg-card p-5">
                   <div className="mb-4">
                      <p className="text-[14px] font-light text-white tracking-wide">Próximo Passo (Tarefa)</p>
                   </div>
@@ -386,21 +386,21 @@ export function LeadSidePanel({
                      </LeadField>
                      <div className="grid gap-4 md:grid-cols-2">
                        <LeadField label="Responsável"><LeadSelect value={taskDraft.owner} onValueChange={(v) => setTaskDraft(c => ({...c, owner: v}))} options={ownerOptions} /></LeadField>
-                       <LeadField label="Quando?"><Input type="date" value={taskDraft.dueDate} onChange={(e) => setTaskDraft(c => ({...c, dueDate: e.target.value}))} className="border-0 bg-transparent text-[13px] text-white focus-visible:ring-0 px-3 shadow-none h-10 block w-full appearance-none" /></LeadField>
+                       <LeadField label="Quando?"><Input type="date" value={taskDraft.dueDate} onChange={(e) => setTaskDraft(c => ({...c, dueDate: e.target.value}))} className="border-border bg-background text-[13px] h-10" /></LeadField>
                      </div>
                      <div className="flex justify-end pt-2">
-                       <Button type="button" className="h-10 rounded-full bg-primary px-6 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(219,13,113,0.4)] hover:bg-primary/90" onClick={handleCreateTask} disabled={taskSaving || !taskDraft.title.trim() || !taskDraft.dueDate}>
+                        <Button type="button" className="h-10 rounded-full bg-primary px-6 text-[11px] font-bold uppercase tracking-widest text-white hover:bg-primary/90" onClick={handleCreateTask} disabled={taskSaving || !taskDraft.title.trim() || !taskDraft.dueDate}>
                          {taskSaving ? <LoaderCircle className="h-4 w-4 animate-spin mr-2" /> : null} Criar Tarefa
                        </Button>
                      </div>
-                     {taskFeedback ? <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 text-right">{taskFeedback}</p> : null}
+                     {taskFeedback ? <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 text-right">{taskFeedback}</p> : null}
                   </div>
                 </div>
               ) : null}
             </TabsContent>
 
             <TabsContent value="lead" className="mt-0 space-y-6">
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.02] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              <div className="rounded-[24px] border border-border bg-card p-5">
                 <div className="mb-5 flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20"><FilePenLine className="h-5 w-5" /></span>
                   <div>
@@ -436,12 +436,12 @@ export function LeadSidePanel({
               </div>
               
               {canEdit && hasLeadDraftChanges ? (
-                <div className="sticky bottom-4 z-10 rounded-[24px] border border-white/10 bg-[#0c0c0c]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-[24px]">
+                <div className="sticky bottom-4 z-10 rounded-[24px] border border-border bg-[#0c0c0c] p-4 ">
                   <div className="flex flex-col gap-3">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-primary text-center">Alterações pendentes detectadas</p>
                     <div className="flex gap-3">
                       <Button type="button" variant="outline" className="flex-1 h-10 rounded-full border-white/10 bg-white/5 text-[11px] font-bold uppercase tracking-widest text-white/50 hover:bg-white/10 hover:text-white" onClick={onReset} disabled={leadSaving}>Descartar</Button>
-                      <Button type="button" className="flex-1 h-10 rounded-full bg-primary text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(219,13,113,0.4)] hover:bg-primary/90" onClick={onSave} disabled={leadSaving}>{leadSaving ? <LoaderCircle className="h-4 w-4 animate-spin mr-2" /> : null} Salvar Tudo</Button>
+                      <Button type="button" className="flex-1 h-10 rounded-full bg-primary text-[11px] font-bold uppercase tracking-widest text-white hover:bg-primary/90" onClick={onSave} disabled={leadSaving}>{leadSaving ? <LoaderCircle className="h-4 w-4 animate-spin mr-2" /> : null} Salvar Tudo</Button>
                     </div>
                   </div>
                 </div>

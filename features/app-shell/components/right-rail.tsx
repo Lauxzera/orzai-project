@@ -41,7 +41,7 @@ const getNotificationStyle = (kind: NotificationItem["kind"]) => {
         colorClass: "text-red-500",
         bgClass: "bg-red-500/10",
         borderClass: "border-red-500/20",
-        glowClass: "shadow-[0_0_20px_rgba(239,68,68,0.2)]",
+        glowClass: "",
       };
     case "pending-task":
       return {
@@ -49,7 +49,7 @@ const getNotificationStyle = (kind: NotificationItem["kind"]) => {
         colorClass: "text-amber-500",
         bgClass: "bg-amber-500/10",
         borderClass: "border-amber-500/20",
-        glowClass: "shadow-[0_0_20px_rgba(245,158,11,0.2)]",
+        glowClass: "",
       };
     case "new-lead":
       return {
@@ -57,7 +57,7 @@ const getNotificationStyle = (kind: NotificationItem["kind"]) => {
         colorClass: "text-emerald-500",
         bgClass: "bg-emerald-500/10",
         borderClass: "border-emerald-500/20",
-        glowClass: "shadow-[0_0_20px_rgba(16,185,129,0.2)]",
+        glowClass: "",
       };
     default:
       return {
@@ -65,19 +65,19 @@ const getNotificationStyle = (kind: NotificationItem["kind"]) => {
         colorClass: "text-primary",
         bgClass: "bg-primary/10",
         borderClass: "border-primary/20",
-        glowClass: "shadow-[0_0_20px_rgba(219,13,113,0.2)]",
+        glowClass: "",
       };
   }
 };
 
 export function RightRail({ notifications, activities, contacts, onOpenLead, onMarkRead, onClose }: Props) {
   return (
-    <aside className="fixed right-4 top-4 bottom-4 z-50 hidden w-[min(380px,calc(100vw-2rem))] overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015] shadow-[0_0_50px_-10px_rgba(0,0,0,0.8)] backdrop-blur-[40px] xl:block">
+    <aside className="fixed right-4 top-4 bottom-4 z-50 hidden w-[min(380px,calc(100vw-2rem))] overflow-hidden rounded-[24px] border border-border bg-card  xl:block">
       <div className="flex h-full flex-col">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/5 px-6 py-5 bg-black/20">
           <div className="flex items-center gap-3">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/20 text-primary shadow-[0_0_15px_-5px_rgba(219,13,113,0.3)]">
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/20 text-primary">
               <Zap className="h-4 w-4" />
             </div>
             <div>
@@ -102,7 +102,7 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
             <div className="flex items-center justify-between gap-3 mb-6">
               <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/50">Notificações</h2>
               {notifications.some((item) => !item.read) ? (
-                <span className="rounded-full bg-primary shadow-[0_0_15px_rgba(219,13,113,0.4)] px-2.5 py-0.5 text-[9px] font-bold tracking-widest uppercase text-white">
+                <span className="rounded-full bg-primary px-2.5 py-0.5 text-[9px] font-bold tracking-widest uppercase text-white">
                   {notifications.filter((item) => !item.read).length} Novas
                 </span>
               ) : null}
@@ -122,7 +122,7 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                        className={`group relative overflow-hidden rounded-[16px] border transition-all duration-300 ${
+                        className={`group relative overflow-hidden rounded-[16px] border transition-colors duration-300 ${
                           isRead 
                             ? "border-white/5 bg-white/[0.01] opacity-50 hover:opacity-100" 
                             : `${style.borderClass} ${style.bgClass} ${style.glowClass}`
@@ -147,7 +147,7 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
                                   </p>
                                 </div>
                                 {!isRead ? (
-                                  <span className={`mt-1.5 inline-flex h-2 w-2 shrink-0 rounded-full shadow-[0_0_10px_currentColor] ${style.colorClass} bg-current`} />
+                                  <span className={`mt-1.5 inline-flex h-2 w-2 shrink-0 rounded-full ${style.colorClass} bg-current`} />
                                 ) : null}
                               </div>
                               
@@ -156,7 +156,7 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
                                   <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className={`h-7 rounded-full border-white/10 bg-white/[0.02] px-3 text-[10px] font-bold uppercase tracking-wider text-white/70 transition-colors hover:bg-white/10 hover:text-white`}
+                                    className={`h-7 rounded-full border-border bg-card px-3 text-[10px] font-bold uppercase tracking-wider text-white/70 transition-colors hover:bg-white/10 hover:text-white`}
                                     onClick={() => onOpenLead(notification.leadId!)}
                                   >
                                     Visualizar Lead
@@ -185,7 +185,7 @@ export function RightRail({ notifications, activities, contacts, onOpenLead, onM
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
                     className="flex flex-col items-center justify-center py-12 text-center"
                   >
-                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-full bg-white/[0.02] border border-white/5 text-white/20">
+                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-full bg-card border border-border text-white/20">
                       <CheckCheck className="h-5 w-5" />
                     </div>
                     <p className="text-[13px] font-light text-white/40">Nenhuma notificação nova.</p>

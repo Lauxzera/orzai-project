@@ -80,7 +80,7 @@ export function LeadsWorkspace({
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-2 bg-white/[0.015] border border-white/5 p-1 rounded-full backdrop-blur-md">
+          <div className="flex items-center gap-2 bg-card border border-border p-1 rounded-full ">
             {[
               { id: "kanban", label: "Funil", icon: PanelLeft, count: activePipelineCount, disabled: !allowKanban },
               { id: "list", label: "Lista", icon: LayoutList, count: visibleLeads.length, disabled: false }
@@ -91,9 +91,9 @@ export function LeadsWorkspace({
                   key={m.id}
                   disabled={m.disabled}
                   onClick={() => setMode(m.id as "list" | "kanban")}
-                  className={`relative flex items-center gap-2 px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 disabled:opacity-30 ${isActive ? "text-primary drop-shadow-[0_0_5px_rgba(219,13,113,0.8)]" : "text-white/40 hover:text-white"}`}
+                  className={`relative flex items-center gap-2 px-6 py-2 text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 disabled:opacity-30 ${isActive ? "text-primary" : "text-white/40 hover:text-white"}`}
                 >
-                  {isActive && <div className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full shadow-[0_0_15px_rgba(219,13,113,0.3)] transition-all duration-300" />}
+                  {isActive && <div className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full transition-colors duration-300" />}
                   <m.icon className="relative z-10 h-4 w-4" />
                   <span className="relative z-10">{m.label}</span>
                   <span className={`relative z-10 ml-2 rounded-full px-2 py-0.5 text-[10px] ${isActive ? 'bg-primary/30 text-white' : 'bg-white/10 text-white/50'}`}>
@@ -113,7 +113,7 @@ export function LeadsWorkspace({
         <SummaryMetric icon={CopyCheck} label="Duplicados" value={String(duplicateCount)} tone="danger" />
       </div>
 
-      <div className="relative grid gap-4 rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[12px] p-4 lg:grid-cols-3">
+      <div className="relative grid gap-4 rounded-[24px] border border-border bg-card  p-4 lg:grid-cols-3">
         <FilterSelect
           value={attentionFilter}
           onValueChange={(value) => setAttentionFilter(value as LeadAttentionFilter)}
@@ -128,7 +128,7 @@ export function LeadsWorkspace({
           placeholder="Qualquer integridade"
           optionValues={integrityOptions.map((option) => option.value)}
         />
-        <div className="rounded-[16px] border border-white/5 bg-white/[0.02] px-4 py-2 flex items-center gap-3">
+        <div className="rounded-[16px] border border-border bg-card px-4 py-2 flex items-center gap-3">
            <SlidersHorizontal className="h-4 w-4 text-white/40" />
            <p className="text-[12px] font-light text-white/60">Filtros limitam os leads exibidos abaixo.</p>
         </div>
@@ -179,7 +179,7 @@ function SummaryMetric({
           : "text-white";
 
   return (
-    <div className="group relative overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.015] backdrop-blur-[24px] transition-all duration-300 hover:bg-white/[0.03] p-6">
+    <div className="group relative overflow-hidden rounded-[24px] border border-border bg-card  transition-colors duration-300 hover:bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">{label}</p>
