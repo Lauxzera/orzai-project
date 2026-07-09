@@ -1,9 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { MessageCircle, BarChart3, GripVertical, Rocket, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { MessageCircle, BarChart3, GripVertical, Rocket, ArrowRight, ShieldCheck, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform, useSpring, Variants } from "framer-motion";
+
+const WHATSAPP_SALES_LINK = "https://wa.me/SEU_NUMERO_AQUI";
 
 type Props = {
   onEnterCrm: () => void;
@@ -91,10 +94,14 @@ export function LandingPage({ onEnterCrm }: Props) {
           <div className="hidden md:flex items-center gap-8 text-[11px] font-semibold tracking-[0.15em] uppercase text-white/50">
             <button onClick={() => scrollTo("proposta")} className="hover:text-white transition-colors duration-300">Proposta</button>
             <button onClick={() => scrollTo("diferenciais")} className="hover:text-white transition-colors duration-300">Plataforma</button>
+            <Link href="/demo" className="hover:text-white transition-colors duration-300">Demonstrações</Link>
           </div>
-          <div>
-            <Button onClick={onEnterCrm} className="rounded px-6 h-10 text-xs font-bold tracking-[0.1em] uppercase transition-transform hover:scale-105 active:scale-95 bg-primary text-primary-foreground shadow-[0_0_20px_-5px_rgba(45,127,234,0.4)] hover:shadow-[0_0_30px_-5px_rgba(45,127,234,0.6)]">
-              Acessar
+          <div className="flex items-center gap-3">
+            <button onClick={onEnterCrm} className="hidden sm:inline text-[11px] font-semibold tracking-[0.1em] uppercase text-white/40 hover:text-white transition-colors">
+              Entrar
+            </button>
+            <Button asChild className="rounded px-6 h-10 text-xs font-bold tracking-[0.1em] uppercase transition-transform hover:scale-105 active:scale-95 bg-primary text-primary-foreground shadow-[0_0_20px_-5px_rgba(45,127,234,0.4)] hover:shadow-[0_0_30px_-5px_rgba(45,127,234,0.6)]">
+              <Link href="/demo">Testar demonstração</Link>
             </Button>
           </div>
         </div>
@@ -114,25 +121,39 @@ export function LandingPage({ onEnterCrm }: Props) {
           >
             <motion.div variants={fadeUp} className="flex items-center gap-2 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Plataforma Exclusiva</span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">CRM com WhatsApp nativo</span>
             </motion.div>
-            
+
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-[90px] font-light tracking-[-0.04em] leading-[0.95] text-white">
-              Gestão comercial, <br className="hidden md:block" />
-              <span className="text-primary italic font-light">redesenhada.</span>
+              Pare de perder lead <br className="hidden md:block" />
+              <span className="text-primary italic font-light">no WhatsApp.</span>
             </motion.h1>
-            
+
             <motion.p variants={fadeUp} className="mt-8 text-lg md:text-xl font-light text-white/60 max-w-2xl leading-[1.6]">
-              A inteligência da Orzai aliada à mais avançada engenharia de software. Fluxos fluídos, disparos seguros e analytics em tempo real.
+              A Orzai centraliza atendimento, funil de vendas e disparos oficiais em um só lugar — pra sua equipe responder mais rápido e nenhum contato se perder na correria.
             </motion.p>
-            
+
             <motion.div variants={fadeUp} className="mt-12 flex flex-col sm:flex-row items-center gap-4">
-              <button onClick={onEnterCrm} className="group relative inline-flex items-center gap-4 rounded-full bg-white px-8 h-14 text-sm font-bold tracking-[0.05em] uppercase text-[#080808] transition-transform hover:scale-105">
+              <Link href="/demo" className="group relative inline-flex items-center gap-4 rounded-full bg-white px-8 h-14 text-sm font-bold tracking-[0.05em] uppercase text-[#080808] transition-transform hover:scale-105">
                 <div className="pointer-events-none absolute inset-0 rounded-full border-2 border-primary animate-button-wave" />
                 <div className="pointer-events-none absolute inset-0 rounded-full border border-primary animate-button-wave-delayed" />
-                <span className="relative z-10">Iniciar sessão</span>
-                <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
+                <PlayCircle className="relative z-10 h-4 w-4" />
+                <span className="relative z-10">Testar demonstração</span>
+              </Link>
+              <a
+                href={WHATSAPP_SALES_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-3 rounded-full border border-white/15 px-8 h-14 text-sm font-bold tracking-[0.05em] uppercase text-white/80 transition-colors hover:text-white hover:border-white/30"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span>Falar com vendas</span>
+              </a>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="mt-8 flex items-center gap-2 text-[11px] text-white/30">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              <span>Dados de leads e conversas tratados conforme a LGPD.</span>
             </motion.div>
           </motion.div>
           
@@ -159,7 +180,7 @@ export function LandingPage({ onEnterCrm }: Props) {
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-500">Nosso Método</span>
             </motion.div>
             <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-light tracking-tight leading-[1.2] text-white max-w-3xl">
-              Nós removemos a fricção do atendimento para que a sua equipe foque apenas no que importa: <strong className="font-normal text-primary">relacionamento e fechamento.</strong>
+              Todo lead que chega pelo WhatsApp cai direto no funil — sem planilha, sem "esqueci de responder", sem depender de um caderno de anotações. <strong className="font-normal text-primary">Sua equipe foca em fechar.</strong>
             </motion.h2>
           </motion.div>
         </section>
@@ -176,28 +197,74 @@ export function LandingPage({ onEnterCrm }: Props) {
             >
               <FeatureCard
                 icon={GripVertical}
-                title="Pipeline Visual"
-                enLabel="01 // KANBAN"
-                description="Controle a jornada inteira. Arraste as oportunidades de estágio em estágio com total visibilidade."
+                title="Nunca mais perca o fio da conversa"
+                enLabel="01 // PIPELINE"
+                description="Veja de relance quem está esperando resposta, quem já negocia e quem já matriculou — e arraste cada lead pra próxima etapa em segundos."
               />
               <FeatureCard
                 icon={MessageCircle}
-                title="Atendimento"
+                title="Todo atendimento em um só lugar"
                 enLabel="02 // INBOX"
-                description="WhatsApp nativo. Todas as mensagens, áudios e interações atreladas diretamente à ficha do lead."
+                description="WhatsApp da equipe direto no CRM: mensagens, áudios e histórico ficam junto da ficha do lead, sem trocar de tela."
               />
               <FeatureCard
                 icon={Rocket}
-                title="Disparos Oficiais"
-                enLabel="03 // BROADCAST"
-                description="Integração Meta Cloud API. Evite bloqueios e escale suas campanhas de forma separada da operação diária."
+                title="Dispare campanhas sem levar bloqueio"
+                enLabel="03 // DISPAROS"
+                description="Integração oficial com a Meta Cloud API, respeitando janela de atendimento e templates aprovados — escale sem colocar o número em risco."
               />
               <FeatureCard
                 icon={BarChart3}
-                title="Analytics"
-                enLabel="04 // INSIGHTS"
-                description="Visão macro e micro. Descubra os gargalos do funil e o tempo de resposta exato da sua equipe."
+                title="Enxergue onde o funil trava"
+                enLabel="04 // ANALYTICS"
+                description="Tempo de resposta por atendente, motivo de leads parados e taxa de conversão real — decisão com dado, não com achismo."
               />
+            </motion.div>
+          </div>
+        </section>
+
+        <ScrollConnector segment="end" />
+
+        {/* Demonstrações */}
+        <section id="demonstracoes" className="py-32 px-6 lg:px-12 relative border-t border-white/5">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeUp} className="flex items-center gap-2 mb-6">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Demonstrações</span>
+              </motion.div>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-light tracking-tight leading-[1.2] text-white max-w-2xl mb-12">
+                Veja o produto rodando antes de conversar com a gente.
+              </motion.h2>
+
+              <motion.div
+                variants={fadeUp}
+                className="group relative flex flex-col md:flex-row items-start md:items-center justify-between gap-8 overflow-hidden rounded-[24px] bg-white/[0.02] border border-white/5 p-8 md:p-10 transition-all duration-500 hover:bg-white/[0.04] hover:border-primary/30"
+              >
+                <div className="min-w-0">
+                  <span className="text-[10px] font-bold tracking-[0.2em] text-white/30">01 // PRODUTO</span>
+                  <h3 className="mt-3 text-2xl font-light tracking-tight text-white">Base CRM</h3>
+                  <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/50">
+                    O CRM completo de atendimento via WhatsApp: funil de vendas, inbox unificado e analytics.
+                    Explore uma versão com dados fictícios — sem precisar de login, sem compromisso.
+                  </p>
+                </div>
+                <Link
+                  href="/demo"
+                  className="group/btn relative flex-none inline-flex items-center gap-3 rounded-full bg-primary px-7 h-14 text-sm font-bold tracking-[0.05em] uppercase text-white transition-transform hover:scale-105"
+                >
+                  <PlayCircle className="h-4 w-4" />
+                  <span>Abrir demonstração</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              <motion.p variants={fadeUp} className="mt-6 text-xs text-white/25">
+                Mais projetos da Orzai em breve nesta página.
+              </motion.p>
             </motion.div>
           </div>
         </section>
@@ -211,19 +278,32 @@ export function LandingPage({ onEnterCrm }: Props) {
             variants={staggerContainer}
             className="max-w-3xl mx-auto flex flex-col items-center"
           >
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-6xl font-light tracking-tighter mb-10 text-white">
-              Pronto para evoluir?
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-6xl font-light tracking-tighter mb-4 text-white">
+              Pronto para parar de perder lead?
             </motion.h2>
-            <motion.button 
-              variants={fadeUp}
-              onClick={onEnterCrm} 
-              className="group relative flex h-16 items-center gap-4 rounded-full bg-primary px-10 text-sm font-bold tracking-[0.1em] uppercase text-white shadow-[0_0_40px_-10px_rgba(45,127,234,0.5)] transition hover:scale-105"
-            >
-              <div className="pointer-events-none absolute inset-0 rounded-full border-2 border-primary animate-button-wave" />
-              <div className="pointer-events-none absolute inset-0 rounded-full border border-primary animate-button-wave-delayed" />
-              <span className="relative z-10">Acessar a Plataforma</span>
-              <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </motion.button>
+            <motion.p variants={fadeUp} className="text-white/50 font-light mb-10 max-w-lg">
+              Teste a demonstração agora ou fale com a gente pra ver o que a Orzai resolve pro seu negócio.
+            </motion.p>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-4">
+              <Link
+                href="/demo"
+                className="group relative flex h-16 items-center gap-4 rounded-full bg-primary px-10 text-sm font-bold tracking-[0.1em] uppercase text-white shadow-[0_0_40px_-10px_rgba(45,127,234,0.5)] transition hover:scale-105"
+              >
+                <div className="pointer-events-none absolute inset-0 rounded-full border-2 border-primary animate-button-wave" />
+                <div className="pointer-events-none absolute inset-0 rounded-full border border-primary animate-button-wave-delayed" />
+                <span className="relative z-10">Testar demonstração</span>
+                <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href={WHATSAPP_SALES_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-16 items-center gap-3 rounded-full border border-white/15 px-10 text-sm font-bold tracking-[0.1em] uppercase text-white/80 transition-colors hover:text-white hover:border-white/30"
+              >
+                <MessageCircle className="h-5 w-5" />
+                <span>Falar com vendas</span>
+              </a>
+            </motion.div>
           </motion.div>
         </section>
       </main>
@@ -235,9 +315,15 @@ export function LandingPage({ onEnterCrm }: Props) {
             <OrzaiLogo className="h-10 w-10 text-primary" />
             <span className="font-bold tracking-tight text-xl text-white/90">Orzai</span>
           </div>
-          <p className="text-[11px] uppercase tracking-[0.1em] text-white/30">
-            © {new Date().getFullYear()} CRM Proprietário. Todos os direitos reservados.
-          </p>
+          <div className="flex flex-col items-center md:items-end gap-2">
+            <p className="text-[11px] uppercase tracking-[0.1em] text-white/30">
+              © {new Date().getFullYear()} Orzai. Todos os direitos reservados.
+            </p>
+            <p className="flex items-center gap-1.5 text-[11px] text-white/25">
+              <ShieldCheck className="h-3 w-3" />
+              Dados tratados conforme a LGPD.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
