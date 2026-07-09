@@ -161,7 +161,7 @@ export default function DemoPage() {
         </div>
 
         {tab === "dashboard" ? (
-          <Dashboard {...dashboardProps} />
+          <Dashboard {...dashboardProps} showTodayAppointments={false} />
         ) : (
           <Kanban leads={leads} onMove={moveLead} renderLeadCard={(lead) => <DemoLeadCard lead={lead} />} />
         )}

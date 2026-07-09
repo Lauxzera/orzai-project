@@ -14,6 +14,12 @@ import {
   type Lead,
   type Task,
 } from "@/lib/crm";
+import {
+  bookAppointmentTool,
+  checkAvailabilityTool,
+  executeBookAppointment,
+  executeCheckAvailability,
+} from "@/lib/server/ai/tools/calendar";
 
 // ---------------------------------------------------------------------------
 // Proposed action type — returned to frontend for user confirmation (Level 3)
@@ -236,7 +242,7 @@ export const CRM_TOOLS = [
           },
           novo_status: {
             type: "string",
-            description: "Para changeLeadStatus: novo status do funil. Ex: 'Aguardando Retorno', 'Negociacao / Matricula'.",
+            description: "Para changeLeadStatus: novo status do funil. Ex: 'Aguardando Retorno', 'Negociação'.",
           },
           tarefa_titulo: {
             type: "string",
@@ -263,6 +269,9 @@ export const CRM_TOOLS = [
       },
     },
   },
+  // --- Agendamento Inteligente ---
+  checkAvailabilityTool,
+  bookAppointmentTool,
 ] as const;
 
 // ---------------------------------------------------------------------------
@@ -276,7 +285,9 @@ export type ToolName =
   | "propor_acao"
   | "estatisticas_crm"
   | "leads_prioritarios"
-  | "rascunhar_mensagem";
+  | "rascunhar_mensagem"
+  | "checkAvailability"
+  | "bookAppointment";
 
 export type ToolCall = {
   id: string;
@@ -733,12 +744,12 @@ function executePropor(
 // Main dispatcher
 // ---------------------------------------------------------------------------
 
-export function executeTool(
+export async function executeTool(
   name: string,
   args: Record<string, unknown>,
   crmState: CrmState,
   collectedActions?: ProposedAction[],
-): string {
+): Promise<string> {
   try {
     switch (name as ToolName) {
       case "buscar_leads":
@@ -759,6 +770,14 @@ export function executeTool(
           crmState,
           collectedActions ?? [],
         );
+      case "checkAvailability": {
+        const result = await executeCheckAvailability(args as Parameters<typeof executeCheckAvailability>[0]);
+        return JSON.stringify(result);
+      }
+      case "bookAppointment": {
+        const result = await executeBookAppointment(args as Parameters<typeof executeBookAppointment>[0]);
+        return JSON.stringify(result);
+      }
       default:
         return `Ferramenta "${name}" nao reconhecida.`;
     }

@@ -6,12 +6,9 @@ import { createLogger } from "@/lib/server/logger";
 
 const logger = createLogger("reengagement");
 
-export async function scheduleFollowUp(leadId: string, departmentId: string) {
+export async function scheduleFollowUp(leadId: string, departmentId: string, scheduledFor: Date = addDays(new Date(), 1)) {
   const prisma = getPrismaClient();
-  
-  // Schedule for 24h from now
-  const scheduledFor = addDays(new Date(), 1);
-  
+
   try {
     const followUp = await prisma.scheduledFollowUp.create({
       data: {

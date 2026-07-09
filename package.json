@@ -22,6 +22,8 @@
     "db:apply:coexistence": "node ./scripts/apply-coexistence-schema.js",
     "db:apply:predictive-score": "node ./scripts/apply-predictive-score-schema.js",
     "db:apply:funnel-simplification": "node ./scripts/apply-funnel-status-simplification.js",
+    "db:apply:appointment": "node ./scripts/apply-appointment-schema.js",
+    "db:apply:followup": "node ./scripts/apply-followup-schema.js",
     "db:studio": "node ./node_modules/prisma/build/index.js studio"
   },
   "dependencies": {

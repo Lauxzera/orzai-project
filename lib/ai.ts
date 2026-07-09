@@ -240,7 +240,7 @@ export async function generateAssistantReplyWithOpenRouter(
         let args: Record<string, unknown> = {};
         try { args = JSON.parse(tc.function?.arguments || "{}"); } catch { args = {}; }
         // Pass collectedActions so propor_acao can store proposals
-        const result = executeTool(tc.function?.name || "", args, crmState, collectedActions);
+        const result = await executeTool(tc.function?.name || "", args, crmState, collectedActions);
         loopMessages.push({
           role: "tool",
           tool_call_id: tc.id,
@@ -568,7 +568,8 @@ COMO VOCE DEVE SE COMPORTAR:
 7. Organize respostas com listas quando houver multiplos itens, mas use texto corrido quando a conversa pedir fluidez.
 8. Nunca invente dados. Se algo nao existir no CRM, diga claramente.
 9. Sempre que o usuario pedir ajuda comercial, considere objetivo, risco, proximo passo e, quando fizer sentido, sugira mensagem pronta.
-10. Voce pode ajudar com qualquer tarefa comercial: textos, estrategias, analises, scripts de vendas e leitura operacional do CRM.`;
+10. Voce pode ajudar com qualquer tarefa comercial: textos, estrategias, analises, scripts de vendas e leitura operacional do CRM.
+11. Quando o usuario pedir para agendar, marcar horario ou verificar disponibilidade para um lead, use as ferramentas checkAvailability e bookAppointment. O setor responsavel e resolvido automaticamente a partir do lead, entao basta informar o leadId.`;
 }
 
 export function normalizeLeadStatus(status: FunnelStatus) {

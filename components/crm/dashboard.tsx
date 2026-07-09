@@ -9,6 +9,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { CourseLeadChart } from "@/features/dashboard/components/dashboard-course-chart";
 import { ActiveOriginShape, ChartMarker, MetricCard, OriginTooltipContent } from "@/features/dashboard/components/dashboard-primitives";
 import { TaskOwnerChart } from "@/features/dashboard/components/dashboard-task-owner-chart";
+import { DashboardTodayAppointments } from "@/features/dashboard/components/dashboard-today-appointments";
 import { useDashboardView } from "@/features/dashboard/hooks/use-dashboard-view";
 import { dashboardChartConfig, type DashboardProps } from "@/features/dashboard/lib/dashboard-types";
 import { snowChartColors } from "@/features/dashboard/lib/dashboard-utils";
@@ -16,7 +17,8 @@ const InteractivePie = Pie as unknown as React.ComponentType<Record<string, unkn
 
 export function Dashboard({
   period, setPeriod, periodLeads, newLeads, waiting, overdue, confirmed, conversion, trendData, courseData, originData, taskOwnerData, pendingTasks, pendingTaskItems, allLeads,
-}: DashboardProps) {
+  showTodayAppointments = true,
+}: DashboardProps & { showTodayAppointments?: boolean }) {
   const { state, actions } = useDashboardView({ originData, courseData, taskOwnerData, periodLeads, pendingTaskItems, allLeads, trendData });
 
   return (
@@ -51,6 +53,8 @@ export function Dashboard({
         <MetricCard label="Tarefas pendentes" value={pendingTasks} icon={ListChecks} tone="blue" />
         <MetricCard label="Cursos em demanda" value={courseData.length} icon={BookOpen} tone="gold" />
       </div>
+
+      {showTodayAppointments ? <DashboardTodayAppointments /> : null}
 
       <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
         <Card className="rounded-[32px] overflow-hidden border border-border bg-card ">
