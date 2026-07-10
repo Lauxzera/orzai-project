@@ -7,7 +7,7 @@ import {
   seedState,
   validateLead,
 } from "@/lib/crm";
-import { uid } from "@/lib/server/crm/shared";
+import { uid } from "@/lib/server/crm/uid";
 import type { CrmCommand, CrmState, Lead, SessionUser, Task } from "@/lib/server/crm/types";
 
 function isAutomaticWhatsappInboxCommand(command: Extract<CrmCommand, { type: "upsertLead" }>, actor: SessionUser | null) {

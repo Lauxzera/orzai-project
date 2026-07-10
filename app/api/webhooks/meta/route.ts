@@ -23,6 +23,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (process.env.PREVIEW_MODE === "true") {
+    return NextResponse.json({ ok: true });
+  }
+
   const config = await getResolvedWhatsAppConfig();
   if (config.provider !== "meta") {
     return NextResponse.json({ ok: false, error: "Provedor Meta nao configurado." }, { status: 400 });

@@ -2,6 +2,8 @@ import path from "node:path";
 import { currentDate } from "@/lib/crm";
 import type { AdminAuditEntry, AdminUserRecord, SessionUser, StoredUser } from "@/lib/server/crm/types";
 
+export { uid } from "@/lib/server/crm/uid";
+
 export const DATA_DIR = path.join(process.cwd(), "data");
 export const DATA_FILE = path.join(DATA_DIR, "crm-store.json");
 export const AUDIT_FILE = path.join(DATA_DIR, "admin-audit.json");
@@ -67,9 +69,3 @@ export function buildUserUpdateChangeTypes(
   return changes.length ? changes : ["name"];
 }
 
-export function uid(prefix: string) {
-  if (typeof globalThis.crypto?.randomUUID === "function") {
-    return `${prefix}-${globalThis.crypto.randomUUID()}`;
-  }
-  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}

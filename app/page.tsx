@@ -75,6 +75,11 @@ import { LandingPage } from "@/features/landing/components/landing-page";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, subDays, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { installPreviewFetch } from "@/lib/preview/preview-fetch";
+import { isPreviewMode } from "@/lib/preview/is-preview-mode";
+import { PreviewStaticScreen } from "@/lib/preview/preview-static-screen";
+
+installPreviewFetch();
 
 const OrzaiLogo = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -415,7 +420,7 @@ export default function OrzaiCrmPage() {
   }, [allowedViews, defaultView, view]);
 
   React.useEffect(() => {
-    if (!authenticated || !allowedViews.includes("messages")) {
+    if (isPreviewMode() || !authenticated || !allowedViews.includes("messages")) {
       setMessagesUnreadCount(0);
       return;
     }
@@ -1376,7 +1381,17 @@ export default function OrzaiCrmPage() {
           />
 
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden relative z-10 w-full animate-in fade-in duration-300">
-              {view === "messages" ? (
+              {view === "messages" && isPreviewMode() ? (
+            <PreviewStaticScreen
+              title="Atendimento via WhatsApp"
+              description="Aqui o time conversa com os leads direto pelo WhatsApp, com histórico completo e ações rápidas de CRM. Na versão real, cada conversa fica ligada ao lead correspondente."
+              items={[
+                { title: "Mariana Alves", detail: "\"Quer confirmar agenda de sábado\" · Aguardando Retorno" },
+                { title: "Letícia Fernandes", detail: "\"Parcelamento\" · Em negociação" },
+                { title: "Camila Rocha", detail: "Novo contato via WhatsApp · Aguardando primeiro atendimento" },
+              ]}
+            />
+          ) : view === "messages" ? (
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
               <MessagesView
                 leads={state.leads}
@@ -1513,7 +1528,19 @@ export default function OrzaiCrmPage() {
             </div>
           ) : null}
 
-          {view === "analytics" ? (
+          {view === "analytics" && isPreviewMode() ? (
+            <div className="perf-section">
+              <PreviewStaticScreen
+                title="Analytics de conversas"
+                description="Métricas de atendimento por canal, tempo de resposta e objeções mais frequentes, calculadas a partir do histórico de conversas. Na versão real, os números refletem seus atendimentos de verdade."
+                items={[
+                  { title: "Tempo médio de resposta", detail: "4 min 30s nas últimas 24h" },
+                  { title: "Objeção mais comum", detail: "\"Preciso avaliar deslocamento\"" },
+                  { title: "Taxa de conversão", detail: "23% dos leads em conversa viram matrícula" },
+                ]}
+              />
+            </div>
+          ) : view === "analytics" ? (
             <div className="perf-section">
               <AnalyticsView
                 leads={state.leads}
@@ -1541,7 +1568,19 @@ export default function OrzaiCrmPage() {
             </div>
           ) : null}
 
-          {view === "broadcasts" ? (
+          {view === "broadcasts" && isPreviewMode() ? (
+            <div className="perf-section">
+              <PreviewStaticScreen
+                title="Central de disparos oficiais"
+                description="Envio de campanhas em massa pela WhatsApp Business Platform, com fila controlada e intervalo de segurança entre mensagens. Na versão real, você monta a mensagem, escolhe o público e acompanha o progresso do envio."
+                items={[
+                  { title: "Turma de Sobrancelhas - Reativação", detail: "Pausada · 12 pendentes, 38 enviados" },
+                  { title: "Follow-up pós-evento", detail: "Concluída · 20 enviados, 0 falhas" },
+                  { title: "Boas-vindas turma nova", detail: "Em andamento · 5 pendentes" },
+                ]}
+              />
+            </div>
+          ) : view === "broadcasts" ? (
             <div className="perf-section">
               <BroadcastsView
                 leads={state.leads}
@@ -1589,7 +1628,19 @@ export default function OrzaiCrmPage() {
               </div>
             ) : null}
 
-          {view === "admin-users" && allowUserManagement ? (
+          {view === "admin-users" && allowUserManagement && isPreviewMode() ? (
+              <div className="perf-section">
+                <PreviewStaticScreen
+                  title="Usuários e permissões"
+                  description="Gestão de quem acessa o CRM, com papéis (admin, gestor, vendas, visualização) e trilha de auditoria de alterações. Na versão real, você cria, edita e bloqueia usuários da equipe por aqui."
+                  items={[
+                    { title: "Ana Paula", detail: "Vendas · ativa" },
+                    { title: "Bruna Martins", detail: "Vendas · ativa" },
+                    { title: "Anderson", detail: "Administrador · ativo" },
+                  ]}
+                />
+              </div>
+            ) : view === "admin-users" && allowUserManagement ? (
               <div className="perf-section">
                 <AdminUsersView
                   currentUser={currentUser ?? { id: "", name: currentUserName, username: "", role: currentRole, active: true }}
