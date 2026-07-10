@@ -346,23 +346,45 @@ export function MessagesView({
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3 px-1">
-        <div className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1">
-          <button
-            type="button"
-            onClick={() => setGuidedMode(false)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${!guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-          >
-            Lista + conversa
-          </button>
-          <button
-            type="button"
-            onClick={() => setGuidedMode(true)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-          >
-            Modo guiado
-          </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1">
+            <button
+              type="button"
+              onClick={() => setGuidedMode(false)}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${!guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              Lista + conversa
+            </button>
+            <button
+              type="button"
+              onClick={() => setGuidedMode(true)}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${guidedMode ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              Modo guiado
+            </button>
+          </div>
+          {compactLayout && !guidedMode ? (
+            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1">
+              <button
+                type="button"
+                onClick={() => { setSidebarSection("inbox"); setSidebarOpen(true); }}
+                className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition-colors ${sidebarSection === "inbox" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                aria-label="Ver inbox"
+              >
+                <LayoutList className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => { setSidebarSection("channel"); setSidebarOpen(true); }}
+                className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition-colors ${sidebarSection === "channel" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                aria-label="Ver canal"
+              >
+                <RadioTower className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ) : null}
         </div>
-        <span className="text-xs text-muted-foreground">
+        <span className="hidden sm:inline text-xs text-muted-foreground">
           {guidedMode ? "Foco total: uma conversa por vez" : "Visão completa: lista à esquerda, conversa no centro"}
         </span>
       </div>
@@ -421,7 +443,10 @@ export function MessagesView({
           ].join(" ")}
         >
           <div className="flex h-full w-full min-w-0 bg-background">
-            <div className="flex w-[68px] shrink-0 flex-col items-center border-r bg-gradient-to-b from-card via-background to-muted/40 py-3 dark:from-muted/25 dark:via-background dark:to-background">
+            <div className={[
+              "shrink-0 flex-col items-center border-r bg-gradient-to-b from-card via-background to-muted/40 py-3 dark:from-muted/25 dark:via-background dark:to-background",
+              compactLayout ? "hidden" : "flex w-[68px]",
+            ].join(" ")}>
               {compactSidebarOverlay ? (
                 <button
                   type="button"
