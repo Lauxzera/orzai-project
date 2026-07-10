@@ -340,6 +340,8 @@ model Department {
   channelConfigs      MessageChannelConfigRecord[]
   appointments        Appointment[]
   scheduledFollowUps  ScheduledFollowUp[]
+  professionals       Professional[]
+  timeBlocks          TimeBlock[]
 }
 
 model UserDepartmentRole {
@@ -398,21 +400,55 @@ model ChannelIntegration {
 }
 
 model Appointment {
-  id           String            @id @default(cuid())
-  externalId   String?
-  leadId       String
-  departmentId String
-  startTime    DateTime
-  endTime      DateTime
-  status       AppointmentStatus @default(PENDING)
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  lead         Lead              @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  department   Department        @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  id             String            @id @default(cuid())
+  externalId     String?
+  leadId         String
+  departmentId   String
+  professionalId String?
+  startTime      DateTime
+  endTime        DateTime
+  status         AppointmentStatus @default(PENDING)
+  notes          String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  lead           Lead              @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  department     Department        @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  professional   Professional?     @relation(fields: [professionalId], references: [id], onDelete: SetNull)
 
   @@index([leadId])
   @@index([departmentId])
+  @@index([professionalId])
   @@index([startTime])
+}
+
+model Professional {
+  id            String        @id @default(cuid())
+  name          String
+  departmentId  String
+  userId        String?
+  businessHours Json?
+  active        Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  department    Department    @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  appointments  Appointment[]
+  timeBlocks    TimeBlock[]
+
+  @@index([departmentId])
+}
+
+model TimeBlock {
+  id             String        @id @default(cuid())
+  departmentId   String
+  professionalId String?
+  startTime      DateTime
+  endTime        DateTime
+  reason         String
+  createdAt      DateTime      @default(now())
+  department     Department    @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  professional   Professional? @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+
+  @@index([departmentId, startTime])
 }
 
 model ScheduledFollowUp {

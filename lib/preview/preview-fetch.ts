@@ -4,6 +4,7 @@ import { applyCommandToState } from "@/lib/server/crm/state-commands";
 import { buildAssignableOwners, defaultCrmCustomizations, normalizeCrmState, seedState, type CrmCustomizations, type CrmState, type CrmUser } from "@/lib/crm";
 import type { CrmCommand } from "@/lib/server/crm/types";
 import { isPreviewMode } from "@/lib/preview/is-preview-mode";
+import { handleAgendaPreviewRequest } from "@/lib/preview/preview-agenda";
 
 const PREVIEW_USER: CrmUser = {
   id: "preview-user",
@@ -114,6 +115,9 @@ async function handlePreviewRequest(input: RequestInfo | URL, init?: RequestInit
       ],
     });
   }
+
+  const agendaResponse = handleAgendaPreviewRequest(url, method, String(init?.body ?? "{}"));
+  if (agendaResponse) return agendaResponse;
 
   return null;
 }

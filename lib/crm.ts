@@ -17,6 +17,7 @@ export type EnrollmentStatus =
 export type Period = "day" | "week" | "month";
 export type View =
   | "dashboard"
+  | "agenda"
   | "analytics"
   | "leads"
   | "lead-lists"
@@ -894,13 +895,13 @@ export function buildAssignableOwners(ownerNames: readonly string[]) {
 export function getRoleViews(role: UserRole): View[] {
   switch (role) {
     case "ADMIN":
-      return ["dashboard", "analytics", "leads", "lead-lists", "tasks", "messages", "broadcasts", "admin-users", "lead-settings"];
+      return ["dashboard", "agenda", "analytics", "leads", "lead-lists", "tasks", "messages", "broadcasts", "admin-users", "lead-settings"];
     case "MANAGER":
-      return ["dashboard", "analytics", "leads", "lead-lists", "tasks", "messages", "broadcasts", "lead-settings"];
+      return ["dashboard", "agenda", "analytics", "leads", "lead-lists", "tasks", "messages", "broadcasts", "lead-settings"];
     case "SALES":
-      return ["dashboard", "leads", "lead-lists", "tasks", "messages", "broadcasts"];
+      return ["dashboard", "agenda", "leads", "lead-lists", "tasks", "messages", "broadcasts"];
     case "VIEWER":
-      return ["dashboard", "leads", "lead-lists", "messages"];
+      return ["dashboard", "agenda", "leads", "lead-lists", "messages"];
   }
 }
 

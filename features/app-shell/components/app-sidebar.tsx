@@ -26,7 +26,7 @@ export function AppSidebar({ items, activeView, messagesUnreadCount = 0, sidebar
   const sections = [
     {
       title: "Atendimento",
-      items: items.filter((item) => ["messages", "broadcasts", "leads", "tasks"].includes(item.id)),
+      items: items.filter((item) => ["messages", "broadcasts", "leads", "tasks", "agenda"].includes(item.id)),
     },
     {
       title: "Carteira",

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import {
   BarChart3,
   Bot,
+  CalendarDays,
   Clock3,
   FileDown,
   FileSpreadsheet,
@@ -102,6 +103,7 @@ const preloadMessagesView = () => import("@/components/crm/messages-view");
 const preloadBroadcastsView = () => import("@/components/crm/broadcasts-view");
 const preloadAdminUsersView = () => import("@/components/crm/admin-users-view");
 const preloadLeadSettingsView = () => import("@/features/settings/components/lead-settings-view");
+const preloadAgendaView = () => import("@/features/agenda/components/agenda-view");
 
 const Dashboard = dynamic(() => preloadDashboard().then((module) => module.Dashboard), {
   loading: () => <PanelSkeleton />,
@@ -131,6 +133,10 @@ const LeadSettingsView = dynamic(
   () => preloadLeadSettingsView().then((module) => module.LeadSettingsView),
   { loading: () => <PanelSkeleton />, ssr: false },
 );
+const AgendaView = dynamic(() => preloadAgendaView().then((module) => module.AgendaView), {
+  loading: () => <PanelSkeleton />,
+  ssr: false,
+});
 const THEME_STORAGE_KEY = "orzai-project-theme";
 const NOTIFICATION_READ_STORAGE_KEY = "orzai-project-notifications-read";
 const CRM_BOOTSTRAP_CACHE_KEY = "crm-bootstrap";
@@ -403,6 +409,7 @@ export default function OrzaiCrmPage() {
   const defaultView = getDefaultViewForRole(currentRole);
   const navigationItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { id: "agenda", label: "Agenda", icon: CalendarDays },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "leads", label: "Leads", icon: UsersRound },
     { id: "lead-lists", label: "Listas de leads", icon: FileSpreadsheet },
@@ -1459,7 +1466,7 @@ export default function OrzaiCrmPage() {
             </div>
           </header>
 
-          {view !== "analytics" && view !== "admin-users" && view !== "lead-settings" ? (
+          {view !== "analytics" && view !== "admin-users" && view !== "lead-settings" && view !== "agenda" ? (
             <Card className="soft-panel">
               <CardContent className="grid gap-3 p-4">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
@@ -1525,6 +1532,12 @@ export default function OrzaiCrmPage() {
                 overdueLeads={overdueLeads.length}
                 pendingTasks={pendingTasks}
               />
+            </div>
+          ) : null}
+
+          {view === "agenda" ? (
+            <div className="perf-section">
+              <AgendaView allowEdits={allowCrmEdits} currentRole={currentRole} leads={state.leads} />
             </div>
           ) : null}
 
