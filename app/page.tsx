@@ -180,7 +180,7 @@ export default function OrzaiCrmPage() {
   const [leadDialogOpen, setLeadDialogOpen] = React.useState(false);
   const [assistantOpen, setAssistantOpen] = React.useState(false);
   const [rightRailOpen, setRightRailOpen] = React.useState(false);
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [sidebarOpen, setSidebarOpen] = React.useState(() => typeof window === "undefined" || window.innerWidth >= 1024);
   const [editingLeadId, setEditingLeadId] = React.useState<string | null>(null);
   const [selectedLeadId, setSelectedLeadId] = React.useState<string | null>(null);
   const [selectedConversationId, setSelectedConversationId] = React.useState<string | null>(null);
@@ -1216,7 +1216,7 @@ export default function OrzaiCrmPage() {
               {loginError ?<p className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">{loginError}</p> : null}
               {serverError ?<p className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">{serverError}</p> : null}
 
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <Button
                   type="button"
                   variant="outline"
@@ -1227,7 +1227,7 @@ export default function OrzaiCrmPage() {
                   {darkMode ?<Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                   {darkMode ? "Claro" : "Escuro"}
                 </Button>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     type="button"
                     variant="outline"
@@ -1307,7 +1307,7 @@ export default function OrzaiCrmPage() {
                 Conta criada com perfil <strong>Vendas</strong>. Um administrador pode alterar o nível de acesso posteriormente.
               </p>
 
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <Button
                   type="button"
                   variant="outline"
@@ -1350,7 +1350,10 @@ export default function OrzaiCrmPage() {
           messagesUnreadCount={messagesUnreadCount}
           sidebarOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          onSelectView={setView}
+          onSelectView={(nextView) => {
+            setView(nextView);
+            if (typeof window !== "undefined" && window.innerWidth < 1024) setSidebarOpen(false);
+          }}
         />
 
         <section
