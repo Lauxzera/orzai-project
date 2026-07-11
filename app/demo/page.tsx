@@ -22,8 +22,7 @@ import {
   type Lead,
   type Period,
 } from "@/lib/crm";
-
-const WHATSAPP_SALES_LINK = "https://wa.me/SEU_NUMERO_AQUI";
+import { WHATSAPP_SALES_LINK } from "@/features/landing/lib/brand";
 
 function useDemoState() {
   const [initial] = React.useState(() => seedState());
