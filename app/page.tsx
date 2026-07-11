@@ -283,6 +283,13 @@ export default function OrzaiCrmPage() {
       setTheme(savedTheme);
     }
     // default é sempre claro — sistema do usuário não sobrepõe a preferência do produto
+    if (isPreviewMode()) {
+      // No modo preview o bootstrap sempre "sucede" (dados fictícios) — não
+      // pode rodar automaticamente no mount, senão pula direto pro CRM sem
+      // nunca mostrar a landing page.
+      setHydrated(true);
+      return;
+    }
     void bootstrap();
   }, [bootstrap]);
 
@@ -1171,7 +1178,18 @@ export default function OrzaiCrmPage() {
 
   if (!authenticated) {
     if (loginMode === "landing") {
-      return <LandingPage onEnterCrm={() => setLoginMode("login")} />;
+      return (
+        <LandingPage
+          onEnterCrm={() => {
+            if (isPreviewMode()) {
+              // Sem login de verdade no preview — "Entrar" já carrega o CRM fictício.
+              void bootstrap(true);
+              return;
+            }
+            setLoginMode("login");
+          }}
+        />
+      );
     }
 
     return (
